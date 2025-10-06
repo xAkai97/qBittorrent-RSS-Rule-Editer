@@ -1,1 +1,1 @@
-# qbt_rss_anime_syncer
+# qBittorrent-RSS-Rule-Editer
