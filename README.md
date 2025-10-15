@@ -23,21 +23,19 @@ This project requires Python 3.8+ and the following libraries:
     cd qbt\_rss\_anime\_syncer
 
 2.  **Create and Activate a Virtual Environment (Recommended):**
-    python -m venv venvipy
-    .\\venvipy\\Scripts\\activate \# On Windows
-    \# source venvipy/bin/activate \# On Linux/macOS
+    python -m venv {venv_dir}
+    .\\{venv_dir}\\Scripts\\activate \# On Windows
+    \# source {venv_dir}/bin/activate \# On Linux/macOS
 
 3.  Install Dependencies:
-    Install all required libraries using pip:
-    pip install requests qbittorrent-api
+    Install all required libraries:
+    pip install requirements.txt
 
 **Usage Guide**
 
 **1. Run the Application**
 
 Execute the main script from your activated virtual environment:
-
-python qbt\_rss\_anime\_syncer.py
 
 **2. Configure Settings (CRITICAL)**
 
@@ -46,15 +44,62 @@ The **Settings** window will open automatically if credentials are not set. Ensu
 *   **Protocol:** **http** / **https** based on your server configuration.
 *   **Port:** **8080**.
 *   **Username/Password:** Must match your qBittorrent WebUI login.
-*   **Verify SSL Certificate:** **UNCHECK THIS BOX** since your Docker setup uses a self-signed certificate.
+*   **Verify SSL Certificate:** **UNCHECK THIS BOX** if your Docker setup uses a self-signed certificate.
 
 **3. Fetch and Select Titles**
 
 1.  Select the desired **Season** and **Year**.
 2.  Adjust the **Media Types** checkboxes (TV, Movie, etc.).
 3.  Click **"Fetch Titles"** (or **"Refresh Titles"** to bypass cache).
-4.  In the **"2. Select Titles"** section, use **Shift + Click** or **Ctrl + Click** to select the anime you want.
+4.  In the **"Select Titles"** section, use **Shift + Click** or **Ctrl + Click** to select the anime you want.
 
 **4. Generate/Sync Rules**
 
-Click **"3. Generate/Sync Rules"** to push the robust, new rules directly to your qBittorrent client.
+Click **"Generate/Sync Rules"** to push the robust, new rules directly to your qBittorrent client.
+
+Running
+-------
+
+The project has been refactored into a package. Preferred ways to run the application:
+
+- Run as a module (recommended):
+
+    python -m qbt_editor
+
+- (Legacy) If you previously used the top-level script, it was removed in this refactor. The package provides the same functionality via the `qbt_editor` package.
+
+Dependencies
+------------
+
+The qBittorrent integration is optional at import-time. To enable online sync with qBittorrent, install the WebUI client library:
+
+    pip install qbittorrent-api
+
+If `qbittorrent-api` is not installed the application will still import and run in offline mode (generate JSON rules) but any online sync features will be disabled until the dependency is present.
+
+Thumbnails in Select Titles
+---------------------------
+
+This application can optionally show poster thumbnails next to each title in the "Select Titles" list. Notes:
+
+- Dependency: The thumbnail feature uses the Pillow library. Install it with the project's dependencies:
+
+    pip install -r requirements.txt
+
+- Enable/Disable: Open the application's **Settings** window and toggle **Show thumbnails in Select Titles**. If disabled, the app will always show a compact, text-only list.
+
+- Cache: Downloaded thumbnails are cached in the `.thumb_cache` directory next to the script to avoid re-downloading images.
+
+- Fallback: If Pillow is not installed or a thumbnail fails to download, the app will gracefully fall back to a text-only view.
+
+Displayed title details
+-----------------------
+
+For each anime listed in the "Select Titles" view the application displays key metadata fetched from MyAnimeList (when available). The fields shown include:
+
+- Episodes: The total number of episodes (or expected episodes) for the title.
+- Status: The broadcast / release status (e.g., "Finished Airing", "Currently Airing", "Not yet aired").
+- Aired: The original air date range or start date.
+- Synopsis: A short description or summary of the title.
+
+These fields are used to help you decide which titles to include when generating RSS rules. The synopsis is truncated in the list view to keep the UI compact; you can view the full synopsis in the preview/edit window when generating rules.
