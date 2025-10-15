@@ -77,6 +77,15 @@ The qBittorrent integration is optional at import-time. To enable online sync wi
 
 If `qbittorrent-api` is not installed the application will still import and run in offline mode (generate JSON rules) but any online sync features will be disabled until the dependency is present.
 
+Example
+-------
+
+Run the application using the module entrypoint (recommended):
+
+```powershell
+python -m qbt_editor
+```
+
 Thumbnails in Select Titles
 ---------------------------
 
