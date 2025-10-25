@@ -56,20 +56,24 @@ This project requires Python 3.8+ and the following libraries:
 
     If the library is not installed the package still imports and supports offline JSON generation.
 
-     Browser extension (MAL export)
-     -----------------------------
+Browser extension (MAL Multi-Select Export)
+------------------------------------------
 
-     The extension has been split into its own repository and is maintained separately:
+This project can be used together with a small browser extension that helps collect anime titles from MyAnimeList.
 
-     - mal-multi-select-export — https://github.com/xAkai97/mal-multi-select-export
+- Extension repo: https://github.com/xAkai97/mal-multi-select-export
 
-     You can install or test the extension in one of two ways:
+How to use the extension with this tool
+1. Install the extension (developer/unpacked install):
+   - Clone the extension repository or download the ZIP and extract it.
+   - In Chrome/Edge/Brave, open chrome://extensions/ and enable "Developer mode".
+   - Click "Load unpacked" and select the extension folder (the one containing `manifest.json`).
+2. On MyAnimeList season pages the extension adds checkboxes for multi-select. Select titles and export as JSON or copy to clipboard.
+3. In this project, use "Import > Paste from Clipboard" or "Import > Open JSON File" to load the exported titles and generate qBittorrent RSS rules.
 
-     1. Download or clone the extension repo and load it unpacked in your browser (Chrome/Edge/Brave):
+Notes
+- The extension is maintained separately so it can evolve independently (its own issues, CI, and releases).
+- If you prefer a single-repo workflow you can import the extension into this repository, or add it as a git submodule — see the `mal-multi-select-export` repo for details.
 
-         - Open `chrome://extensions/` and enable Developer mode.
-         - Click "Load unpacked" and select the extension folder you cloned from the `mal-multi-select-export` repository.
-
-     2. If you have a local copy in this repository at `mal-multi-select-export/`, you can also load that folder directly using the same "Load unpacked" workflow.
-
-     See the extension repository for usage, releases, and installation notes: https://github.com/xAkai97/mal-multi-select-export
+Related links
+- Extension repository: https://github.com/xAkai97/mal-multi-select-export
