@@ -1,4 +1,4 @@
 config.ini
 /.vscode
-seasonal_cache.json
 /__pycache__
+seasonal_cache.json
