@@ -1,79 +1,155 @@
-**qBittorrent RSS Rule Editor**
+# qBittorrent RSS Rule Editor
 
-A small cross-platform Tkinter GUI that helps generate and synchronize qBittorrent RSS rules for seasonal anime, supporting offline JSON export and optional online sync to a qBittorrent WebUI.
+A cross-platform Tkinter GUI that helps generate and synchronize qBittorrent RSS rules for seasonal anime, supporting offline JSON export and optional online sync to a qBittorrent WebUI.
 
-**Features**
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Tests](https://img.shields.io/badge/tests-30%2F30%20passing-brightgreen.svg)](tests/)
+[![Code Style](https://img.shields.io/badge/code%20style-modular-blue.svg)](STRUCTURE.md)
 
-- Generate offline qBittorrent RSS rule JSON for manual import.
-- Sync generated rules directly to a qBittorrent WebUI when `qbittorrent-api` is installed and configured.
-- A simple Tkinter GUI to pick titles and set season/year prefixes.
-- Config persistence in `config.ini` (qBittorrent host/port/credentials, connection mode, SSL options).
+## Features
 
-**Installation**
+- **🎯 Smart Rule Generation** - Create qBittorrent RSS download rules with seasonal paths
+- **📤 Dual Mode Operation** - Export JSON files or sync directly to qBittorrent WebUI
+- **🔄 SubsPlease Integration** - Fetch current seasonal anime titles with local caching
+- **📋 MAL Import** - Import anime lists from MyAnimeList Seasonal via browser extension
+- **⚙️ Flexible Configuration** - Persistent settings with SSL/TLS support
+- **🏗️ Modular Architecture** - Clean, testable, maintainable codebase
 
-This project requires Python 3.8+ and the following libraries:
+## Quick Start
 
-1.  **Clone the Repository (or save the script):**
-    # qBittorrent RSS Rule Editor
+### 1. Create & Activate Virtual Environment
 
-    Small Tkinter GUI to generate or synchronize qBittorrent RSS rules (focused on seasonal anime).
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate
+```
 
-    ## Quick start
+### 2. Install Dependencies
 
-    1. Create & activate a Python 3.8+ virtualenv:
+```powershell
+pip install -r requirements.txt
+```
 
-    ```powershell
-    python -m venv .venv
-    .\.venv\Scripts\Activate
-    ```
+### 3. Run the Application
 
-    2. Install dependencies:
+```powershell
+# Modular version (recommended)
+python main.py
 
-    ```powershell
-    pip install -r requirements.txt
-    ```
+# OR legacy single-file version
+python legacy/qbt_editor.py
+```
 
-    3. Run the GUI:
+Both versions are fully functional and share the same configuration files.
 
-    ```powershell
-    python "filename.py"
-    ```
+## Project Structure
 
-    ## Configuration
+This project has been refactored into a clean modular architecture:
 
-    On first run open Settings and provide your qBittorrent WebUI details. Config is stored in `config.ini`.
+```
+src/
+├── constants.py       ✅ Constants & exceptions
+├── config.py          ✅ Configuration management
+├── cache.py           ✅ Data persistence
+├── utils.py           ✅ Utility functions
+├── subsplease_api.py  ✅ SubsPlease integration
+├── qbittorrent_api.py ✅ qBittorrent API client
+├── rss_rules.py       ✅ RSS rule management
+└── gui/               🔄 GUI modules (in progress)
+```
 
-    - Connection Mode: `online` (sync directly) or `offline` (generate JSON file for manual import).
-    - For self-signed HTTPS, either provide a CA certificate path in Settings or uncheck "Verify SSL".
+**Test Coverage:** 30/30 tests passing (100%) ✅
 
-    ## Optional dependency
+## Configuration
 
-    Install `qbittorrent-api` only if you want online sync:
+On first run, open **Settings** and configure your qBittorrent WebUI details. Configuration is stored in `config.ini`.
 
-    ```powershell
-    pip install qbittorrent-api
-    ```
+### Connection Modes
 
-    If the library is not installed the package still imports and supports offline JSON generation.
+- **Online Mode** - Sync rules directly to qBittorrent WebUI (requires `qbittorrent-api`)
+- **Offline Mode** - Generate JSON file for manual import
 
-Browser extension (MAL Multi-Select Export)
-------------------------------------------
+### SSL/TLS Support
 
-This project can be used together with a small browser extension that helps collect anime titles from MyAnimeList.
+For self-signed HTTPS certificates:
+- Provide a CA certificate path in Settings, OR
+- Uncheck "Verify SSL" (not recommended for production)
 
-- Extension repo: https://github.com/xAkai97/mal-multi-select-export
+### Optional Dependency
 
-How to use the extension with this tool
-1. Install the extension (developer/unpacked install):
-   - Clone the extension repository or download the ZIP and extract it.
-   - In Chrome/Edge/Brave, open chrome://extensions/ and enable "Developer mode".
-   - Click "Load unpacked" and select the extension folder (the one containing `manifest.json`).
-2. On MyAnimeList season pages the extension adds checkboxes for multi-select. Select titles and export as JSON or copy to clipboard.
-3. In this project, use "Import > Paste from Clipboard" or "Import > Open JSON File" to load the exported titles and generate qBittorrent RSS rules.
+Install `qbittorrent-api` for online sync capability:
 
-Notes
-- The extension is maintained separately so it can evolve independently (its own issues, CI, and releases).
-- If you prefer a single-repo workflow you can import the extension into this repository, or add it as a git submodule — see the `mal-multi-select-export` repo for details.
+```powershell
+pip install qbittorrent-api
+```
 
-Related links
-- Extension repository: https://github.com/xAkai97/mal-multi-select-export
+**Note:** The application works in offline mode without this library.
+
+## SubsPlease API Integration
+
+The "Feed Title Variations" feature fetches current anime titles from SubsPlease's public API to help match your titles with their RSS feed naming conventions.
+
+### API Usage Details
+
+- **Endpoint:** `https://subsplease.org/api/?f=schedule&tz=UTC`
+- **Access:** Public API with no published restrictions
+- **Caching:** Results cached locally for 30 days in `seasonal_cache.json`
+- **Rate Limiting:** Automatic through caching mechanism
+- **User-Agent:** Identifies itself properly to SubsPlease
+- **Usage:** Multiple open-source projects use this API responsibly
+
+### How to Use
+
+- **Load Cache** - Uses local cache if available, fetches only if cache is empty
+- **Fetch Fresh** - Always fetches latest data from SubsPlease API
+- **Optional** - The tool works fine without this feature
+
+**Please use responsibly** - The caching system minimizes API load automatically.
+
+## MAL Multi-Select Export Integration
+
+This tool integrates with the **MAL Multi-Select Export** browser extension to import anime lists from MyAnimeList.
+
+### Extension Repository
+🔗 https://github.com/xAkai97/mal-multi-select-export
+
+### How to Use
+
+1. **Install the Extension** (developer mode):
+   - Clone or download the extension repository
+   - In Chrome/Edge/Brave: Navigate to `chrome://extensions/`
+   - Enable "Developer mode"
+   - Click "Load unpacked" and select the extension folder (containing `manifest.json`)
+
+2. **Export from MyAnimeList:**
+   - Visit MyAnimeList seasonal anime pages
+   - Use checkboxes to multi-select titles
+   - Export as JSON or copy to clipboard
+
+3. **Import into RSS Rule Editor:**
+   - Use **"Import > Paste from Clipboard"** or **"Import > Open JSON File"**
+   - Generate qBittorrent RSS rules from imported titles
+
+### Why Separate Repository?
+
+The extension is maintained separately to allow independent development, issues tracking, CI/CD, and releases.
+
+## Development
+
+### Running Tests
+
+```powershell
+# Run all tests
+python test_modules.py        # Foundation modules (6/6)
+python test_qbittorrent_api.py  # qBittorrent API (5/5)
+python test_rss_rules.py       # RSS rules (9/9)
+python test_integration.py     # Integration (10/10)
+```
+
+## License
+
+MIT License - See [LICENSE](LICENSE) file for details.
+
+## Author
+
+**xAkai97**

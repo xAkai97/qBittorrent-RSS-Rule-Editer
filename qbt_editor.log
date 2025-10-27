@@ -1,0 +1,55 @@
+2025-10-27 04:21:13 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-27 04:21:13 - __main__ - INFO - Phase 3: GUI modularization in progress
+2025-10-27 04:21:13 - __main__ - ERROR - Import error: cannot import name 'create_labeled_text' from 'src.gui.widgets' (C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\widgets.py)
+Traceback (most recent call last):
+  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\main.py", line 35, in main
+    from src.gui import setup_gui, exit_handler
+  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\__init__.py", line 11, in <module>
+    from .gui import setup_gui, main
+  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\__init__.py", line 30, in <module>
+    from .widgets import (
+    ...<5 lines>...
+    )
+ImportError: cannot import name 'create_labeled_text' from 'src.gui.widgets' (C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\widgets.py)
+2025-10-27 04:22:05 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-27 04:22:05 - __main__ - INFO - Phase 3: GUI modularization in progress
+2025-10-27 04:22:05 - __main__ - ERROR - Import error: cannot import name 'main' from 'src.gui' (C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\__init__.py)
+Traceback (most recent call last):
+  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\main.py", line 35, in main
+    from src.gui import setup_gui, exit_handler
+  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\__init__.py", line 11, in <module>
+    from .gui import setup_gui, main
+ImportError: cannot import name 'main' from 'src.gui' (C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\__init__.py)
+2025-10-27 04:22:39 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-27 04:22:39 - __main__ - INFO - Phase 3: GUI modularization in progress
+2025-10-27 04:22:39 - src.gui.main_window - ERROR - Failed to import legacy GUI: No module named 'qbt_editor'
+2025-10-27 04:22:53 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-27 04:22:53 - __main__ - INFO - Phase 3: GUI modularization in progress
+2025-10-27 04:22:53 - src.gui.main_window - ERROR - Failed to import legacy GUI: No module named 'qbt_editor'
+2025-10-27 04:25:25 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-27 04:25:25 - __main__ - INFO - Phase 3: GUI modularization in progress
+2025-10-27 04:25:47 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-27 04:25:47 - __main__ - INFO - Phase 3: GUI modularization in progress
+2025-10-27 04:26:33 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-27 04:26:33 - __main__ - INFO - Phase 3: GUI modularization in progress
+2025-10-27 04:26:33 - src.gui.main_window - INFO - GUI Phase 3: Using legacy setup_gui during transition
+2025-10-27 04:26:33 - qbt_editor - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-10-27 04:26:33 - qbt_editor - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 04:32:58 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-27 04:32:58 - __main__ - INFO - Phase 3: GUI modularization in progress
+2025-10-27 04:32:58 - src.qbittorrent_api - WARNING - qbittorrentapi not available, using requests fallback
+2025-10-27 04:32:58 - src.gui.main_window - INFO - GUI Phase 3: Using legacy setup_gui during transition
+2025-10-27 04:32:58 - qbt_editor - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-10-27 04:32:58 - qbt_editor - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 04:38:00 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-27 04:38:00 - __main__ - INFO - Phase 3: GUI modularization in progress
+2025-10-27 04:38:00 - src.qbittorrent_api - WARNING - qbittorrentapi not available, using requests fallback
+2025-10-27 04:38:00 - src.gui.main_window - INFO - GUI Phase 3: Using legacy setup_gui during transition
+2025-10-27 04:38:00 - qbt_editor - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-10-27 04:38:00 - qbt_editor - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 04:43:16 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-27 04:43:16 - __main__ - INFO - Phase 3: GUI modularization in progress
+2025-10-27 04:43:16 - src.qbittorrent_api - WARNING - qbittorrentapi not available, using requests fallback
+2025-10-27 04:43:16 - src.gui.main_window - INFO - GUI Phase 3: Using legacy setup_gui during transition
+2025-10-27 04:43:16 - qbt_editor - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-10-27 04:43:16 - qbt_editor - INFO - Loaded 52 cached SubsPlease titles
