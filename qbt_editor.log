@@ -1,55 +1,454 @@
-2025-10-27 04:21:13 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-10-27 04:21:13 - __main__ - INFO - Phase 3: GUI modularization in progress
-2025-10-27 04:21:13 - __main__ - ERROR - Import error: cannot import name 'create_labeled_text' from 'src.gui.widgets' (C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\widgets.py)
-Traceback (most recent call last):
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\main.py", line 35, in main
-    from src.gui import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\__init__.py", line 11, in <module>
-    from .gui import setup_gui, main
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\__init__.py", line 30, in <module>
-    from .widgets import (
-    ...<5 lines>...
-    )
-ImportError: cannot import name 'create_labeled_text' from 'src.gui.widgets' (C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\widgets.py)
-2025-10-27 04:22:05 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-10-27 04:22:05 - __main__ - INFO - Phase 3: GUI modularization in progress
-2025-10-27 04:22:05 - __main__ - ERROR - Import error: cannot import name 'main' from 'src.gui' (C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\__init__.py)
-Traceback (most recent call last):
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\main.py", line 35, in main
-    from src.gui import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\__init__.py", line 11, in <module>
-    from .gui import setup_gui, main
-ImportError: cannot import name 'main' from 'src.gui' (C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\__init__.py)
-2025-10-27 04:22:39 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-10-27 04:22:39 - __main__ - INFO - Phase 3: GUI modularization in progress
-2025-10-27 04:22:39 - src.gui.main_window - ERROR - Failed to import legacy GUI: No module named 'qbt_editor'
-2025-10-27 04:22:53 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-10-27 04:22:53 - __main__ - INFO - Phase 3: GUI modularization in progress
-2025-10-27 04:22:53 - src.gui.main_window - ERROR - Failed to import legacy GUI: No module named 'qbt_editor'
-2025-10-27 04:25:25 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-10-27 04:25:25 - __main__ - INFO - Phase 3: GUI modularization in progress
-2025-10-27 04:25:47 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-10-27 04:25:47 - __main__ - INFO - Phase 3: GUI modularization in progress
-2025-10-27 04:26:33 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-10-27 04:26:33 - __main__ - INFO - Phase 3: GUI modularization in progress
-2025-10-27 04:26:33 - src.gui.main_window - INFO - GUI Phase 3: Using legacy setup_gui during transition
-2025-10-27 04:26:33 - qbt_editor - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
-2025-10-27 04:26:33 - qbt_editor - INFO - Loaded 52 cached SubsPlease titles
-2025-10-27 04:32:58 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-10-27 04:32:58 - __main__ - INFO - Phase 3: GUI modularization in progress
-2025-10-27 04:32:58 - src.qbittorrent_api - WARNING - qbittorrentapi not available, using requests fallback
-2025-10-27 04:32:58 - src.gui.main_window - INFO - GUI Phase 3: Using legacy setup_gui during transition
-2025-10-27 04:32:58 - qbt_editor - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
-2025-10-27 04:32:58 - qbt_editor - INFO - Loaded 52 cached SubsPlease titles
-2025-10-27 04:38:00 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-10-27 04:38:00 - __main__ - INFO - Phase 3: GUI modularization in progress
-2025-10-27 04:38:00 - src.qbittorrent_api - WARNING - qbittorrentapi not available, using requests fallback
-2025-10-27 04:38:00 - src.gui.main_window - INFO - GUI Phase 3: Using legacy setup_gui during transition
-2025-10-27 04:38:00 - qbt_editor - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
-2025-10-27 04:38:00 - qbt_editor - INFO - Loaded 52 cached SubsPlease titles
-2025-10-27 04:43:16 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-10-27 04:43:16 - __main__ - INFO - Phase 3: GUI modularization in progress
-2025-10-27 04:43:16 - src.qbittorrent_api - WARNING - qbittorrentapi not available, using requests fallback
-2025-10-27 04:43:16 - src.gui.main_window - INFO - GUI Phase 3: Using legacy setup_gui during transition
-2025-10-27 04:43:16 - qbt_editor - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
-2025-10-27 04:43:16 - qbt_editor - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 23:57:56 - src.gui.dialogs - INFO - Log file cleared by user
+2025-10-27 23:58:02 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-27 23:58:02 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2025-10-27 23:58:02 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-10-27 23:58:02 - src.config - INFO - Loaded 2 recent files
+2025-10-27 23:58:03 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 23:58:03 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:58:03 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2025-10-27 23:58:03 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-27 23:58:03 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-27 23:58:03 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-27 23:58:03 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-27 23:58:03 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-27 23:58:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-27 23:58:03 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-27 23:58:03 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-27 23:58:03 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-27 23:58:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-27 23:58:03 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-27 23:58:03 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-27 23:58:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-10-27 23:58:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-27 23:58:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-27 23:58:04 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-27 23:58:04 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-27 23:58:04 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-27 23:58:04 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-27 23:58:04 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-27 23:58:04 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-27 23:58:04 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-27 23:58:04 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-27 23:58:04 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-27 23:58:04 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-27 23:58:04 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-27 23:58:04 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-27 23:58:04 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 871
+2025-10-27 23:58:04 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-27 23:58:04 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-27 23:58:04 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
+2025-10-27 23:58:04 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
+2025-10-27 23:58:04 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
+2025-10-27 23:58:04 - src.gui.main_window - DEBUG - Sync: Adding new entry: Spring - Witch Watch
+2025-10-27 23:58:04 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
+2025-10-27 23:58:04 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
+2025-10-27 23:58:04 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Kizu darake Seijo yori Houfuku wo Komete
+2025-10-27 23:58:04 - src.gui.main_window - DEBUG - Sync: Adding new entry: Tensei Shitara Slime Datta Ken
+2025-10-27 23:58:04 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 0 children
+2025-10-27 23:58:04 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-10-27 23:58:04 - src.gui.file_operations - DEBUG - Cleared 0 items from treeview
+2025-10-27 23:58:04 - src.gui.file_operations - DEBUG - Processing media_type 'existing' with 8 items
+2025-10-27 23:58:04 - src.gui.file_operations - DEBUG - Added 8 items to treeview (final count: 8)
+2025-10-27 23:58:05 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:58:05 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 23:58:05 - src.config - INFO - Loaded 5 cached feeds
+2025-10-27 23:58:05 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:58:08 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:58:08 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 23:58:08 - src.config - INFO - Loaded 5 cached feeds
+2025-10-27 23:58:08 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:58:10 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:58:10 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 23:58:13 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:58:13 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 23:58:13 - src.config - INFO - Loaded 5 cached feeds
+2025-10-27 23:58:13 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:58:26 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:58:26 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 23:58:30 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:58:30 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 23:58:33 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 6 children
+2025-10-27 23:58:33 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-10-27 23:58:33 - src.gui.file_operations - DEBUG - Cleared 6 items from treeview
+2025-10-27 23:58:33 - src.gui.file_operations - DEBUG - Processing media_type 'existing' with 8 items
+2025-10-27 23:58:33 - src.gui.file_operations - DEBUG - Added 8 items to treeview (final count: 8)
+2025-10-27 23:58:33 - src.gui.main_window - INFO - Treeview display refreshed
+2025-10-27 23:58:35 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:58:35 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 23:59:27 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:59:27 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 23:59:35 - src.config - INFO - Loaded 10 cached categories
+2025-10-27 23:59:35 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-27 23:59:43 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 7 children
+2025-10-27 23:59:43 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-10-27 23:59:43 - src.gui.file_operations - DEBUG - Cleared 7 items from treeview
+2025-10-27 23:59:43 - src.gui.file_operations - DEBUG - Added 0 items to treeview (final count: 0)
+2025-10-27 23:59:43 - src.gui.main_window - INFO - Treeview display refreshed
+2025-10-28 00:02:35 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-28 00:02:35 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2025-10-28 00:02:35 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-10-28 00:02:35 - src.config - INFO - Loaded 2 recent files
+2025-10-28 00:02:35 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-28 00:02:35 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:02:35 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2025-10-28 00:02:35 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:02:35 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:02:35 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:02:35 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:02:35 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:02:36 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-28 00:02:36 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:02:36 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:02:36 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:02:36 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-28 00:02:36 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-28 00:02:36 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-28 00:02:36 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:02:36 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:02:36 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-28 00:02:37 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:02:37 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:02:37 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:02:37 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:02:37 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:02:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-28 00:02:37 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:02:37 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:02:37 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:02:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-28 00:02:37 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-28 00:02:37 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-28 00:02:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 871
+2025-10-28 00:02:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:02:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-28 00:02:37 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
+2025-10-28 00:02:37 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
+2025-10-28 00:02:37 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
+2025-10-28 00:02:37 - src.gui.main_window - DEBUG - Sync: Adding new entry: Spring - Witch Watch
+2025-10-28 00:02:37 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
+2025-10-28 00:02:37 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
+2025-10-28 00:02:37 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Kizu darake Seijo yori Houfuku wo Komete
+2025-10-28 00:02:37 - src.gui.main_window - DEBUG - Sync: Adding new entry: Tensei Shitara Slime Datta Ken
+2025-10-28 00:02:37 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 0 children
+2025-10-28 00:02:37 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-10-28 00:02:37 - src.gui.file_operations - DEBUG - Cleared 0 items from treeview
+2025-10-28 00:02:37 - src.gui.file_operations - DEBUG - Processing media_type 'existing' with 8 items
+2025-10-28 00:02:37 - src.gui.file_operations - DEBUG - Added 8 items to treeview (final count: 8)
+2025-10-28 00:02:38 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:02:38 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-28 00:03:13 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:03:13 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-28 00:03:25 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:03:25 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-28 00:03:28 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:03:28 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-28 00:03:30 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:03:30 - src.config - INFO - Loaded 5 cached feeds
+2025-10-28 00:03:33 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:03:33 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:03:33 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:80', path='', params='', query='', fragment='')
+2025-10-28 00:03:33 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:03:33 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:80
+2025-10-28 00:03:33 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/'): Retry(total=0, connect=1, read=1, redirect=None, status=None)
+2025-10-28 00:03:33 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=1, redirect=None, status=None)) after connection broken by 'SSLError(SSLError(1, '[SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1077)'))': /
+2025-10-28 00:03:33 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): 192.168.1.21:80
+2025-10-28 00:03:33 - qbittorrentapi.request - DEBUG - Encountered SSLError: will prefer HTTPS if HTTP fails
+2025-10-28 00:03:33 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 192.168.1.21:80
+2025-10-28 00:03:33 - urllib3.connectionpool - DEBUG - http://192.168.1.21:80 "HEAD / HTTP/1.1" 302 0
+2025-10-28 00:03:33 - urllib3.connectionpool - DEBUG - http://192.168.1.21:80 "HEAD /Main HTTP/1.1" 302 0
+2025-10-28 00:03:33 - urllib3.connectionpool - DEBUG - http://192.168.1.21:80 "HEAD /login HTTP/1.1" 200 0
+2025-10-28 00:03:33 - qbittorrentapi.request - DEBUG - Using HTTP scheme
+2025-10-28 00:03:33 - qbittorrentapi.request - WARNING - Using 'http' instead of requested 'https'to communicate with qBittorrent
+2025-10-28 00:03:33 - qbittorrentapi.request - DEBUG - Base URL: http://192.168.1.21:80/
+2025-10-28 00:03:33 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 192.168.1.21:80
+2025-10-28 00:03:33 - urllib3.connectionpool - DEBUG - http://192.168.1.21:80 "POST /api/v2/auth/login HTTP/1.1" 302 138
+2025-10-28 00:03:33 - urllib3.connectionpool - DEBUG - http://192.168.1.21:80 "GET /login HTTP/1.1" 200 None
+2025-10-28 00:03:33 - qbittorrentapi.auth - DEBUG - Login failed
+2025-10-28 00:03:40 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:03:40 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:03:40 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:03:40 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:03:40 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:40 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-28 00:03:40 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:03:40 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:03:40 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:40 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-28 00:03:40 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-28 00:03:40 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-28 00:03:40 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:03:40 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:03:40 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-28 00:03:41 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-28 00:03:41 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-28 00:03:41 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-28 00:03:41 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-28 00:03:41 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-28 00:03:41 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-28 00:03:41 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:03:41 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-28 00:03:41 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-28 00:03:41 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:03:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:03:42 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-28 00:03:42 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:03:42 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:03:42 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:03:42 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:03:42 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:42 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-28 00:03:42 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:03:42 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:03:42 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:42 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-28 00:03:42 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-28 00:03:42 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-28 00:03:42 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:03:42 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:03:42 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-28 00:03:45 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=True, ca_cert=None, verify_param=True
+2025-10-28 00:03:45 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:03:45 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:03:45 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:03:45 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:45 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/'): Retry(total=0, connect=1, read=1, redirect=None, status=None)
+2025-10-28 00:03:45 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=1, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1077)'))': /
+2025-10-28 00:03:45 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): 192.168.1.21:8080
+2025-10-28 00:03:45 - qbittorrentapi.request - DEBUG - Encountered SSLError: will prefer HTTPS if HTTP fails
+2025-10-28 00:03:45 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 192.168.1.21:8080
+2025-10-28 00:03:45 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/'): Retry(total=0, connect=1, read=0, redirect=None, status=None)
+2025-10-28 00:03:45 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=0, redirect=None, status=None)) after connection broken by 'BadStatusLine('\x15\x03\x03\x00\x02\x02\x16')': /
+2025-10-28 00:03:45 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (2): 192.168.1.21:8080
+2025-10-28 00:03:45 - qbittorrentapi.request - DEBUG - Failed connection attempt with HTTP
+2025-10-28 00:03:45 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:03:45 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:03:45 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:45 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/v2/auth/login'): Retry(total=0, connect=1, read=1, redirect=None, status=None)
+2025-10-28 00:03:45 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=1, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1077)'))': /api/v2/auth/login
+2025-10-28 00:03:45 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): 192.168.1.21:8080
+2025-10-28 00:03:45 - qbittorrentapi.request - DEBUG - Retry attempt 1
+2025-10-28 00:03:45 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:03:45 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:03:45 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:03:45 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:46 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/'): Retry(total=0, connect=1, read=1, redirect=None, status=None)
+2025-10-28 00:03:46 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=1, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1077)'))': /
+2025-10-28 00:03:46 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): 192.168.1.21:8080
+2025-10-28 00:03:46 - qbittorrentapi.request - DEBUG - Encountered SSLError: will prefer HTTPS if HTTP fails
+2025-10-28 00:03:46 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 192.168.1.21:8080
+2025-10-28 00:03:46 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/'): Retry(total=0, connect=1, read=0, redirect=None, status=None)
+2025-10-28 00:03:46 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=0, redirect=None, status=None)) after connection broken by 'BadStatusLine('\x15\x03\x03\x00\x02\x02\x16')': /
+2025-10-28 00:03:46 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (2): 192.168.1.21:8080
+2025-10-28 00:03:46 - qbittorrentapi.request - DEBUG - Failed connection attempt with HTTP
+2025-10-28 00:03:46 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:03:46 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:03:46 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:03:46 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/v2/auth/login'): Retry(total=0, connect=1, read=1, redirect=None, status=None)
+2025-10-28 00:03:46 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=1, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1077)'))': /api/v2/auth/login
+2025-10-28 00:03:46 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): 192.168.1.21:8080
+2025-10-28 00:03:46 - qbittorrentapi.request - DEBUG - Failed to connect to qBittorrent. This is likely due to using an untrusted certificate (likely self-signed) for HTTPS qBittorrent WebUI. To suppress this error (and skip certificate verification consequently exposing the HTTPS connection to man-in-the-middle attacks), set VERIFY_WEBUI_CERTIFICATE=False when instantiating Client or set environment variable QBITTORRENTAPI_DO_NOT_VERIFY_WEBUI_CERTIFICATE to a non-null value. SSL Error: SSLError(MaxRetryError("HTTPSConnectionPool(host='192.168.1.21', port=8080): Max retries exceeded with url: /api/v2/auth/login (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1077)')))"))
+2025-10-28 00:06:46 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-28 00:06:46 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2025-10-28 00:06:46 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-10-28 00:06:46 - src.config - INFO - Loaded 2 recent files
+2025-10-28 00:06:46 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-28 00:06:46 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:06:46 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2025-10-28 00:06:47 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:06:47 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:06:47 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:06:47 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:06:47 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:06:47 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-28 00:06:47 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:06:47 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:06:47 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:06:47 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-28 00:06:47 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-28 00:06:47 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-28 00:06:47 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:06:47 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:06:47 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-28 00:06:48 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:06:48 - src.config - INFO - Loaded 5 cached feeds
+2025-10-28 00:06:54 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=True, ca_cert=None, verify_param=True
+2025-10-28 00:06:54 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:06:54 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:06:54 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:06:54 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:06:54 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/'): Retry(total=0, connect=1, read=1, redirect=None, status=None)
+2025-10-28 00:06:54 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=1, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1077)'))': /
+2025-10-28 00:06:54 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): 192.168.1.21:8080
+2025-10-28 00:06:54 - qbittorrentapi.request - DEBUG - Encountered SSLError: will prefer HTTPS if HTTP fails
+2025-10-28 00:06:54 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 192.168.1.21:8080
+2025-10-28 00:06:55 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/'): Retry(total=0, connect=1, read=0, redirect=None, status=None)
+2025-10-28 00:06:55 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=0, redirect=None, status=None)) after connection broken by 'BadStatusLine('\x15\x03\x03\x00\x02\x02\x16')': /
+2025-10-28 00:06:55 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (2): 192.168.1.21:8080
+2025-10-28 00:06:55 - qbittorrentapi.request - DEBUG - Failed connection attempt with HTTP
+2025-10-28 00:06:55 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:06:55 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:06:55 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:06:55 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/v2/auth/login'): Retry(total=0, connect=1, read=1, redirect=None, status=None)
+2025-10-28 00:06:55 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=1, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1077)'))': /api/v2/auth/login
+2025-10-28 00:06:55 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): 192.168.1.21:8080
+2025-10-28 00:06:55 - qbittorrentapi.request - DEBUG - Retry attempt 1
+2025-10-28 00:06:55 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:06:55 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:06:55 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:06:55 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:06:55 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/'): Retry(total=0, connect=1, read=1, redirect=None, status=None)
+2025-10-28 00:06:55 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=1, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1077)'))': /
+2025-10-28 00:06:55 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): 192.168.1.21:8080
+2025-10-28 00:06:55 - qbittorrentapi.request - DEBUG - Encountered SSLError: will prefer HTTPS if HTTP fails
+2025-10-28 00:06:55 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 192.168.1.21:8080
+2025-10-28 00:06:55 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/'): Retry(total=0, connect=1, read=0, redirect=None, status=None)
+2025-10-28 00:06:55 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=0, redirect=None, status=None)) after connection broken by 'BadStatusLine('\x15\x03\x03\x00\x02\x02\x16')': /
+2025-10-28 00:06:55 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (2): 192.168.1.21:8080
+2025-10-28 00:06:55 - qbittorrentapi.request - DEBUG - Failed connection attempt with HTTP
+2025-10-28 00:06:55 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:06:55 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:06:55 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:06:55 - urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/v2/auth/login'): Retry(total=0, connect=1, read=1, redirect=None, status=None)
+2025-10-28 00:06:55 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=1, read=1, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1077)'))': /api/v2/auth/login
+2025-10-28 00:06:55 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): 192.168.1.21:8080
+2025-10-28 00:06:56 - qbittorrentapi.request - DEBUG - Failed to connect to qBittorrent. This is likely due to using an untrusted certificate (likely self-signed) for HTTPS qBittorrent WebUI. To suppress this error (and skip certificate verification consequently exposing the HTTPS connection to man-in-the-middle attacks), set VERIFY_WEBUI_CERTIFICATE=False when instantiating Client or set environment variable QBITTORRENTAPI_DO_NOT_VERIFY_WEBUI_CERTIFICATE to a non-null value. SSL Error: SSLError(MaxRetryError("HTTPSConnectionPool(host='192.168.1.21', port=8080): Max retries exceeded with url: /api/v2/auth/login (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1077)')))"))
+2025-10-28 00:08:16 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-28 00:08:16 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2025-10-28 00:08:16 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-10-28 00:08:16 - src.config - INFO - Loaded 2 recent files
+2025-10-28 00:08:16 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-28 00:08:16 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:08:16 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2025-10-28 00:08:16 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:08:16 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:08:16 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:08:16 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:08:16 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:08:16 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-28 00:08:16 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:08:16 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:08:16 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:08:16 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-28 00:08:16 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-28 00:08:16 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-28 00:08:16 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:08:16 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:08:16 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-28 00:08:17 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:08:17 - src.config - INFO - Loaded 5 cached feeds
+2025-10-28 00:08:23 - src.config - INFO - Saved qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-10-28 00:10:55 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-28 00:10:55 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2025-10-28 00:10:55 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-10-28 00:10:55 - src.config - INFO - Loaded 2 recent files
+2025-10-28 00:10:55 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-10-28 00:10:55 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-10-28 00:10:55 - src.cache - INFO - Saved 0 recent files to cache
+2025-10-28 00:10:55 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-28 00:10:55 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:10:55 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2025-10-28 00:10:56 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:10:56 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:10:56 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:10:56 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-28 00:10:56 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:10:56 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-28 00:10:56 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-28 00:10:56 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-28 00:10:56 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-28 00:10:56 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-28 00:10:56 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-28 00:10:56 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-28 00:10:56 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-28 00:10:56 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-28 00:10:56 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-28 00:10:56 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 871
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-28 00:10:56 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-28 00:10:56 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
+2025-10-28 00:10:56 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
+2025-10-28 00:10:56 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
+2025-10-28 00:10:56 - src.gui.main_window - DEBUG - Sync: Adding new entry: Spring - Witch Watch
+2025-10-28 00:10:56 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
+2025-10-28 00:10:56 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
+2025-10-28 00:10:56 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Kizu darake Seijo yori Houfuku wo Komete
+2025-10-28 00:10:56 - src.gui.main_window - DEBUG - Sync: Adding new entry: Tensei Shitara Slime Datta Ken
+2025-10-28 00:10:56 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 0 children
+2025-10-28 00:10:56 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-10-28 00:10:56 - src.gui.file_operations - DEBUG - Cleared 0 items from treeview
+2025-10-28 00:10:56 - src.gui.file_operations - DEBUG - Processing media_type 'existing' with 8 items
+2025-10-28 00:10:56 - src.gui.file_operations - DEBUG - Added 8 items to treeview (final count: 8)
+2025-10-28 00:11:00 - src.gui.file_operations - INFO - Import merge complete: 32 new, 1 duplicates, total in ALL_TITLES: 40
+2025-10-28 00:11:00 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 40 total titles
+2025-10-28 00:11:00 - src.gui.file_operations - INFO - About to update treeview with 40 total titles
+2025-10-28 00:11:00 - src.gui.file_operations - DEBUG - ALL_TITLES keys: ['existing', 'anime']
+2025-10-28 00:11:00 - src.gui.file_operations - DEBUG -   'existing': 8 items
+2025-10-28 00:11:00 - src.gui.file_operations - DEBUG -   'anime': 32 items
+2025-10-28 00:11:00 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 8 children
+2025-10-28 00:11:00 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-10-28 00:11:00 - src.gui.file_operations - DEBUG - Cleared 8 items from treeview
+2025-10-28 00:11:00 - src.gui.file_operations - DEBUG - Processing media_type 'existing' with 8 items
+2025-10-28 00:11:00 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 32 items
+2025-10-28 00:11:00 - src.gui.file_operations - DEBUG - Added 40 items to treeview (final count: 40)
+2025-10-28 00:11:00 - src.gui.file_operations - INFO - Treeview now has 40 visible items
+2025-10-28 00:11:00 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-10-28 00:11:00 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-10-28 00:11:00 - src.cache - INFO - Saved 1 recent files to cache
+2025-10-28 00:11:00 - src.config - INFO - Loaded 1 recent files
+2025-10-28 00:12:45 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:12:45 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-28 00:12:45 - src.config - INFO - Loaded 5 cached feeds
+2025-10-28 00:12:45 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:18:36 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:18:36 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-28 00:18:36 - src.config - INFO - Loaded 5 cached feeds
+2025-10-28 00:18:36 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:25:09 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:25:09 - src.subsplease_api - INFO - Loaded 52 cached SubsPlease titles
+2025-10-28 00:25:17 - src.config - INFO - Loaded 10 cached categories
+2025-10-28 00:25:17 - src.config - INFO - Loaded 5 cached feeds

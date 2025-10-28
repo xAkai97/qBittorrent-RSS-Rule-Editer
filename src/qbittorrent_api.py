@@ -9,10 +9,15 @@ Phase 4: qBittorrent Integration
 """
 import logging
 import typing
+import warnings
 from typing import Tuple, Optional, Union, Dict, List, Any
 
 import requests
 from requests.auth import HTTPBasicAuth
+
+# Suppress SSL warnings when verify_ssl is disabled
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 from src.config import config
 from src.constants import QBittorrentError
@@ -82,14 +87,28 @@ class QBittorrentClient:
         self.timeout = timeout
         
         self.base_url = f"{self.protocol}://{self.host}:{self.port}"
-        self.verify_param = ca_cert if (ca_cert and verify_ssl) else verify_ssl
+        
+        # SSL verification parameter
+        if not verify_ssl:
+            self.verify_param = False
+        elif ca_cert:
+            self.verify_param = ca_cert
+        else:
+            self.verify_param = verify_ssl
+        
+        logger.debug(f"QBittorrentClient initialized: verify_ssl={verify_ssl}, ca_cert={ca_cert}, verify_param={self.verify_param}")
         
         self._client = None
         self._session = None
         
     def _get_verify_param(self) -> Union[bool, str]:
         """Get SSL verification parameter."""
-        return self.ca_cert if (self.ca_cert and self.verify_ssl) else self.verify_ssl
+        if not self.verify_ssl:
+            return False
+        elif self.ca_cert:
+            return self.ca_cert
+        else:
+            return self.verify_ssl
     
     def connect(self) -> bool:
         """
@@ -110,36 +129,46 @@ class QBittorrentClient:
     def _connect_with_library(self) -> bool:
         """Connect using qbittorrentapi library."""
         try:
+            # Try with VERIFY_WEBUI_CERTIFICATE parameter (newer versions)
             self._client = Client(
                 host=self.base_url,
                 username=self.username,
                 password=self.password,
-                verify_ssl=self.verify_param
+                VERIFY_WEBUI_CERTIFICATE=self.verify_param
             )
             self._client.auth_log_in()
             logger.info(f"Connected to qBittorrent at {self.base_url}")
             return True
         except TypeError:
-            # Fallback for older library versions that don't support verify_ssl
-            self._client = Client(
-                host=self.base_url,
-                username=self.username,
-                password=self.password
-            )
-            if not self.verify_ssl:
-                for attr in ('_http_session', 'http_session', '_session', 'session'):
-                    sess = getattr(self._client, attr, None)
-                    if sess is not None and hasattr(sess, 'verify'):
-                        sess.verify = False
-                        break
-            self._client.auth_log_in()
-            logger.info(f"Connected to qBittorrent at {self.base_url} (fallback mode)")
-            return True
+            # Fallback: try without certificate parameter, then set session verify manually
+            try:
+                self._client = Client(
+                    host=self.base_url,
+                    username=self.username,
+                    password=self.password
+                )
+                # Manually disable SSL verification if needed
+                if not self.verify_ssl:
+                    # Try to find and set the session's verify attribute
+                    for attr in ('_http_session', '_session', 'http_session', 'session'):
+                        sess = getattr(self._client, attr, None)
+                        if sess is not None and hasattr(sess, 'verify'):
+                            sess.verify = False
+                            logger.debug(f"Disabled SSL verification via {attr}")
+                            break
+                self._client.auth_log_in()
+                logger.info(f"Connected to qBittorrent at {self.base_url} (fallback mode)")
+                return True
+            except Exception as e:
+                logger.error(f"Failed to connect with library: {e}")
+                raise
     
     def _connect_with_requests(self) -> bool:
         """Connect using raw requests."""
         self._session = requests.Session()
         login_url = f"{self.base_url}{QBT_AUTH_LOGIN}"
+        
+        logger.debug(f"Connecting to {login_url} with verify={self.verify_param}")
         
         try:
             response = self._session.post(

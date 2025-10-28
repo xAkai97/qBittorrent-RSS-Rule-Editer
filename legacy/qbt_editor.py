@@ -3733,13 +3733,14 @@ def setup_gui() -> tk.Tk:
     use_sp_btn = ttk.Button(subsplease_row, text='Use', command=_use_subsplease_title, width=8)
     use_sp_btn.pack(side='right', padx=(5, 0))
     
-    # Fetch/Refresh button
-    fetch_btn_frame = ttk.Frame(feed_lookup_frame)
-    fetch_btn_frame.pack(fill='x', pady=(5, 0))
-    
+    # Status label (above buttons)
     fetch_status_var = tk.StringVar(value='')
-    fetch_status_label = ttk.Label(fetch_btn_frame, textvariable=fetch_status_var, font=('Segoe UI', 8), foreground='#666')
-    fetch_status_label.pack(side='left', fill='x', expand=True)
+    fetch_status_label = ttk.Label(feed_lookup_frame, textvariable=fetch_status_var, font=('Segoe UI', 8), foreground='#666')
+    fetch_status_label.pack(fill='x', pady=(5, 3))
+    
+    # Fetch/Refresh buttons frame
+    fetch_btn_frame = ttk.Frame(feed_lookup_frame)
+    fetch_btn_frame.pack(fill='x', pady=(0, 0))
     
     def _fetch_subsplease_titles(force_refresh: bool = False):
         """Fetches SubsPlease schedule in background thread."""
@@ -3830,19 +3831,17 @@ def setup_gui() -> tk.Tk:
                     pass
                 self.tooltip = None
     
-    # Load Cache button (tries cache first, then API if empty)
-    load_cache_btn = ttk.Button(fetch_btn_frame, text='� Load Cache', 
-                                command=lambda: _fetch_subsplease_titles(force_refresh=False),
-                                width=14)
-    load_cache_btn.pack(side='right', padx=(2, 0))
-    ToolTip(load_cache_btn, "Loads from local cache, or fetches from API if cache is empty")
-    
     # Fetch Fresh button (always fetches from API)
     fetch_fresh_btn = ttk.Button(fetch_btn_frame, text='🔄 Fetch Fresh', 
-                                  command=lambda: _fetch_subsplease_titles(force_refresh=True),
-                                  width=14)
-    fetch_fresh_btn.pack(side='right', padx=(2, 0))
+                                  command=lambda: _fetch_subsplease_titles(force_refresh=True))
+    fetch_fresh_btn.pack(side='left', fill='x', expand=True, padx=(0, 3))
     ToolTip(fetch_fresh_btn, "Always fetches the latest data from SubsPlease API")
+    
+    # Load Cache button (tries cache first, then API if empty)
+    load_cache_btn = ttk.Button(fetch_btn_frame, text='� Load Cache', 
+                                command=lambda: _fetch_subsplease_titles(force_refresh=False))
+    load_cache_btn.pack(side='left', fill='x', expand=True, padx=(3, 0))
+    ToolTip(load_cache_btn, "Loads from local cache, or fetches from API if cache is empty")
     
     # Load initial cache status
     try:

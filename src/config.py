@@ -4,6 +4,7 @@ Application configuration management.
 import json
 import logging
 import os
+from configparser import ConfigParser
 from typing import Any, Dict, List, Optional
 
 from .constants import CacheKeys
@@ -22,6 +23,8 @@ class AppConfig:
         
         self.DEFAULT_RSS_FEED: str = "https://subsplease.org/rss/?r=1080"
         self.DEFAULT_SAVE_PREFIX: str = "/downloads/Anime/Web/"
+        self.DEFAULT_SAVE_PATH: str = ""
+        self.DEFAULT_CATEGORY: str = ""
         
         # Connection configuration
         self.QBT_PROTOCOL: Optional[str] = None
@@ -123,6 +126,141 @@ class AppConfig:
             logger.info(f"Added recent file: {filepath}")
         except Exception as e:
             logger.error(f"Failed to add recent file: {e}")
+    
+    def load_config(self) -> bool:
+        """
+        Loads qBittorrent connection configuration from config.ini file.
+        
+        Reads configuration file and populates configuration variables
+        for qBittorrent API connection parameters.
+        
+        Returns:
+            bool: True if configuration loaded successfully with host and port,
+                  False otherwise
+        """
+        try:
+            cfg = ConfigParser()
+            cfg.read(self.CONFIG_FILE)
+
+            qbt_loaded = 'QBITTORRENT_API' in cfg
+            if qbt_loaded:
+                self.QBT_PROTOCOL = cfg['QBITTORRENT_API'].get('protocol', 'http')
+                self.QBT_HOST = cfg['QBITTORRENT_API'].get('host', 'localhost')
+                self.QBT_PORT = cfg['QBITTORRENT_API'].get('port', '8080')
+                self.QBT_USER = cfg['QBITTORRENT_API'].get('username', '')
+                self.QBT_PASS = cfg['QBITTORRENT_API'].get('password', '')
+                self.CONNECTION_MODE = cfg['QBITTORRENT_API'].get('mode', 'online')
+                self.QBT_VERIFY_SSL = cfg['QBITTORRENT_API'].get('verify_ssl', 'True').lower() == 'true'
+                self.QBT_CA_CERT = cfg['QBITTORRENT_API'].get('ca_cert', '') or None
+                self.DEFAULT_SAVE_PATH = cfg['QBITTORRENT_API'].get('default_save_path', '')
+                self.DEFAULT_CATEGORY = cfg['QBITTORRENT_API'].get('default_category', '')
+                logger.info(f"Loaded qBittorrent config: {self.QBT_PROTOCOL}://{self.QBT_HOST}:{self.QBT_PORT} (mode: {self.CONNECTION_MODE})")
+            else:
+                self.QBT_PROTOCOL, self.QBT_HOST, self.QBT_PORT, self.QBT_USER, self.QBT_PASS = ('http', 'localhost', '8080', '', '')
+                self.QBT_VERIFY_SSL = False
+                self.CONNECTION_MODE = 'online'
+                logger.warning("No QBITTORRENT_API section found in config.ini, using defaults")
+
+            return bool(self.QBT_HOST and self.QBT_PORT)
+        except Exception as e:
+            logger.error(f"Failed to load config from INI: {e}")
+            return False
+    
+    def save_config(self, protocol: str, host: str, port: str, user: str, password: str, mode: str, verify_ssl: bool, 
+                    default_save_path: str = '', default_category: str = '') -> bool:
+        """
+        Saves qBittorrent connection configuration to config.ini file.
+        
+        Args:
+            protocol: HTTP protocol ('http' or 'https')
+            host: qBittorrent host address (IP or hostname)
+            port: qBittorrent WebUI port number
+            user: WebUI username
+            password: WebUI password
+            mode: Connection mode ('online' or 'offline')
+            verify_ssl: Whether to verify SSL certificates
+            default_save_path: Default save path for new rules
+            default_category: Default category for new rules
+        
+        Returns:
+            bool: True if save was successful, False otherwise
+        """
+        try:
+            cfg = ConfigParser()
+            cfg['QBITTORRENT_API'] = {
+                'protocol': protocol,
+                'host': host,
+                'port': port,
+                'username': user,
+                'password': password,
+                'mode': mode,
+                'verify_ssl': str(verify_ssl),
+                'ca_cert': self.QBT_CA_CERT or '',
+                'default_save_path': default_save_path,
+                'default_category': default_category,
+            }
+            with open(self.CONFIG_FILE, 'w') as f:
+                cfg.write(f)
+
+            self.QBT_PROTOCOL, self.QBT_HOST, self.QBT_PORT, self.QBT_USER, self.QBT_PASS, self.CONNECTION_MODE, self.QBT_VERIFY_SSL = (
+                protocol, host, port, user, password, mode, verify_ssl
+            )
+            self.DEFAULT_SAVE_PATH = default_save_path
+            self.DEFAULT_CATEGORY = default_category
+            logger.info(f"Saved qBittorrent config: {protocol}://{host}:{port} (mode: {mode})")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to save config to INI: {e}")
+            return False
+    
+    def save_cached_categories(self, categories: Dict[str, Any]) -> bool:
+        """Save cached categories to file."""
+        try:
+            cache = self._load_cache_data()
+            cache[CacheKeys.CATEGORIES] = categories
+            self._save_cache_data(cache)
+            self.CACHED_CATEGORIES = categories
+            logger.info(f"Saved {len(categories)} cached categories")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to save cached categories: {e}")
+            return False
+    
+    def save_cached_feeds(self, feeds: Dict[str, Any]) -> bool:
+        """Save cached feeds to file."""
+        try:
+            cache = self._load_cache_data()
+            cache[CacheKeys.FEEDS] = feeds
+            self._save_cache_data(cache)
+            self.CACHED_FEEDS = feeds
+            logger.info(f"Saved {len(feeds)} cached feeds")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to save cached feeds: {e}")
+            return False
+    
+    def load_recent_files(self) -> None:
+        """Load recent files list from cache."""
+        try:
+            cache = self._load_cache_data()
+            self.RECENT_FILES = cache.get(CacheKeys.RECENT_FILES, [])
+            logger.info(f"Loaded {len(self.RECENT_FILES)} recent files")
+        except Exception as e:
+            logger.error(f"Failed to load recent files: {e}")
+            self.RECENT_FILES = []
+    
+    def clear_recent_files(self) -> bool:
+        """Clear the recent files list."""
+        try:
+            self.RECENT_FILES = []
+            cache = self._load_cache_data()
+            cache[CacheKeys.RECENT_FILES] = []
+            self._save_cache_data(cache)
+            logger.info("Cleared recent files list")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to clear recent files: {e}")
+            return False
 
 
 # Global config instance
