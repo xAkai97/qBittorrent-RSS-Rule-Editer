@@ -6,7 +6,7 @@ Handles importing titles from files/clipboard and exporting rules to JSON.
 import json
 import logging
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, ttk
 from typing import Dict, List, Tuple, Any, Optional
 import threading
 
@@ -84,6 +84,11 @@ def prefix_titles_with_season_year(
 ) -> None:
     """
     Prefix all titles with season and year (e.g., "Fall 2025 - Title").
+    Also adds season/year folder to save paths.
+    
+    Example:
+    - Display title: "Fall 2025 - Anime Title"
+    - Save path: "/mnt/disk5/Anime/Fall 2025/Anime Title/"
     
     Modifies titles in-place.
     
@@ -97,6 +102,7 @@ def prefix_titles_with_season_year(
             return
         
         prefix = f"{season} {year} - "
+        season_year_folder = f"{season} {year}"
         
         if not isinstance(all_titles, dict):
             return
@@ -113,10 +119,27 @@ def prefix_titles_with_season_year(
                         orig_title = str(title) if title else ''
                         
                         if orig_title and not orig_title.startswith(prefix):
+                            # Add prefix to display title
                             node['title'] = prefix + orig_title
                             entry['node'] = node
                             if not entry.get('mustContain'):
                                 entry['mustContain'] = orig_title
+                            
+                            # Add season/year folder to save path
+                            current_save_path = entry.get('savePath', '') or ''
+                            if current_save_path:
+                                import os.path
+                                # Add season/year folder and title folder
+                                # Example: "/mnt/disk5/Anime" -> "/mnt/disk5/Anime/Fall 2025/Anime Title"
+                                new_save_path = os.path.join(current_save_path, season_year_folder, orig_title).replace('\\', '/')
+                                entry['savePath'] = new_save_path
+                                
+                                # Also update torrentParams if it exists
+                                if 'torrentParams' not in entry:
+                                    entry['torrentParams'] = {}
+                                entry['torrentParams']['save_path'] = new_save_path
+                                
+                                logger.debug(f"Updated save path: '{current_save_path}' -> '{new_save_path}'")
                     else:
                         # String entry
                         title = str(entry)
@@ -238,6 +261,9 @@ def populate_missing_rule_fields(
     """
     Populate missing fields in rule entries with defaults.
     
+    Applies default category and save path from config to imported rules
+    that don't already have them set.
+    
     Modifies titles in-place.
     
     Args:
@@ -248,12 +274,17 @@ def populate_missing_rule_fields(
     logger.debug(f"populate_missing_rule_fields called with {sum(len(v) for v in all_titles.values() if isinstance(v, list))} total titles")
     try:
         from src.utils import get_current_anime_season
+        from src.config import config
         
         # Use provided season/year or current if not specified
         if not season or not year:
             year_val, season_val = get_current_anime_season()
             season = season or season_val
             year = year or str(year_val)
+        
+        # Get defaults from config
+        default_save_path = getattr(config, 'DEFAULT_SAVE_PATH', '') or ''
+        default_category = getattr(config, 'DEFAULT_CATEGORY', '') or ''
         
         for media_type, items in all_titles.items():
             if not isinstance(items, list):
@@ -277,6 +308,26 @@ def populate_missing_rule_fields(
                         title = node.get('title') or entry.get('title', '')
                         if title:
                             entry['mustContain'] = title
+                    
+                    # Apply default category if missing
+                    if not entry.get('assignedCategory') and default_category:
+                        entry['assignedCategory'] = default_category
+                        logger.debug(f"Applied default category '{default_category}' to {entry.get('mustContain', 'unknown')}")
+                    
+                    # Apply default save path if missing
+                    if not entry.get('savePath') and default_save_path:
+                        entry['savePath'] = default_save_path
+                        logger.debug(f"Applied default save path '{default_save_path}' to {entry.get('mustContain', 'unknown')}")
+                    
+                    # Ensure torrentParams exist and sync category/save_path
+                    if 'torrentParams' not in entry:
+                        entry['torrentParams'] = {}
+                    
+                    # Sync category and save_path to torrentParams
+                    if entry.get('assignedCategory'):
+                        entry['torrentParams']['category'] = entry['assignedCategory']
+                    if entry.get('savePath'):
+                        entry['torrentParams']['save_path'] = entry['savePath']
                             
                 except Exception as e:
                     logger.error(f"Error populating fields: {e}")
@@ -298,6 +349,14 @@ def update_treeview_with_titles(all_titles: Dict[str, List]) -> None:
     if not treeview:
         logger.warning("No treeview widget available")
         return
+    
+    # DEBUG: Check treeview configuration
+    try:
+        logger.debug(f"Treeview columns: {treeview['columns']}")
+        logger.debug(f"Treeview displaycolumns: {treeview['displaycolumns']}")
+        logger.debug(f"Treeview show: {treeview['show']}")
+    except Exception as e:
+        logger.error(f"Error checking treeview config: {e}")
     
     try:
         # Clear existing items
@@ -349,14 +408,26 @@ def update_treeview_with_titles(all_titles: Dict[str, List]) -> None:
                         save_path = ''
                         enabled_mark = '✓'  # Default enabled
                     
-                    # Insert into treeview with enabled column
+                    # Insert into treeview with enabled column first, then index
                     index += 1
                     items_added += 1
                     
                     before_insert_count = len(treeview.get_children())
-                    treeview.insert('', 'end', text=str(index),
-                                  values=(enabled_mark, title_text, category, save_path))
+                    logger.debug(f"Inserting item {index}: enabled={enabled_mark!r}, title={title_text!r}")
+                    logger.debug(f"Insert values: {(enabled_mark, str(index), title_text, category, save_path)}")
+                    
+                    # Use the real ttk.Treeview.insert method to bypass any monkey-patching
+                    import tkinter.ttk as ttk
+                    try:
+                        item_id = ttk.Treeview.insert(treeview, '', 'end', 
+                                      values=(enabled_mark, str(index), title_text, category, save_path))
+                        logger.debug(f"Insert returned item_id: {item_id!r}")
+                    except Exception as insert_err:
+                        logger.error(f"INSERT FAILED with error: {insert_err}", exc_info=True)
+                        continue
+                    
                     after_insert_count = len(treeview.get_children())
+                    logger.debug(f"After insert: before={before_insert_count}, after={after_insert_count}")
                     
                     if after_insert_count != before_insert_count + 1:
                         logger.warning(f"Treeview insert anomaly: before={before_insert_count}, after={after_insert_count}, expected={before_insert_count + 1}")
@@ -886,6 +957,358 @@ def clear_all_titles(root: tk.Tk, status_var: tk.StringVar) -> bool:
     return True
 
 
+def dispatch_generation(
+    root: tk.Tk,
+    season_var: tk.StringVar,
+    year_var: tk.StringVar,
+    status_var: tk.StringVar
+) -> None:
+    """
+    Handles generation and synchronization of RSS rules to qBittorrent.
+    
+    Shows preview dialog with validation, allows user to review and confirm
+    before syncing rules to qBittorrent.
+    
+    Args:
+        root: Parent Tkinter window
+        season_var: Tkinter variable containing season selection
+        year_var: Tkinter variable containing year value
+        status_var: Status bar variable for displaying progress
+    """
+    from src.constants import FileSystem
+    from src.qbittorrent_api import QBittorrentClient
+    from src.gui.app_state import get_app_state
+    from src.rss_rules import build_rules_from_titles
+    
+    try:
+        season = season_var.get()
+        year = year_var.get()
+
+        if not season or not year:
+            messagebox.showwarning("Input Error", "Season and Year must be specified.")
+            return
+
+        app_state = get_app_state()
+        listbox_items = app_state.listbox_items
+        treeview = app_state.treeview
+
+        # Get selected items or all items
+        items = []
+        try:
+            if treeview:
+                sel = treeview.selection()
+                if sel:
+                    # Match by index column (second column, index 1)
+                    indices = []
+                    for item_id in sel:
+                        try:
+                            values = treeview.item(item_id, 'values')
+                            if values and len(values) >= 2:
+                                idx_str = values[1]  # index column
+                                idx = int(idx_str) - 1  # Convert to 0-based
+                                if 0 <= idx < len(listbox_items):
+                                    indices.append(idx)
+                        except Exception:
+                            pass
+                else:
+                    indices = list(range(len(listbox_items)))
+            else:
+                indices = list(range(len(listbox_items)))
+        except Exception:
+            indices = list(range(len(listbox_items)))
+
+        for i in indices:
+            try:
+                if i < len(listbox_items):
+                    t, entry = listbox_items[i]
+                    items.append((t, entry))
+            except Exception:
+                continue
+
+        if not items:
+            messagebox.showwarning('No Items', 'No titles to generate rules for.')
+            return
+
+        # Validation helper
+        def _is_valid_folder_name(name):
+            """Validates if a string is a valid folder name."""
+            try:
+                if not name or not isinstance(name, str) or not str(name).strip():
+                    return False, 'Empty name'
+                
+                s = str(name).strip()
+                
+                # Check for invalid characters
+                found_invalid = [c for c in s if c in FileSystem.INVALID_CHARS]
+                if found_invalid:
+                    return False, f'Contains invalid characters: {"".join(sorted(set(found_invalid)))}'
+                
+                # Check for trailing space or dot
+                if s.endswith(' ') or s.endswith('.'):
+                    return False, 'Ends with a space or dot (invalid on Windows)'
+                
+                # Check for Windows reserved names
+                base = s.split('.')[0].upper()
+                if base in FileSystem.RESERVED_NAMES:
+                    return False, f'Reserved name: {base}'
+                
+                # Check length
+                if len(s) > FileSystem.MAX_PATH_LENGTH:
+                    return False, f'Name too long (>{FileSystem.MAX_PATH_LENGTH} chars)'
+                
+                return True, None
+            except Exception:
+                return False, 'Validation error'
+
+        # Validate all items
+        problems = []
+        preview_list = []
+        
+        for title_text, entry in items:
+            e = entry if isinstance(entry, dict) else {'node': {'title': str(entry)}}
+            
+            try:
+                node = e.get('node') or {}
+                node_title = node.get('title') or e.get('mustContain') or title_text
+            except Exception:
+                node_title = title_text
+                
+            if not node_title or not str(node_title).strip():
+                problems.append(f'Missing title for item: {title_text}')
+
+            # Validate lastMatch JSON
+            try:
+                lm = e.get('lastMatch', '')
+                if isinstance(lm, str):
+                    s = lm.strip()
+                    if s and (s.startswith('{') or s.startswith('[') or s.startswith('"')):
+                        try:
+                            json.loads(s)
+                        except Exception as ex:
+                            problems.append(f'Invalid JSON lastMatch for "{title_text}": {ex}')
+            except Exception:
+                pass
+
+            # Validate folder name
+            try:
+                raw = e.get('mustContain') or (e.get('node') or {}).get('title') or e.get('title') or ''
+                if not raw:
+                    display = (e.get('node') or {}).get('title') or e.get('title') or title_text
+                    if display and ' - ' in display:
+                        parts = display.split(' - ', 1)
+                        if len(parts) == 2:
+                            raw = parts[1]
+                if raw:
+                    valid, reason = _is_valid_folder_name(raw)
+                    if not valid:
+                        problems.append(f'Invalid folder-name for "{title_text}": {reason}')
+            except Exception:
+                pass
+
+            preview_list.append(e)
+
+        # Show preview dialog
+        dlg = tk.Toplevel(root)
+        dlg.title('Preview Generation & Sync')
+        dlg.geometry('800x700')
+        dlg.transient(root)
+        dlg.grab_set()
+        dlg.configure(bg='#f5f5f5')
+        
+        # Header
+        header_frame = ttk.Frame(dlg, padding=10)
+        header_frame.pack(fill='x')
+        ttk.Label(header_frame, text=f'Generate {len(preview_list)} rule(s) for {season} {year}',
+                 font=('Segoe UI', 10, 'bold')).pack(anchor='w')
+
+        # Validation issues section
+        prob_frame = ttk.LabelFrame(dlg, text='Validation', padding=10)
+        prob_frame.pack(fill='both', padx=10, pady=(0, 10), expand=False)
+        
+        if problems:
+            ttk.Label(prob_frame, text='⚠️ Validation issues detected:', 
+                     foreground='#d32f2f', font=('Segoe UI', 9, 'bold')).pack(anchor='w', pady=(0, 5))
+            prob_box = tk.Text(prob_frame, height=min(10, max(3, len(problems))), width=90,
+                              font=('Consolas', 9), wrap='word', bg='#fff3cd', fg='#856404')
+            prob_box.pack(fill='both', expand=True)
+            prob_scroll = ttk.Scrollbar(prob_frame, orient='vertical', command=prob_box.yview)
+            prob_scroll.pack(side='right', fill='y')
+            prob_box.configure(yscrollcommand=prob_scroll.set)
+            
+            for p in problems:
+                prob_box.insert('end', f'• {p}\n')
+            prob_box.config(state='disabled')
+        else:
+            ttk.Label(prob_frame, text='✅ No validation issues detected.',
+                     foreground='#2e7d32', font=('Segoe UI', 9, 'bold')).pack(anchor='w')
+
+        # Preview JSON section
+        preview_frame = ttk.LabelFrame(dlg, text='Rules Preview (JSON)', padding=10)
+        preview_frame.pack(fill='both', expand=True, padx=10, pady=(0, 10))
+        
+        preview_text = tk.Text(preview_frame, height=20, width=90, font=('Consolas', 9),
+                               wrap='none', bg='#fafafa', fg='#333333')
+        preview_text.pack(side='left', fill='both', expand=True)
+        
+        preview_scroll_y = ttk.Scrollbar(preview_frame, orient='vertical', command=preview_text.yview)
+        preview_scroll_y.pack(side='right', fill='y')
+        preview_scroll_x = ttk.Scrollbar(preview_frame, orient='horizontal', command=preview_text.xview)
+        preview_scroll_x.pack(side='bottom', fill='x')
+        
+        preview_text.configure(yscrollcommand=preview_scroll_y.set, xscrollcommand=preview_scroll_x.set)
+        
+        try:
+            # Build actual qBittorrent rules format for preview
+            from src.rss_rules import build_rules_from_titles
+            
+            # Create clean data without internal tracking fields
+            clean_titles = {}
+            for media_type, items in config.ALL_TITLES.items():
+                clean_items = []
+                for item in items:
+                    if isinstance(item, dict):
+                        # Create clean copy without internal tracking fields
+                        clean_item = {}
+                        for key, value in item.items():
+                            # Skip internal tracking fields
+                            if key not in ['node', 'ruleName']:
+                                clean_item[key] = value
+                        clean_items.append(clean_item)
+                    else:
+                        clean_items.append(item)
+                clean_titles[media_type] = clean_items
+            
+            # Build rules dict - this returns {"Rule Name": {rule_data}, ...}
+            rules_dict = build_rules_from_titles(clean_titles)
+            
+            # Display as proper qBittorrent dictionary format (not a list)
+            preview_text.insert('1.0', json.dumps(rules_dict, indent=2, ensure_ascii=False))
+        except Exception as e:
+            # Fallback to original format if build fails
+            try:
+                preview_data = {
+                    'season': season,
+                    'year': year,
+                    'rule_count': len(preview_list),
+                    'rules': preview_list
+                }
+                preview_text.insert('1.0', json.dumps(preview_data, indent=2, ensure_ascii=False))
+            except Exception:
+                preview_text.insert('1.0', str(preview_list))
+        preview_text.config(state='disabled')
+
+        # Button frame
+        btns = ttk.Frame(dlg, padding=10)
+        btns.pack(fill='x', side='bottom')
+
+        def _do_proceed():
+            """Proceed with sync after validation."""
+            try:
+                if problems:
+                    if not messagebox.askyesno('Proceed with Warnings', 
+                        f'{len(problems)} validation issue(s) detected.\n\nProceed anyway?'):
+                        return
+                
+                dlg.destroy()
+                status_var.set(f"⏳ Syncing {len(preview_list)} rules to qBittorrent...")
+                root.update()
+                
+                # Check connection mode
+                mode = config.CONNECTION_MODE or 'online'
+                if mode == 'offline':
+                    messagebox.showinfo('Offline Mode', 
+                        'In offline mode. Rules would be generated to JSON file only.\n\n'
+                        'Use File > Export to save rules.')
+                    status_var.set('Offline mode - use Export to save rules')
+                    return
+                
+                # Build rules from the validated preview list
+                try:
+                    rules_dict = build_rules_from_titles(config.ALL_TITLES)
+                    if not rules_dict:
+                        messagebox.showwarning('Sync', 'No valid rules to sync.')
+                        status_var.set('No rules generated')
+                        return
+                except Exception as e:
+                    messagebox.showerror('Build Error', f'Failed to build rules: {e}')
+                    status_var.set('❌ Failed to build rules')
+                    return
+                
+                # Connect and sync to qBittorrent
+                try:
+                    api = QBittorrentClient(
+                        protocol=config.QBT_PROTOCOL,
+                        host=config.QBT_HOST,
+                        port=config.QBT_PORT,
+                        username=config.QBT_USER,
+                        password=config.QBT_PASS,
+                        verify_ssl=config.QBT_VERIFY_SSL,
+                        ca_cert=getattr(config, 'QBT_CA_CERT', None)
+                    )
+                    
+                    # Connect to qBittorrent
+                    if not api.connect():
+                        status_var.set('❌ Failed to connect to qBittorrent')
+                        messagebox.showerror('Connection Failed', 'Could not connect to qBittorrent.')
+                        return
+                    
+                    success_count = 0
+                    failed_count = 0
+                    
+                    for rule_name, rule_def in rules_dict.items():
+                        try:
+                            if api.set_rule(rule_name, rule_def):
+                                success_count += 1
+                                status_var.set(f"⏳ Synced {success_count}/{len(rules_dict)} rules...")
+                                root.update()
+                            else:
+                                failed_count += 1
+                        except Exception as e:
+                            logger.error(f"Failed to set rule '{rule_name}': {e}")
+                            failed_count += 1
+                    
+                    # Show results
+                    if success_count > 0:
+                        status_var.set(f'✅ Synced {success_count} rule(s) for {season} {year}')
+                        if failed_count > 0:
+                            messagebox.showwarning('Sync Complete', 
+                                f'Successfully synced {success_count} rule(s).\n'
+                                f'{failed_count} rule(s) failed.')
+                        else:
+                            messagebox.showinfo('Sync Complete', 
+                                f'✅ Successfully synced {success_count} rule(s) to qBittorrent!\n\n'
+                                f'Season: {season} {year}')
+                    else:
+                        status_var.set('❌ Sync failed')
+                        messagebox.showerror('Sync Failed', 'Failed to sync any rules to qBittorrent.')
+                        
+                except Exception as e:
+                    status_var.set(f'❌ Sync error')
+                    messagebox.showerror('Sync Error', f'Failed to connect to qBittorrent:\n\n{e}')
+                    
+            except Exception as e:
+                logger.error(f"Error in _do_proceed: {e}")
+                messagebox.showerror('Generation Error', f'An error occurred: {e}')
+
+        def _do_cancel():
+            """Cancel the operation."""
+            try:
+                dlg.destroy()
+                status_var.set('Sync cancelled')
+            except Exception:
+                pass
+
+        ttk.Button(btns, text='✓ Proceed & Sync', command=_do_proceed, 
+                  style='Accent.TButton').pack(side='right', padx=(5, 0))
+        ttk.Button(btns, text='✕ Cancel', command=_do_cancel).pack(side='right')
+
+        dlg.wait_window()
+
+    except Exception as e:
+        logger.error(f"Error in dispatch_generation: {e}")
+        messagebox.showerror("Generation Error", f"An error occurred: {e}")
+
+
 __all__ = [
     'normalize_titles_structure',
     'import_titles_from_text',
@@ -898,5 +1321,7 @@ __all__ = [
     'import_titles_from_clipboard',
     'export_selected_titles',
     'export_all_titles',
+    'build_rules_from_titles',
     'clear_all_titles',
+    'dispatch_generation',
 ]

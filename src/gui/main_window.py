@@ -45,6 +45,44 @@ import src.qbittorrent_api as qbt_api
 logger = logging.getLogger(__name__)
 
 
+def create_tooltip(widget, text):
+    """
+    Creates a tooltip for a widget that appears on hover.
+    
+    Args:
+        widget: The tkinter widget to attach the tooltip to
+        text: The tooltip text to display
+    """
+    tooltip_window = None
+    
+    def on_enter(event):
+        nonlocal tooltip_window
+        try:
+            x, y, _, _ = widget.bbox("insert")
+        except:
+            x = y = 0
+        x += widget.winfo_rootx() + 25
+        y += widget.winfo_rooty() + 25
+        
+        tooltip_window = tk.Toplevel(widget)
+        tooltip_window.wm_overrideredirect(True)
+        tooltip_window.wm_geometry(f"+{x}+{y}")
+        
+        label = tk.Label(tooltip_window, text=text, justify='left',
+                        background='#ffffe0', relief='solid', borderwidth=1,
+                        font=('Segoe UI', 9), padx=5, pady=3)
+        label.pack()
+    
+    def on_leave(event):
+        nonlocal tooltip_window
+        if tooltip_window:
+            tooltip_window.destroy()
+            tooltip_window = None
+    
+    widget.bind('<Enter>', on_enter)
+    widget.bind('<Leave>', on_leave)
+
+
 def setup_window_and_styles(root: tk.Tk) -> Tuple[ttk.Style, tk.StringVar, tk.StringVar]:
     """
     Configures the main window geometry, theme, and styles.
@@ -74,9 +112,9 @@ def setup_window_and_styles(root: tk.Tk) -> Tuple[ttk.Style, tk.StringVar, tk.St
         y = 50  # 50px from top to avoid covering with taskbar
         root.geometry(f"{window_width}x{window_height}+{x}+{y}")
     except Exception:
-        root.geometry("1200x900")
+        root.geometry("1400x800")
     
-    root.minsize(1000, 700)
+    root.minsize(1200, 700)
 
     style = ttk.Style()
     style.theme_use('clam')
@@ -316,10 +354,9 @@ def setup_menu_bar(root: tk.Tk, status_var: tk.StringVar, season_var: tk.StringV
                                          clear_all_titles)
     from src.gui.dialogs import view_trash_dialog
     
-    # Note: Enable/Disable commands will be set up after treeview is created
-    # They are placeholders here and will be configured in setup_library_panel
-    edit_menu.add_command(label='✓ Enable Selected')
-    edit_menu.add_command(label='✕ Disable Selected')
+    # Note: Toggle command will be set up after treeview is created
+    # It is a placeholder here and will be configured in setup_library_panel
+    edit_menu.add_command(label='🔄 Toggle Enable/Disable', accelerator='Space')
     edit_menu.add_separator()
     edit_menu.add_command(
         label='Clear All Titles', 
@@ -371,15 +408,14 @@ def setup_menu_bar(root: tk.Tk, status_var: tk.StringVar, season_var: tk.StringV
             for path in valid_files:
                 def _open_path(p=path):
                     try:
-                        with open(p, 'r', encoding='utf-8') as f:
-                            text = f.read()
-                        parsed = import_titles_from_text(text)
-                        if not parsed:
-                            messagebox.showerror('Import Error', f'Failed to parse JSON from {p}.')
-                            return
-                        config.ALL_TITLES = parsed
-                        update_treeview_with_titles(config.ALL_TITLES)
-                        status_var.set(f'Imported {sum(len(v) for v in config.ALL_TITLES.values())} titles from {os.path.basename(p)}.')
+                        # Use import_titles_from_file to get proper merge behavior
+                        result = import_titles_from_file(
+                            root, status_var, season_var, year_var,
+                            prefix_imports=config.get_pref('prefix_imports', True),
+                            path=p
+                        )
+                        if result:
+                            update_treeview_with_titles(config.ALL_TITLES)
                     except Exception as e:
                         messagebox.showerror('Open Recent', f'Failed to open {os.path.basename(p)}: {e}')
                 
@@ -730,19 +766,100 @@ def setup_gui() -> tk.Tk:
         except Exception as e:
             messagebox.showerror('Copy Error', f'Failed to copy selected titles: {e}')
     
+    def _ctx_toggle_enabled():
+        """Toggles enabled/disabled state for selected rules."""
+        try:
+            sel = treeview.selection()
+            if not sel:
+                messagebox.showwarning('Toggle Enable/Disable', 'No title selected.')
+                return
+            
+            toggled_count = 0
+            for item_id in sel:
+                try:
+                    values = treeview.item(item_id, 'values')
+                    if not values or len(values) < 3:
+                        continue
+                    
+                    # Get title from values (index 2: enabled, index, title, ...)
+                    title_text = values[2]
+                    
+                    # Find entry in listbox_items
+                    entry = None
+                    for t, e in app_state.listbox_items:
+                        if t == title_text:
+                            entry = e
+                            break
+                    
+                    if not entry:
+                        continue
+                    
+                    # Toggle enabled state
+                    current_enabled = values[0] == '✓'
+                    new_enabled = not current_enabled
+                    
+                    # Update entry enabled state
+                    if isinstance(entry, dict):
+                        entry['enabled'] = new_enabled
+                    
+                    # Update in config.ALL_TITLES
+                    for k, lst in (config.ALL_TITLES.items() if isinstance(config.ALL_TITLES, dict) else []):
+                        for i, it in enumerate(lst):
+                            try:
+                                candidate_title = (it.get('node') or {}).get('title') if isinstance(it, dict) else str(it)
+                            except Exception:
+                                candidate_title = str(it)
+                            if candidate_title == title_text:
+                                if isinstance(config.ALL_TITLES[k][i], dict):
+                                    config.ALL_TITLES[k][i]['enabled'] = new_enabled
+                    
+                    # Update treeview display
+                    enabled_mark = '✓' if new_enabled else ''
+                    new_values = (enabled_mark,) + values[1:]
+                    treeview.item(item_id, values=new_values)
+                    
+                    toggled_count += 1
+                except Exception as e:
+                    logger.error(f"Error toggling item: {e}")
+                    continue
+            
+            if toggled_count > 0:
+                status_var.set(f'Toggled {toggled_count} rule(s)')
+                # Refresh editor if any toggled item is currently selected
+                # This ensures the enable checkbox updates immediately
+                try:
+                    treeview.event_generate('<<TreeviewSelect>>')
+                except Exception:
+                    pass
+        except Exception as e:
+            messagebox.showerror('Toggle Error', f'Failed to toggle rules: {e}')
+    
     def _ctx_enable_selected():
         """Enables selected rules."""
         try:
-            sel = treeview.curselection()
+            sel = treeview.selection()
             if not sel:
                 messagebox.showwarning('Enable', 'No title selected.')
                 return
             
             enabled_count = 0
-            for s in sel:
+            for item_id in sel:
                 try:
-                    idx = int(s)
-                    title_text, entry = app_state.listbox_items[idx]
+                    values = treeview.item(item_id, 'values')
+                    if not values or len(values) < 3:
+                        continue
+                    
+                    title_text = values[2]
+                    
+                    # Find entry in listbox_items
+                    entry = None
+                    for t, e in app_state.listbox_items:
+                        if t == title_text:
+                            entry = e
+                            break
+                    
+                    if not entry:
+                        continue
                     
                     # Update entry enabled state
                     if isinstance(entry, dict):
@@ -759,14 +876,9 @@ def setup_gui() -> tk.Tk:
                                 if isinstance(config.ALL_TITLES[k][i], dict):
                                     config.ALL_TITLES[k][i]['enabled'] = True
                     
-                    # Update treeview display
-                    try:
-                        current_values = treeview.item(idx, 'values')
-                        if current_values and len(current_values) >= 4:
-                            new_values = ('✓',) + current_values[1:]
-                            treeview.item(idx, values=new_values)
-                    except Exception:
-                        pass
+                    # Update treeview display (enabled, index, title, category, savepath)
+                    new_values = ('✓',) + values[1:]
+                    treeview.item(item_id, values=new_values)
                     
                     enabled_count += 1
                 except Exception:
@@ -775,22 +887,40 @@ def setup_gui() -> tk.Tk:
             if enabled_count > 0:
                 messagebox.showinfo('Enable', f'Enabled {enabled_count} rule(s).')
                 status_var.set(f'Enabled {enabled_count} rule(s)')
+                # Refresh editor to update checkbox
+                try:
+                    treeview.event_generate('<<TreeviewSelect>>')
+                except Exception:
+                    pass
         except Exception as e:
             messagebox.showerror('Enable Error', f'Failed to enable rules: {e}')
     
     def _ctx_disable_selected():
         """Disables selected rules."""
         try:
-            sel = treeview.curselection()
+            sel = treeview.selection()
             if not sel:
                 messagebox.showwarning('Disable', 'No title selected.')
                 return
             
             disabled_count = 0
-            for s in sel:
+            for item_id in sel:
                 try:
-                    idx = int(s)
-                    title_text, entry = app_state.listbox_items[idx]
+                    values = treeview.item(item_id, 'values')
+                    if not values or len(values) < 3:
+                        continue
+                    
+                    title_text = values[2]
+                    
+                    # Find entry in listbox_items
+                    entry = None
+                    for t, e in app_state.listbox_items:
+                        if t == title_text:
+                            entry = e
+                            break
+                    
+                    if not entry:
+                        continue
                     
                     # Update entry enabled state
                     if isinstance(entry, dict):
@@ -807,14 +937,9 @@ def setup_gui() -> tk.Tk:
                                 if isinstance(config.ALL_TITLES[k][i], dict):
                                     config.ALL_TITLES[k][i]['enabled'] = False
                     
-                    # Update treeview display
-                    try:
-                        current_values = treeview.item(idx, 'values')
-                        if current_values and len(current_values) >= 4:
-                            new_values = ('',) + current_values[1:]
-                            treeview.item(idx, values=new_values)
-                    except Exception:
-                        pass
+                    # Update treeview display (enabled, index, title, category, savepath)
+                    new_values = ('',) + values[1:]
+                    treeview.item(item_id, values=new_values)
                     
                     disabled_count += 1
                 except Exception:
@@ -823,6 +948,11 @@ def setup_gui() -> tk.Tk:
             if disabled_count > 0:
                 messagebox.showinfo('Disable', f'Disabled {disabled_count} rule(s).')
                 status_var.set(f'Disabled {disabled_count} rule(s)')
+                # Refresh editor to update checkbox
+                try:
+                    treeview.event_generate('<<TreeviewSelect>>')
+                except Exception:
+                    pass
         except Exception as e:
             messagebox.showerror('Disable Error', f'Failed to disable rules: {e}')
     
@@ -852,120 +982,65 @@ def setup_gui() -> tk.Tk:
     # Create context menu
     try:
         context_menu = tk.Menu(treeview, tearoff=0)
-        context_menu.add_command(label='✓ Enable', command=_ctx_enable_selected)
-        context_menu.add_command(label='✕ Disable', command=_ctx_disable_selected)
+        context_menu.add_command(label='🔄 Toggle Enable/Disable', command=_ctx_toggle_enabled)
         context_menu.add_separator()
         context_menu.add_command(label='Copy', command=_ctx_copy_selected)
         context_menu.add_command(label='Edit', command=_ctx_edit_selected)
         context_menu.add_command(label='Delete', command=_ctx_delete_selected)
         treeview.bind('<Button-3>', _on_listbox_right_click, add='+')
+        
+        # Bind Space key to toggle enable/disable
+        def _on_space_key(event):
+            """Toggle enable/disable on Space key press."""
+            try:
+                _ctx_toggle_enabled()
+                return "break"  # Prevent default space behavior
+            except Exception as e:
+                logger.error(f"Error in Space key handler: {e}")
+        
+        treeview.bind('<space>', _on_space_key)
+        treeview.bind('<Space>', _on_space_key)
     except Exception as e:
         logger.error(f"Failed to setup context menu: {e}")
     
     # Update Edit menu commands now that functions are defined
     if edit_menu:
         try:
-            edit_menu.entryconfig(0, command=_ctx_enable_selected)
-            edit_menu.entryconfig(1, command=_ctx_disable_selected)
+            edit_menu.entryconfig(0, command=_ctx_toggle_enabled)
         except Exception as e:
             logger.error(f"Failed to update edit menu: {e}")
     
     # ==================== Generate/Sync Button Bar ====================
+    # Will be packed after status_frame is created (see below around line 970)
     action_bar = ttk.Frame(root, padding="8")
-    action_bar.pack(side='bottom', fill='x', before=status_frame)
     
     def _generate_and_sync():
-        """Generates rules and syncs them to qBittorrent."""
+        """Generates rules and syncs them to qBittorrent with validation and preview."""
         try:
-            from src.gui.file_operations import build_rules_from_titles
-            from src.qbittorrent_api import QBittorrentAPI
-            
-            if not config.ALL_TITLES:
-                messagebox.showwarning('Sync', 'No titles to sync. Please add some titles first.')
-                return
-            
-            # Build rules
-            try:
-                rules_dict = build_rules_from_titles(config.ALL_TITLES)
-                if not rules_dict:
-                    messagebox.showwarning('Sync', 'No valid rules to sync.')
-                    return
-            except Exception as e:
-                messagebox.showerror('Build Error', f'Failed to build rules: {e}')
-                return
-            
-            # Check connection mode
-            mode = config.CONNECTION_MODE or 'online'
-            if mode == 'offline':
-                messagebox.showinfo('Offline Mode', 'In offline mode. Rules would be generated to file only.')
-                return
-            
-            # Confirm sync
-            rule_count = len(rules_dict)
-            if not messagebox.askyesno('Confirm Sync', 
-                f'Sync {rule_count} rule(s) to qBittorrent?\n\n'
-                f'This will update RSS automation rules on your qBittorrent instance.'):
-                return
-            
-            status_var.set('⏳ Connecting to qBittorrent...')
-            root.update()
-            
-            # Connect and sync
-            try:
-                api = QBittorrentAPI(
-                    protocol=config.QBT_PROTOCOL,
-                    host=config.QBT_HOST,
-                    port=config.QBT_PORT,
-                    username=config.QBT_USER,
-                    password=config.QBT_PASS,
-                    verify_ssl=config.QBT_VERIFY_SSL
-                )
-                
-                success_count = 0
-                failed_count = 0
-                
-                for rule_name, rule_def in rules_dict.items():
-                    try:
-                        if api.set_rule(rule_name, rule_def):
-                            success_count += 1
-                        else:
-                            failed_count += 1
-                    except Exception as e:
-                        logger.error(f"Failed to set rule '{rule_name}': {e}")
-                        failed_count += 1
-                
-                if success_count > 0:
-                    status_var.set(f'✅ Synced {success_count} rule(s) successfully')
-                    if failed_count > 0:
-                        messagebox.showwarning('Sync Complete', 
-                            f'Synced {success_count} rule(s) successfully.\n'
-                            f'{failed_count} rule(s) failed.')
-                    else:
-                        messagebox.showinfo('Sync Complete', 
-                            f'Successfully synced {success_count} rule(s) to qBittorrent!')
-                else:
-                    status_var.set('❌ Sync failed')
-                    messagebox.showerror('Sync Failed', 'Failed to sync any rules.')
-                    
-            except Exception as e:
-                status_var.set(f'❌ Sync error: {str(e)[:50]}')
-                messagebox.showerror('Sync Error', f'Failed to sync to qBittorrent:\n{e}')
-                
+            from src.gui.file_operations import dispatch_generation
+            dispatch_generation(root, season_var, year_var, status_var)
         except Exception as e:
+            logger.error(f"Error in generate/sync: {e}")
             messagebox.showerror('Error', f'An error occurred: {e}')
     
-    generate_sync_btn = ttk.Button(action_bar, text='📤 Generate/Sync TO qBittorrent', 
+    generate_sync_btn = ttk.Button(action_bar, text='⚡ Generate/Sync to qBittorrent', 
                                    command=_generate_and_sync, style='Accent.TButton')
-    generate_sync_btn.pack(side='right', padx=5)
-    
-    ttk.Label(action_bar, text='Ready to sync rules', foreground='#666', 
-              font=('Segoe UI', 8)).pack(side='left', padx=5)
+    generate_sync_btn.pack(fill='x', pady=(0, 5))
+    create_tooltip(generate_sync_btn, 
+                  "Generate RSS rules and sync to qBittorrent\n" +
+                  "• Validates all titles and settings\n" +
+                  "• Shows preview before syncing\n" +
+                  "• Requires Season and Year to be set")
     
     # ==================== Status Bar ====================
+    # Pack status_frame first (at very bottom)
     status_frame = ttk.Frame(root, padding="5")
     status_frame.pack(side='bottom', fill='x')
     status_label = ttk.Label(status_frame, textvariable=status_var, relief='sunken', anchor='w')
     status_label.pack(fill='x')
+    
+    # Pack action_bar above status_frame
+    action_bar.pack(side='bottom', fill='x')
     
     # ==================== Final Initialization ====================
     # Load initial data if available
@@ -1216,9 +1291,22 @@ def setup_season_controls(root: tk.Tk, main_frame: ttk.Frame, season_var: tk.Str
             messagebox.showerror('Sync Error', f'Failed to start sync: {e}')
     
     # Sync button
+    # Use larger font for emoji visibility and secondary color styling
+    sync_btn_style = ttk.Style()
+    sync_btn_style.configure('SyncButton.TButton', 
+                            font=('Segoe UI', 10),
+                            background='#5A9FD4',
+                            foreground='white')
+    sync_btn_style.map('SyncButton.TButton',
+                      background=[('active', '#4A8FC4'), ('pressed', '#3A7FB4')])
     sync_btn = ttk.Button(top_config_frame, text='🔄 Sync from qBittorrent', 
-                         command=_on_sync_clicked, style='Secondary.TButton')
+                         command=_on_sync_clicked, style='SyncButton.TButton')
     sync_btn.grid(row=2, column=0, columnspan=4, sticky='ew', padx=0, pady=(10, 0))
+    create_tooltip(sync_btn,
+                  "Import existing RSS rules from qBittorrent\n" +
+                  "• Online mode: Fetch rules from qBittorrent API\n" +
+                  "• Offline mode: Import from JSON file\n" +
+                  "• Automatically skips duplicates")
 
     return top_config_frame
 
@@ -1305,17 +1393,17 @@ def setup_library_panel(main_frame: ttk.Frame, style: ttk.Style, edit_menu: tk.M
     treeview_frame = ttk.Frame(paned)
     paned.add(treeview_frame, weight=3)
     
-    # Create Treeview with columns (added 'enabled' column)
+    # Create Treeview with columns (checkmark as first column, hide tree column #0)
     treeview = ttk.Treeview(treeview_frame, selectmode='extended', 
-                           columns=('enabled', 'title', 'category', 'savepath'),
-                           show='tree headings', height=20)
+                           columns=('enabled', 'index', 'title', 'category', 'savepath'),
+                           show='headings', height=20)
     
-    # Define column headings
-    treeview.heading('#0', text='#', anchor='w')
-    treeview.heading('enabled', text='✓', anchor='center')
-    treeview.heading('title', text='Title', anchor='w')
-    treeview.heading('category', text='Category', anchor='w')
-    treeview.heading('savepath', text='Save Path', anchor='w')
+    # Define column headings (enabled first, then index, title, category, savepath)
+    treeview.heading('enabled', text='✓', anchor='center', command=lambda: _sort_column('enabled', False))
+    treeview.heading('index', text='#', anchor='w', command=lambda: _sort_column('index', False))
+    treeview.heading('title', text='Title', anchor='w', command=lambda: _sort_column('title', False))
+    treeview.heading('category', text='Category', anchor='w', command=lambda: _sort_column('category', False))
+    treeview.heading('savepath', text='Save Path', anchor='w', command=lambda: _sort_column('savepath', False))
     
     # Load saved column widths or use defaults
     try:
@@ -1323,74 +1411,161 @@ def setup_library_panel(main_frame: ttk.Frame, style: ttk.Style, edit_menu: tk.M
     except Exception:
         saved_col_widths = {}
     
+    # Load saved column order
+    try:
+        saved_col_order = config.get_pref('treeview_column_order', None)
+    except Exception:
+        saved_col_order = None
+    
+    # Apply saved column order if available, ensuring 'enabled' is always first and 'index' always second
+    # IMPORTANT: If old config doesn't have 'index', we must add it!
+    if saved_col_order and isinstance(saved_col_order, list):
+        try:
+            logger.debug(f"Saved column order from config: {saved_col_order}")
+            # Ensure 'enabled' is first in the display order
+            if 'enabled' in saved_col_order:
+                saved_col_order.remove('enabled')
+            saved_col_order.insert(0, 'enabled')
+            # Ensure 'index' is second (may not exist in old configs - MUST ADD IT!)
+            if 'index' not in saved_col_order:
+                logger.debug("'index' column not in saved order, adding it at position 1")
+                saved_col_order.insert(1, 'index')
+            else:
+                # Move index to position 1 if it's elsewhere
+                if saved_col_order.index('index') != 1:
+                    saved_col_order.remove('index')
+                    saved_col_order.insert(1, 'index')
+            logger.debug(f"Final column display order: {saved_col_order}")
+            treeview['displaycolumns'] = tuple(saved_col_order)
+        except Exception as e:
+            logger.error(f"Error setting column order: {e}", exc_info=True)
+            # Fallback to default order with enabled first
+            treeview['displaycolumns'] = ('enabled', 'index', 'title', 'category', 'savepath')
+    else:
+        logger.debug("No saved column order, using default: enabled, index, title, category, savepath")
+        # Default order with enabled first
+        treeview['displaycolumns'] = ('enabled', 'index', 'title', 'category', 'savepath')
+    
+    # Sorting state
+    sort_reverse = {}
+    
+    def _sort_column(col, reverse):
+        """Sort treeview contents by column."""
+        try:
+            items = [(treeview.set(item, col), item) for item in treeview.get_children('')]
+            items.sort(reverse=reverse)
+            
+            for index, (val, item) in enumerate(items):
+                treeview.move(item, '', index)
+            
+            # Toggle sort direction for next click
+            sort_reverse[col] = not reverse
+            treeview.heading(col, command=lambda: _sort_column(col, sort_reverse[col]))
+        except Exception:
+            pass
+    
     # Track manual column resizes
     columns_manual_resize = {
-        '#0': {'disabled': False},
         'enabled': {'disabled': False},
+        'index': {'disabled': False},
         'title': {'disabled': False},
         'category': {'disabled': False},
         'savepath': {'disabled': False}
     }
     
-    # Configure column widths (added 'enabled' column)
-    treeview.column('#0', width=saved_col_widths.get('#0', 25), minwidth=20, stretch=False)
+    # Configure column widths
     treeview.column('enabled', width=saved_col_widths.get('enabled', 30), minwidth=25, stretch=False)
+    treeview.column('index', width=saved_col_widths.get('index', 40), minwidth=30, stretch=False)
     treeview.column('title', width=saved_col_widths.get('title', 300), minwidth=150, stretch=False)
     treeview.column('category', width=saved_col_widths.get('category', 150), minwidth=100, stretch=False)
     treeview.column('savepath', width=saved_col_widths.get('savepath', 400), minwidth=150, stretch=False)
     
-    # Auto-fit column function
+    # Auto-fit column function with better width calculation
     def _auto_fit_column(col_id):
-        """Auto-fit column width based on content."""
+        """Auto-fit column width based on content with proper text measurement."""
         try:
-            max_width = 50
+            # Start with minimum width
+            max_width = 30
+            
+            # Font metrics for accurate measurement (approximate 7 pixels per char for Segoe UI 9pt)
+            char_width = 7
+            padding = 20
             
             # Measure header text
-            header_texts = {'#0': '#', 'enabled': '✓', 'title': 'Title', 'category': 'Category', 'savepath': 'Save Path'}
+            header_texts = {'enabled': '✓', 'index': '#', 'title': 'Title', 'category': 'Category', 'savepath': 'Save Path'}
             header_text = header_texts.get(col_id, '')
-            max_width = max(max_width, len(header_text) * 8 + 20)
+            header_width = len(header_text) * char_width + padding + 10  # Extra padding for sort indicator
+            max_width = max(max_width, header_width)
             
             # Measure all items in column
             for item in treeview.get_children():
                 try:
-                    if col_id == '#0':
-                        text = treeview.item(item, 'text')
-                    else:
-                        values = treeview.item(item, 'values')
-                        col_index = {'enabled': 0, 'title': 1, 'category': 2, 'savepath': 3}.get(col_id, -1)
-                        text = values[col_index] if col_index >= 0 and col_index < len(values) else ''
+                    values = treeview.item(item, 'values')
+                    col_index = {'enabled': 0, 'index': 1, 'title': 2, 'category': 3, 'savepath': 4}.get(col_id, -1)
+                    text = values[col_index] if col_index >= 0 and col_index < len(values) else ''
                     
                     if text:
-                        text_width = len(str(text)) * 8 + 20
+                        text_width = len(str(text)) * char_width + padding
                         max_width = max(max_width, text_width)
                 except Exception:
                     pass
             
+            # Cap maximum width to prevent excessive columns
+            max_width = min(max_width, 600)
+            
             treeview.column(col_id, width=int(max_width))
             
+            # Mark as manually sized to prevent auto-resize
             if col_id in columns_manual_resize:
                 columns_manual_resize[col_id]['disabled'] = False
+        except Exception as e:
+            logger.error(f"Error in auto_fit_column: {e}")
+    
+    # Auto-fit all columns on data load
+    def _auto_fit_all_columns():
+        """Auto-fit all columns after data is loaded."""
+        try:
+            for col_id in ['enabled', 'index', 'title', 'category', 'savepath']:
+                if col_id not in columns_manual_resize or not columns_manual_resize[col_id].get('disabled', False):
+                    _auto_fit_column(col_id)
         except Exception:
             pass
     
-    # Save column widths function
-    def _save_column_widths(event=None):
+    # Save column widths and order function
+    def _save_column_widths_and_order(event=None):
+        """Save column widths and display order."""
         try:
             widths = {
-                '#0': treeview.column('#0', 'width'),
                 'enabled': treeview.column('enabled', 'width'),
+                'index': treeview.column('index', 'width'),
                 'title': treeview.column('title', 'width'),
                 'category': treeview.column('category', 'width'),
                 'savepath': treeview.column('savepath', 'width')
             }
             config.set_pref('treeview_column_widths', widths)
             
+            # Save column display order (always ensure enabled is first, index second)
+            try:
+                display_cols = list(treeview['displaycolumns'])
+                # Ensure enabled is always first
+                if 'enabled' in display_cols:
+                    display_cols.remove('enabled')
+                display_cols.insert(0, 'enabled')
+                # Ensure index is always second
+                if 'index' in display_cols:
+                    display_cols.remove('index')
+                display_cols.insert(1, 'index')
+                config.set_pref('treeview_column_order', display_cols)
+            except Exception:
+                pass
+            
+            # Track manual resize
             if event:
                 try:
                     region = treeview.identify_region(event.x, event.y)
                     if region == "separator":
                         col = treeview.identify_column(event.x)
-                        col_map = {'#0': '#0', '#1': 'title', '#2': 'category', '#3': 'savepath'}
+                        col_map = {'#0': '#0', '#1': 'enabled', '#2': 'title', '#3': 'category', '#4': 'savepath'}
                         if col in col_map:
                             columns_manual_resize[col_map[col]]['disabled'] = True
                 except Exception:
@@ -1398,21 +1573,33 @@ def setup_library_panel(main_frame: ttk.Frame, style: ttk.Style, edit_menu: tk.M
         except Exception:
             pass
     
-    treeview.bind('<ButtonRelease-1>', _save_column_widths)
+    treeview.bind('<ButtonRelease-1>', _save_column_widths_and_order)
     
-    # Double-click to auto-fit column
+    # Double-click separator to auto-fit column
     def _on_double_click(event):
+        """Handle double-click on column separator to auto-resize."""
         try:
             region = treeview.identify_region(event.x, event.y)
             if region == "separator":
-                col = treeview.identify_column(event.x)
-                col_map = {'#0': '#0', '#1': 'title', '#2': 'category', '#3': 'savepath'}
-                if col in col_map:
-                    _auto_fit_column(col_map[col])
-                    _save_column_widths()
-                    return "break"
-        except Exception:
-            pass
+                # Get the column to the LEFT of the separator
+                x_pos = event.x
+                col = None
+                cumulative_width = 0
+                    
+                # Check each displayed column
+                for col_name in ['enabled', 'index', 'title', 'category', 'savepath']:
+                    col_width = treeview.column(col_name, 'width')
+                    cumulative_width += col_width
+                    if abs(x_pos - cumulative_width) <= 5:  # Separator threshold
+                        col = col_name
+                        break
+                
+                if col:
+                    _auto_fit_column(col)
+                    _save_column_widths_and_order()
+                return "break"
+        except Exception as e:
+            logger.error(f"Error in double-click handler: {e}")
     
     treeview.bind('<Double-Button-1>', _on_double_click)
     
@@ -1674,12 +1861,10 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
                                      relief='flat', bd=1, highlightthickness=1,
                                      highlightbackground='#e0e0e0', highlightcolor='#0078D4')
 
-    # Create header row with title and refresh button
+    # Create header with title only (auto-refreshes on selection change)
     editor_header = ttk.Frame(editor_frame)
     editor_header.pack(fill='x', pady=(0, 10))
     ttk.Label(editor_header, text='📝 Rule Editor', font=('Segoe UI', 11, 'bold')).pack(side='left')
-    editor_refresh_btn = ttk.Button(editor_header, text='🔄', command=lambda: None, width=3, style='RefreshButton.TButton')
-    editor_refresh_btn.pack(side='right', padx=(5, 0))
     
     ttk.Separator(editor_frame, orient='horizontal').pack(fill='x', pady=(0, 10))
     
@@ -1909,7 +2094,7 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
     editor_category_combo.pack(anchor='w', fill='x', pady=(0, 8))
     
     def _on_category_change(*args):
-        """Auto-fill save path from category's save path if not manually edited."""
+        """Auto-fill save path from category's save path if not manually edited and no custom save path exists."""
         if savepath_manually_edited['flag']:
             return  # User has manually edited save path, don't override
         
@@ -1918,14 +2103,27 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
             if not selected_category:
                 return
             
+            # Get current save path
+            current_save_path = editor_savepath.get().strip()
+            
             # Get category info from cached categories
             cached_cats = getattr(config, 'CACHED_CATEGORIES', {}) or {}
             if isinstance(cached_cats, dict) and selected_category in cached_cats:
                 cat_info = cached_cats[selected_category]
                 if isinstance(cat_info, dict) and 'savePath' in cat_info:
                     cat_save_path = cat_info['savePath']
-                    if cat_save_path and cat_save_path != editor_savepath.get():
+                    
+                    # Only auto-fill if:
+                    # 1. There's no current save path (empty field), OR
+                    # 2. Current save path matches the category's default (user hasn't customized it)
+                    # This prevents overwriting custom save paths when loading rules
+                    if not current_save_path:
+                        # Empty field, safe to auto-fill
                         editor_savepath.set(cat_save_path)
+                    elif current_save_path == cat_save_path:
+                        # Already matches category default, no change needed
+                        pass
+                    # else: Custom save path exists, don't override it
         except Exception:
             pass
     
@@ -2137,12 +2335,6 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
             _update_feed_variations()
         except Exception:
             pass
-    
-    # Configure refresh button command now that function is defined
-    try:
-        editor_refresh_btn.config(command=_populate_editor_from_selection)
-    except Exception:
-        pass
 
     def _parse_datetime_from_string(s):
         """
@@ -2399,12 +2591,14 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
             entry['assignedCategory'] = new_cat
             entry['enabled'] = new_en
             
-            # Sync category to torrentParams.category
+            # Sync category and save path to torrentParams
             if 'torrentParams' not in entry:
                 entry['torrentParams'] = {}
             if not isinstance(entry['torrentParams'], dict):
                 entry['torrentParams'] = {}
             entry['torrentParams']['category'] = new_cat
+            # Also sync save_path to torrentParams (qBittorrent uses this field)
+            entry['torrentParams']['save_path'] = new_save
             
             try:
                 lm_val = ''

@@ -38,8 +38,8 @@ def open_settings_window(root: tk.Tk, status_var: tk.StringVar) -> None:
     # Try to fit full settings on screen
     screen_height = root.winfo_screenheight()
     optimal_height = min(900, screen_height - 100)  # Leave 100px for taskbar
-    settings_win.geometry(f"700x{optimal_height}")
-    settings_win.minsize(700, 500)
+    settings_win.geometry(f"800x{optimal_height}")
+    settings_win.minsize(800, 500)
     settings_win.transient(root)
     settings_win.grab_set()
     settings_win.configure(bg='#f5f5f5')
@@ -232,11 +232,57 @@ def open_settings_window(root: tk.Tk, status_var: tk.StringVar) -> None:
     ttk.Label(defaults_frame, text="These defaults will be used when creating new rules:", 
               font=('Segoe UI', 9)).grid(row=0, column=0, columnspan=4, sticky='w', pady=(0, 10))
     
-    ttk.Label(defaults_frame, text="Default Save Path:", font=('Segoe UI', 9, 'bold')).grid(row=1, column=0, sticky='w', padx=5, pady=8)
-    ttk.Entry(defaults_frame, textvariable=default_save_path_temp, width=50).grid(row=1, column=1, columnspan=3, sticky='ew', padx=5, pady=8)
+    # Default Category (moved above save path)
+    ttk.Label(defaults_frame, text="Default Category:", font=('Segoe UI', 9, 'bold')).grid(row=1, column=0, sticky='w', padx=5, pady=8)
     
-    ttk.Label(defaults_frame, text="Default Category:", font=('Segoe UI', 9, 'bold')).grid(row=2, column=0, sticky='w', padx=5, pady=8)
-    ttk.Entry(defaults_frame, textvariable=default_category_temp, width=30).grid(row=2, column=1, sticky='w', padx=5, pady=8)
+    # Create combobox for category selection from cache
+    from tkinter import ttk as tkinter_ttk
+    default_category_combo = tkinter_ttk.Combobox(defaults_frame, textvariable=default_category_temp, width=28)
+    default_category_combo.grid(row=1, column=1, sticky='w', padx=5, pady=8)
+    
+    # Default Save Path (moved below category)
+    ttk.Label(defaults_frame, text="Default Save Path:", font=('Segoe UI', 9, 'bold')).grid(row=2, column=0, sticky='w', padx=5, pady=8)
+    default_save_path_entry = ttk.Entry(defaults_frame, textvariable=default_save_path_temp, width=50)
+    default_save_path_entry.grid(row=2, column=1, columnspan=3, sticky='ew', padx=5, pady=8)
+    
+    # Load cached categories into combobox
+    def _update_category_combobox():
+        try:
+            config.load_cached_categories()
+            cats = getattr(config, 'CACHED_CATEGORIES', {}) or {}
+            if isinstance(cats, dict):
+                category_names = list(cats.keys())
+            elif isinstance(cats, list):
+                category_names = cats
+            else:
+                category_names = []
+            default_category_combo['values'] = [''] + sorted(category_names)  # Empty option first
+        except Exception as e:
+            logger.error(f"Error loading categories for combobox: {e}")
+            default_category_combo['values'] = ['']
+    
+    # Initial load
+    _update_category_combobox()
+    
+    # Auto-fill save path when category is selected
+    def _on_category_selected(event=None):
+        try:
+            selected_cat = default_category_temp.get().strip()
+            if selected_cat:
+                cats = getattr(config, 'CACHED_CATEGORIES', {}) or {}
+                if isinstance(cats, dict) and selected_cat in cats:
+                    cat_data = cats[selected_cat]
+                    # Handle both string save paths and dict with 'savePath' key
+                    if isinstance(cat_data, dict):
+                        save_path = cat_data.get('savePath', '')
+                    else:
+                        save_path = str(cat_data)
+                    default_save_path_temp.set(save_path)
+                    logger.debug(f"Auto-filled save path from category '{selected_cat}': {save_path}")
+        except Exception as e:
+            logger.error(f"Error auto-filling save path: {e}")
+    
+    default_category_combo.bind('<<ComboboxSelected>>', _on_category_selected)
     
     ttk.Label(defaults_frame, text="💡 Tip: Leave blank to use no defaults. Category will auto-fill its save path when selected.",
               font=('Segoe UI', 8), foreground='#666').grid(row=3, column=0, columnspan=4, sticky='w', padx=5, pady=(5, 0))
@@ -302,6 +348,8 @@ def open_settings_window(root: tk.Tk, status_var: tk.StringVar) -> None:
                     keys = []
                 for k in keys:
                     cat_listbox.insert('end', str(k))
+                # Also update the combobox
+                _update_category_combobox()
             except Exception:
                 pass
 
@@ -765,9 +813,9 @@ def open_full_rule_editor(root: tk.Tk, title_text: str, entry: Dict[str, Any], i
         screen_height = dlg.winfo_screenheight()
         dialog_height = int(screen_height * 0.85)
         dialog_height = max(600, min(dialog_height, screen_height - 100))
-        dlg.geometry(f'750x{dialog_height}')
+        dlg.geometry(f'900x{dialog_height}')
     except Exception:
-        dlg.geometry('750x700')
+        dlg.geometry('900x700')
     
     dlg.transient(root)
     dlg.grab_set()
