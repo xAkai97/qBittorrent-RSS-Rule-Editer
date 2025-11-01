@@ -62,8 +62,8 @@ def sanitize_folder_name(name: str, replacement_char: str = '_', max_length: int
     for char in FileSystem.INVALID_CHARS:
         sanitized = sanitized.replace(char, replacement_char)
     
-    # Remove leading/trailing spaces and dots
-    sanitized = sanitized.strip(). strip('.')
+    # Remove leading/trailing spaces and dots (Windows doesn't allow these)
+    sanitized = sanitized.strip().strip('.')
     
     # Check for Windows reserved names
     base_name = sanitized.split('.')[0].upper()

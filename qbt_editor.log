@@ -4442,3 +4442,783 @@
 2025-10-31 23:30:58 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
 2025-10-31 23:30:59 - src.config - INFO - Loaded 10 cached categories
 2025-10-31 23:30:59 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-10-31 23:37:01 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-10-31 23:37:01 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2025-10-31 23:37:01 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-10-31 23:37:01 - src.config - INFO - Loaded 2 recent files
+2025-10-31 23:37:01 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-10-31 23:37:01 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-10-31 23:37:01 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-10-31 23:37:01 - src.config - INFO - Loaded 10 cached categories
+2025-10-31 23:37:01 - src.gui.main_window - ERROR - Failed to setup context menu: bad event type or keysym "Space"
+2025-10-31 23:37:01 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2025-10-31 23:37:02 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-31 23:37:02 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-31 23:37:02 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-31 23:37:02 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-31 23:37:02 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:37:02 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-31 23:37:02 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-31 23:37:02 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-31 23:37:02 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:37:02 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-31 23:37:02 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-31 23:37:02 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-31 23:37:02 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-10-31 23:37:02 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-31 23:37:02 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-31 23:37:03 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-31 23:37:03 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-31 23:37:03 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-31 23:37:03 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-31 23:37:03 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:37:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-31 23:37:03 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-31 23:37:03 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-31 23:37:03 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:37:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-31 23:37:03 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-31 23:37:03 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-31 23:37:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2319
+2025-10-31 23:37:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-31 23:37:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Alma-chan wa Kazoku ni Naritai
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Bukiyou na Senpai.
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Digimon Beatbreak
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Gnosia
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Heika Watashi wo Wasurete Kudasai
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Isekai Quartet 3
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kakuriyo no Yadomeshi Ni
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kikaijikake no Marie
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kimi to Koete Koi ni Naru
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kingdom 6th Season
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - One Punch Man 3
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Potion, Wagami wo Tasukeru
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ranma ½ 2nd Season
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sanda
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shuumatsu Touring
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Spy x Family Season 3
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tensei Akujo no Kuro Rekishi
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Towa no Yuugure
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Watashi wo Tabetai, Hitodenashi
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Yasei no Last Boss ga Arawareta!
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
+2025-10-31 23:37:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 0 children
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Cleared 0 items from treeview
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Processing media_type 'existing' with 37 items
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Boku no Hero Academia'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Boku no Hero Academia', 'Disk1 - Anime', 'disk1/Anime/100+ Series/Boku no Hero Academia')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I001'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 2: enabled='\u2713', title='Detective Conan'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '2', 'Detective Conan', 'Disk1 - Anime', 'disk1/Anime/100+ Series/Detective Conan/Season 31 [1000+]')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I002'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=1, after=2
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 3: enabled='\u2713', title='Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '3', 'Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Akujiki Reijou to Kyouketsu Koushaku')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I003'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=2, after=3
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 4: enabled='\u2713', title='Fall 2025 - Alma-chan wa Kazoku ni Naritai'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '4', 'Fall 2025 - Alma-chan wa Kazoku ni Naritai', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Alma-chan wa Kazoku ni Naritai')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I004'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=3, after=4
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 5: enabled='\u2713', title='Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '5', 'Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I005'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=4, after=5
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 6: enabled='\u2713', title='Fall 2025 - Bukiyou na Senpai.'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '6', 'Fall 2025 - Bukiyou na Senpai.', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Bukiyou na Senpai.')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I006'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=5, after=6
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 7: enabled='\u2713', title='Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '7', 'Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I007'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=6, after=7
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 8: enabled='\u2713', title='Fall 2025 - Chitose-kun wa Ramune Bin no Naka'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '8', 'Fall 2025 - Chitose-kun wa Ramune Bin no Naka', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Chitose-kun wa Ramune Bin no Naka')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I008'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=7, after=8
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 9: enabled='\u2713', title='Fall 2025 - Digimon Beatbreak'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '9', 'Fall 2025 - Digimon Beatbreak', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Digimon Beatbreak')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I009'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=8, after=9
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 10: enabled='\u2713', title='Fall 2025 - Gnosia'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '10', 'Fall 2025 - Gnosia', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Gnosia')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00A'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=9, after=10
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 11: enabled='', title='Fall 2025 - Heika Watashi wo Wasurete Kudasai'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('', '11', 'Fall 2025 - Heika Watashi wo Wasurete Kudasai', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Heika Watashi wo Wasurete Kudasai')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00B'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=10, after=11
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 12: enabled='\u2713', title='Fall 2025 - Isekai Quartet 3'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '12', 'Fall 2025 - Isekai Quartet 3', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Isekai Quartet 3')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00C'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=11, after=12
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 13: enabled='\u2713', title='Fall 2025 - Kakuriyo no Yadomeshi Ni'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '13', 'Fall 2025 - Kakuriyo no Yadomeshi Ni', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Kakuriyo no Yadomeshi Ni')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00D'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=12, after=13
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 14: enabled='\u2713', title='Fall 2025 - Kikaijikake no Marie'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '14', 'Fall 2025 - Kikaijikake no Marie', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Kikaijikake no Marie')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00E'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=13, after=14
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 15: enabled='\u2713', title='Fall 2025 - Kimi to Koete Koi ni Naru'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '15', 'Fall 2025 - Kimi to Koete Koi ni Naru', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Kimi to Koete Koi ni Naru')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00F'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=14, after=15
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 16: enabled='\u2713', title='Fall 2025 - Kingdom 6th Season'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '16', 'Fall 2025 - Kingdom 6th Season', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Kingdom 6th Season')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I010'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=15, after=16
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 17: enabled='\u2713', title='Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '17', 'Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I011'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=16, after=17
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 18: enabled='\u2713', title='Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '18', 'Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I012'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=17, after=18
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 19: enabled='\u2713', title='Fall 2025 - Nageki no Bourei wa Intai shitai Part 2'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '19', 'Fall 2025 - Nageki no Bourei wa Intai shitai Part 2', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Nageki no Bourei wa Intai shitai Part 2')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I013'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=18, after=19
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 20: enabled='\u2713', title='Fall 2025 - One Punch Man 3'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '20', 'Fall 2025 - One Punch Man 3', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/One Punch Man 3')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I014'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=19, after=20
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 21: enabled='', title='Fall 2025 - Potion, Wagami wo Tasukeru'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('', '21', 'Fall 2025 - Potion, Wagami wo Tasukeru', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Potion, Wagami wo Tasukeru')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I015'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=20, after=21
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 22: enabled='', title='Fall 2025 - Ranma ½ 2nd Season'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('', '22', 'Fall 2025 - Ranma ½ 2nd Season', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Ranma ½ 2nd Season')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I016'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=21, after=22
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 23: enabled='\u2713', title='Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '23', 'Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I017'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=22, after=23
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 24: enabled='', title='Fall 2025 - Sanda'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('', '24', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Sanda')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I018'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=23, after=24
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 25: enabled='\u2713', title='Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '25', 'Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I019'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=24, after=25
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 26: enabled='\u2713', title='Fall 2025 - Shuumatsu Touring'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '26', 'Fall 2025 - Shuumatsu Touring', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Shuumatsu Touring')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I01A'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=25, after=26
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 27: enabled='\u2713', title='Fall 2025 - Sozai Saishuka no Isekai Ryokouki'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '27', 'Fall 2025 - Sozai Saishuka no Isekai Ryokouki', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Sozai Saishuka no Isekai Ryokouki')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I01B'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=26, after=27
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 28: enabled='\u2713', title='Fall 2025 - Spy x Family Season 3'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '28', 'Fall 2025 - Spy x Family Season 3', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Spy x Family Season 3')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I01C'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=27, after=28
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 29: enabled='\u2713', title='Fall 2025 - Tensei Akujo no Kuro Rekishi'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '29', 'Fall 2025 - Tensei Akujo no Kuro Rekishi', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Tensei Akujo no Kuro Rekishi')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I01D'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=28, after=29
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 30: enabled='\u2713', title='Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '30', 'Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Tomodachi no Imouto ga Ore ni dake Uzai')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I01E'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=29, after=30
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 31: enabled='\u2713', title='Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '31', 'Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Tondemo Skill de Isekai Hourou Meshi 2')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I01F'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=30, after=31
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 32: enabled='\u2713', title='Fall 2025 - Towa no Yuugure'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '32', 'Fall 2025 - Towa no Yuugure', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Towa no Yuugure')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I020'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=31, after=32
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 33: enabled='\u2713', title='Fall 2025 - Watashi wo Tabetai, Hitodenashi'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '33', 'Fall 2025 - Watashi wo Tabetai, Hitodenashi', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Watashi wo Tabetai, Hitodenashi')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I021'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=32, after=33
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 34: enabled='\u2713', title='Fall 2025 - Yasei no Last Boss ga Arawareta!'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '34', 'Fall 2025 - Yasei no Last Boss ga Arawareta!', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Yasei no Last Boss ga Arawareta!')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I022'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=33, after=34
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 35: enabled='\u2713', title='One Piece'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '35', 'One Piece', 'Disk1 - Anime', 'disk1/Anime/100+ Series/One Piece/HD')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I023'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=34, after=35
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 36: enabled='\u2713', title='Summer - Futari Solo Camp'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '36', 'Summer - Futari Solo Camp', 'Disk4 - Anime', 'disk4/Anime/Web/Summer 2025/Futari Solo Camp')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I024'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=35, after=36
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Inserting item 37: enabled='\u2713', title='Summer - Gachiakuta'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '37', 'Summer - Gachiakuta', 'Disk5 - Web', 'disk5/Anime/Web/Summer 2025/Gachiakuta')
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I025'
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - After insert: before=36, after=37
+2025-10-31 23:37:03 - src.gui.file_operations - DEBUG - Added 37 items to treeview (final count: 37)
+2025-10-31 23:37:15 - src.config - INFO - Loaded 10 cached categories
+2025-10-31 23:37:15 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-10-31 23:38:34 - src.config - INFO - Loaded 10 cached categories
+2025-10-31 23:38:34 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-10-31 23:38:35 - src.config - INFO - Loaded 10 cached categories
+2025-10-31 23:38:35 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-10-31 23:38:35 - src.config - INFO - Loaded 5 cached feeds
+2025-10-31 23:38:35 - src.config - INFO - Loaded 10 cached categories
+2025-10-31 23:38:37 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-31 23:38:37 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-31 23:38:37 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-31 23:38:37 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-31 23:38:37 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-31 23:38:37 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-31 23:38:37 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-31 23:38:37 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-31 23:38:37 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-31 23:38:37 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-31 23:38:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2325
+2025-10-31 23:38:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-31 23:38:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Boku no Hero Academia
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Detective Conan
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Alma-chan wa Kazoku ni Naritai
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Bukiyou na Senpai.
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Digimon Beatbreak
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Gnosia
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Heika Watashi wo Wasurete Kudasai
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Isekai Quartet 3
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kakuriyo no Yadomeshi Ni
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kikaijikake no Marie
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kimi to Koete Koi ni Naru
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kingdom 6th Season
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - One Punch Man 3
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Potion, Wagami wo Tasukeru
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ranma ½ 2nd Season
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sanda
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shuumatsu Touring
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Spy x Family Season 3
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tensei Akujo no Kuro Rekishi
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Towa no Yuugure
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Watashi wo Tabetai, Hitodenashi
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Yasei no Last Boss ga Arawareta!
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: One Piece
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Futari Solo Camp
+2025-10-31 23:38:37 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Gachiakuta
+2025-10-31 23:38:38 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-31 23:38:38 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-31 23:38:38 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-31 23:38:38 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-31 23:38:38 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:38 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-31 23:38:38 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-31 23:38:38 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-31 23:38:38 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:38 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-31 23:38:38 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-31 23:38:38 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-31 23:38:38 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2325
+2025-10-31 23:38:38 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-31 23:38:38 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Boku no Hero Academia
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Detective Conan
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Alma-chan wa Kazoku ni Naritai
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Bukiyou na Senpai.
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Digimon Beatbreak
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Gnosia
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Heika Watashi wo Wasurete Kudasai
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Isekai Quartet 3
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kakuriyo no Yadomeshi Ni
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kikaijikake no Marie
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kimi to Koete Koi ni Naru
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kingdom 6th Season
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - One Punch Man 3
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Potion, Wagami wo Tasukeru
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ranma ½ 2nd Season
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sanda
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shuumatsu Touring
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Spy x Family Season 3
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tensei Akujo no Kuro Rekishi
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Towa no Yuugure
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Watashi wo Tabetai, Hitodenashi
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Yasei no Last Boss ga Arawareta!
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: One Piece
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Futari Solo Camp
+2025-10-31 23:38:38 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Gachiakuta
+2025-10-31 23:38:39 - src.config - INFO - Loaded 10 cached categories
+2025-10-31 23:38:39 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-10-31 23:38:39 - src.config - INFO - Loaded 10 cached categories
+2025-10-31 23:38:39 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-10-31 23:38:41 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-31 23:38:41 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-31 23:38:41 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-31 23:38:41 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-31 23:38:41 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-31 23:38:41 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-31 23:38:41 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-31 23:38:41 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2325
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Boku no Hero Academia
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Detective Conan
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Alma-chan wa Kazoku ni Naritai
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Bukiyou na Senpai.
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Digimon Beatbreak
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Gnosia
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Heika Watashi wo Wasurete Kudasai
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Isekai Quartet 3
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kakuriyo no Yadomeshi Ni
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kikaijikake no Marie
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kimi to Koete Koi ni Naru
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kingdom 6th Season
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - One Punch Man 3
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Potion, Wagami wo Tasukeru
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ranma ½ 2nd Season
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sanda
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shuumatsu Touring
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Spy x Family Season 3
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tensei Akujo no Kuro Rekishi
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Towa no Yuugure
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Watashi wo Tabetai, Hitodenashi
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Yasei no Last Boss ga Arawareta!
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: One Piece
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Futari Solo Camp
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Gachiakuta
+2025-10-31 23:38:41 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-31 23:38:41 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-31 23:38:41 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-31 23:38:41 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-31 23:38:41 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-31 23:38:41 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-31 23:38:41 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-31 23:38:41 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2325
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-31 23:38:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Boku no Hero Academia
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Detective Conan
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Alma-chan wa Kazoku ni Naritai
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Bukiyou na Senpai.
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Digimon Beatbreak
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Gnosia
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Heika Watashi wo Wasurete Kudasai
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Isekai Quartet 3
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kakuriyo no Yadomeshi Ni
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kikaijikake no Marie
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kimi to Koete Koi ni Naru
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kingdom 6th Season
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - One Punch Man 3
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Potion, Wagami wo Tasukeru
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ranma ½ 2nd Season
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sanda
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shuumatsu Touring
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Spy x Family Season 3
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tensei Akujo no Kuro Rekishi
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Towa no Yuugure
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Watashi wo Tabetai, Hitodenashi
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Yasei no Last Boss ga Arawareta!
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: One Piece
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Futari Solo Camp
+2025-10-31 23:38:41 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Gachiakuta
+2025-10-31 23:38:58 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-31 23:38:58 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-31 23:38:58 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-31 23:38:58 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-31 23:38:58 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:58 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-31 23:38:58 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-31 23:38:58 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-31 23:38:58 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:58 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-31 23:38:58 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-31 23:38:58 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-31 23:38:58 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2327
+2025-10-31 23:38:58 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-31 23:38:58 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Boku no Hero Academia
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Detective Conan
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Alma-chan wa Kazoku ni Naritai
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate mustContain: Bukiyou na Senpai.
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Digimon Beatbreak
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Gnosia
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Heika Watashi wo Wasurete Kudasai
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Isekai Quartet 3
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kakuriyo no Yadomeshi Ni
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kikaijikake no Marie
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kimi to Koete Koi ni Naru
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kingdom 6th Season
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - One Punch Man 3
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Potion, Wagami wo Tasukeru
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ranma ½ 2nd Season
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sanda
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shuumatsu Touring
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Spy x Family Season 3
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tensei Akujo no Kuro Rekishi
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Towa no Yuugure
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Watashi wo Tabetai, Hitodenashi
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Yasei no Last Boss ga Arawareta!
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: One Piece
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Futari Solo Camp
+2025-10-31 23:38:58 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Gachiakuta
+2025-10-31 23:38:59 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-31 23:38:59 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-31 23:38:59 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-31 23:38:59 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-31 23:38:59 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:59 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-31 23:38:59 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-31 23:38:59 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-31 23:38:59 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:38:59 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-31 23:38:59 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-31 23:38:59 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-31 23:38:59 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2327
+2025-10-31 23:38:59 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-31 23:38:59 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Boku no Hero Academia
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Detective Conan
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Alma-chan wa Kazoku ni Naritai
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate mustContain: Bukiyou na Senpai.
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Digimon Beatbreak
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Gnosia
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Heika Watashi wo Wasurete Kudasai
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Isekai Quartet 3
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kakuriyo no Yadomeshi Ni
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kikaijikake no Marie
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kimi to Koete Koi ni Naru
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Kingdom 6th Season
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - One Punch Man 3
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Potion, Wagami wo Tasukeru
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Ranma ½ 2nd Season
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sanda
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Shuumatsu Touring
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Spy x Family Season 3
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tensei Akujo no Kuro Rekishi
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Towa no Yuugure
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Watashi wo Tabetai, Hitodenashi
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Fall 2025 - Yasei no Last Boss ga Arawareta!
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: One Piece
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Futari Solo Camp
+2025-10-31 23:38:59 - src.gui.main_window - DEBUG - Sync: Skipping duplicate title: Summer - Gachiakuta
+2025-10-31 23:39:00 - src.config - INFO - Loaded 10 cached categories
+2025-10-31 23:39:00 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-10-31 23:39:00 - src.config - INFO - Loaded 10 cached categories
+2025-10-31 23:39:00 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-10-31 23:39:30 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-10-31 23:39:30 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-10-31 23:39:30 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-10-31 23:39:30 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 37 children
+2025-10-31 23:39:30 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-10-31 23:39:30 - src.gui.file_operations - DEBUG - Cleared 37 items from treeview
+2025-10-31 23:39:30 - src.gui.file_operations - DEBUG - Added 0 items to treeview (final count: 0)
+2025-10-31 23:39:32 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-10-31 23:39:32 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-10-31 23:39:32 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-10-31 23:39:32 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-10-31 23:39:32 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:39:32 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-10-31 23:39:32 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-10-31 23:39:32 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-10-31 23:39:32 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-10-31 23:39:32 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-10-31 23:39:32 - qbittorrentapi.auth - DEBUG - Login successful
+2025-10-31 23:39:32 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-10-31 23:39:32 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2326
+2025-10-31 23:39:32 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-10-31 23:39:32 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Alma-chan wa Kazoku ni Naritai
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Bukiyou na Senpai
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Digimon Beatbreak
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Gnosia
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Heika Watashi wo Wasurete Kudasai
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Isekai Quartet 3
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kakuriyo no Yadomeshi Ni
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kikaijikake no Marie
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kimi to Koete Koi ni Naru
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kingdom 6th Season
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - One Punch Man 3
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Potion, Wagami wo Tasukeru
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ranma ½ 2nd Season
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sanda
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shuumatsu Touring
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Spy x Family Season 3
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tensei Akujo no Kuro Rekishi
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Towa no Yuugure
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Watashi wo Tabetai, Hitodenashi
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Yasei no Last Boss ga Arawareta!
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
+2025-10-31 23:39:32 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 0 children
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Cleared 0 items from treeview
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Processing media_type 'existing' with 37 items
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Boku no Hero Academia'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Boku no Hero Academia', 'Disk1 - Anime', 'disk1/Anime/100+ Series/Boku no Hero Academia')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I026'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 2: enabled='\u2713', title='Detective Conan'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '2', 'Detective Conan', 'Disk1 - Anime', 'disk1/Anime/100+ Series/Detective Conan/Season 31 [1000+]')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I027'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=1, after=2
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 3: enabled='\u2713', title='Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '3', 'Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Akujiki Reijou to Kyouketsu Koushaku')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I028'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=2, after=3
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 4: enabled='\u2713', title='Fall 2025 - Alma-chan wa Kazoku ni Naritai'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '4', 'Fall 2025 - Alma-chan wa Kazoku ni Naritai', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Alma-chan wa Kazoku ni Naritai')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I029'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=3, after=4
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 5: enabled='\u2713', title='Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '5', 'Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I02A'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=4, after=5
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 6: enabled='\u2713', title='Fall 2025 - Bukiyou na Senpai'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '6', 'Fall 2025 - Bukiyou na Senpai', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Bukiyou na Senpai')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I02B'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=5, after=6
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 7: enabled='\u2713', title='Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '7', 'Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I02C'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=6, after=7
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 8: enabled='\u2713', title='Fall 2025 - Chitose-kun wa Ramune Bin no Naka'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '8', 'Fall 2025 - Chitose-kun wa Ramune Bin no Naka', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Chitose-kun wa Ramune Bin no Naka')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I02D'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=7, after=8
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 9: enabled='\u2713', title='Fall 2025 - Digimon Beatbreak'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '9', 'Fall 2025 - Digimon Beatbreak', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Digimon Beatbreak')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I02E'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=8, after=9
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 10: enabled='\u2713', title='Fall 2025 - Gnosia'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '10', 'Fall 2025 - Gnosia', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Gnosia')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I02F'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=9, after=10
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 11: enabled='', title='Fall 2025 - Heika Watashi wo Wasurete Kudasai'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('', '11', 'Fall 2025 - Heika Watashi wo Wasurete Kudasai', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Heika Watashi wo Wasurete Kudasai')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I030'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=10, after=11
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 12: enabled='\u2713', title='Fall 2025 - Isekai Quartet 3'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '12', 'Fall 2025 - Isekai Quartet 3', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Isekai Quartet 3')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I031'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=11, after=12
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 13: enabled='\u2713', title='Fall 2025 - Kakuriyo no Yadomeshi Ni'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '13', 'Fall 2025 - Kakuriyo no Yadomeshi Ni', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Kakuriyo no Yadomeshi Ni')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I032'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=12, after=13
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 14: enabled='\u2713', title='Fall 2025 - Kikaijikake no Marie'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '14', 'Fall 2025 - Kikaijikake no Marie', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Kikaijikake no Marie')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I033'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=13, after=14
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 15: enabled='\u2713', title='Fall 2025 - Kimi to Koete Koi ni Naru'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '15', 'Fall 2025 - Kimi to Koete Koi ni Naru', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Kimi to Koete Koi ni Naru')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I034'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=14, after=15
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 16: enabled='\u2713', title='Fall 2025 - Kingdom 6th Season'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '16', 'Fall 2025 - Kingdom 6th Season', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Kingdom 6th Season')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I035'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=15, after=16
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 17: enabled='\u2713', title='Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '17', 'Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I036'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=16, after=17
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 18: enabled='\u2713', title='Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '18', 'Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I037'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=17, after=18
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 19: enabled='\u2713', title='Fall 2025 - Nageki no Bourei wa Intai shitai Part 2'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '19', 'Fall 2025 - Nageki no Bourei wa Intai shitai Part 2', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Nageki no Bourei wa Intai shitai Part 2')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I038'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=18, after=19
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 20: enabled='\u2713', title='Fall 2025 - One Punch Man 3'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '20', 'Fall 2025 - One Punch Man 3', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/One Punch Man 3')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I039'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=19, after=20
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 21: enabled='', title='Fall 2025 - Potion, Wagami wo Tasukeru'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('', '21', 'Fall 2025 - Potion, Wagami wo Tasukeru', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Potion, Wagami wo Tasukeru')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I03A'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=20, after=21
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 22: enabled='', title='Fall 2025 - Ranma ½ 2nd Season'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('', '22', 'Fall 2025 - Ranma ½ 2nd Season', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Ranma ½ 2nd Season')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I03B'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=21, after=22
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 23: enabled='\u2713', title='Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '23', 'Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I03C'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=22, after=23
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 24: enabled='', title='Fall 2025 - Sanda'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('', '24', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Sanda')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I03D'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=23, after=24
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 25: enabled='\u2713', title='Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '25', 'Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I03E'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=24, after=25
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 26: enabled='\u2713', title='Fall 2025 - Shuumatsu Touring'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '26', 'Fall 2025 - Shuumatsu Touring', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Shuumatsu Touring')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I03F'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=25, after=26
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 27: enabled='\u2713', title='Fall 2025 - Sozai Saishuka no Isekai Ryokouki'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '27', 'Fall 2025 - Sozai Saishuka no Isekai Ryokouki', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Sozai Saishuka no Isekai Ryokouki')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I040'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=26, after=27
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 28: enabled='\u2713', title='Fall 2025 - Spy x Family Season 3'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '28', 'Fall 2025 - Spy x Family Season 3', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Spy x Family Season 3')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I041'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=27, after=28
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 29: enabled='\u2713', title='Fall 2025 - Tensei Akujo no Kuro Rekishi'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '29', 'Fall 2025 - Tensei Akujo no Kuro Rekishi', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Tensei Akujo no Kuro Rekishi')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I042'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=28, after=29
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 30: enabled='\u2713', title='Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '30', 'Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Tomodachi no Imouto ga Ore ni dake Uzai')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I043'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=29, after=30
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 31: enabled='\u2713', title='Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '31', 'Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Tondemo Skill de Isekai Hourou Meshi 2')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I044'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=30, after=31
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 32: enabled='\u2713', title='Fall 2025 - Towa no Yuugure'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '32', 'Fall 2025 - Towa no Yuugure', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Towa no Yuugure')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I045'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=31, after=32
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 33: enabled='\u2713', title='Fall 2025 - Watashi wo Tabetai, Hitodenashi'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '33', 'Fall 2025 - Watashi wo Tabetai, Hitodenashi', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Watashi wo Tabetai, Hitodenashi')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I046'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=32, after=33
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 34: enabled='\u2713', title='Fall 2025 - Yasei no Last Boss ga Arawareta!'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '34', 'Fall 2025 - Yasei no Last Boss ga Arawareta!', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Yasei no Last Boss ga Arawareta!')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I047'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=33, after=34
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 35: enabled='\u2713', title='One Piece'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '35', 'One Piece', 'Disk1 - Anime', 'disk1/Anime/100+ Series/One Piece/HD')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I048'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=34, after=35
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 36: enabled='\u2713', title='Summer - Futari Solo Camp'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '36', 'Summer - Futari Solo Camp', 'Disk4 - Anime', 'disk4/Anime/Web/Summer 2025/Futari Solo Camp')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I049'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=35, after=36
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Inserting item 37: enabled='\u2713', title='Summer - Gachiakuta'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '37', 'Summer - Gachiakuta', 'Disk5 - Web', 'disk5/Anime/Web/Summer 2025/Gachiakuta')
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I04A'
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - After insert: before=36, after=37
+2025-10-31 23:39:32 - src.gui.file_operations - DEBUG - Added 37 items to treeview (final count: 37)
+2025-10-31 23:39:40 - src.config - INFO - Loaded 10 cached categories
+2025-10-31 23:39:40 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-10-31 23:41:22 - src.config - INFO - Loaded 10 cached categories
+2025-10-31 23:41:22 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles

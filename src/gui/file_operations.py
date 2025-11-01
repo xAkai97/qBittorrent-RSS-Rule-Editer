@@ -122,9 +122,11 @@ def prefix_titles_with_season_year(
                             current_save_path = entry.get('savePath', '') or ''
                             if current_save_path:
                                 import os.path
+                                # Sanitize the title for use as folder name
+                                sanitized_title = sanitize_folder_name(orig_title)
                                 # Add season/year folder and title folder
                                 # Example: "/mnt/disk5/Anime" -> "/mnt/disk5/Anime/Fall 2025/Anime Title"
-                                new_save_path = os.path.join(current_save_path, season_year_folder, orig_title).replace('\\', '/')
+                                new_save_path = os.path.join(current_save_path, season_year_folder, sanitized_title).replace('\\', '/')
                                 entry['savePath'] = new_save_path
                                 
                                 # Also update torrentParams if it exists
