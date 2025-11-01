@@ -40,9 +40,7 @@ def parse_datetime_from_string(s: str) -> Optional[datetime]:
     for fmt in formats:
         try:
             dt = datetime.strptime(s, fmt)
-            if dt.tzinfo is None:
-                dt = dt.replace(tzinfo=timezone.utc)
-            return dt
+            return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
         except Exception:
             continue
     
@@ -52,9 +50,7 @@ def parse_datetime_from_string(s: str) -> Optional[datetime]:
         if ds.endswith('Z'):
             ds = ds[:-1] + '+00:00'
         dt = datetime.fromisoformat(ds)
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=timezone.utc)
-        return dt
+        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
     except Exception:
         return None
 
@@ -81,15 +77,13 @@ def format_timedelta(td: timedelta) -> str:
     hours = minutes // 60
     remaining_minutes = minutes % 60
     if hours < 24:
-        if remaining_minutes > 0:
-            return f"{hours} hour{'s' if hours != 1 else ''}, {remaining_minutes} minute{'s' if remaining_minutes != 1 else ''}"
-        return f"{hours} hour{'s' if hours != 1 else ''}"
+        hour_str = f"{hours} hour{'s' if hours != 1 else ''}"
+        return f"{hour_str}, {remaining_minutes} minute{'s' if remaining_minutes != 1 else ''}" if remaining_minutes > 0 else hour_str
     
     days = hours // 24
     remaining_hours = hours % 24
-    if remaining_hours > 0:
-        return f"{days} day{'s' if days != 1 else ''}, {remaining_hours} hour{'s' if remaining_hours != 1 else ''}"
-    return f"{days} day{'s' if days != 1 else ''}"
+    day_str = f"{days} day{'s' if days != 1 else ''}"
+    return f"{day_str}, {remaining_hours} hour{'s' if remaining_hours != 1 else ''}" if remaining_hours > 0 else day_str
 
 
 def looks_like_json_candidate(s: str) -> bool:
@@ -102,13 +96,10 @@ def looks_like_json_candidate(s: str) -> bool:
     Returns:
         bool: True if string looks like it could be JSON
     """
-    try:
-        if not s or not isinstance(s, str):
-            return False
-        ss = s.strip()
-        return ss.startswith('{') or ss.startswith('[') or ss.startswith('"')
-    except Exception:
+    if not s or not isinstance(s, str):
         return False
+    ss = s.strip()
+    return ss.startswith(('{', '[', '"'))
 
 
 def validate_json_string(s: str) -> tuple[bool, Optional[str]]:
@@ -122,11 +113,11 @@ def validate_json_string(s: str) -> tuple[bool, Optional[str]]:
         Tuple of (is_valid, error_message). error_message is None if valid.
     """
     if not s or not isinstance(s, str):
-        return (True, None)  # Empty is valid
+        return (True, None)
     
     s = s.strip()
     if not looks_like_json_candidate(s):
-        return (True, None)  # Not JSON-like, so valid as plain text
+        return (True, None)
     
     try:
         json.loads(s)

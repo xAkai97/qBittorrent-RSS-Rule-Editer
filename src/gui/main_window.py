@@ -68,10 +68,17 @@ def create_tooltip(widget, text):
         tooltip_window.wm_overrideredirect(True)
         tooltip_window.wm_geometry(f"+{x}+{y}")
         
-        label = tk.Label(tooltip_window, text=text, justify='left',
-                        background='#ffffe0', relief='solid', borderwidth=1,
-                        font=('Segoe UI', 9), padx=5, pady=3)
-        label.pack()
+        tk.Label(
+            tooltip_window, 
+            text=text, 
+            justify='left',
+            background='#ffffe0', 
+            relief='solid', 
+            borderwidth=1,
+            font=('Segoe UI', 9), 
+            padx=5, 
+            pady=3
+        ).pack()
     
     def on_leave(event):
         nonlocal tooltip_window
@@ -105,7 +112,7 @@ def setup_window_and_styles(root: tk.Tk) -> Tuple[ttk.Style, tk.StringVar, tk.St
     try:
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
-        window_width = 1200
+        window_width = 1400
         window_height = 900
         # Position at top-center with some margin from top
         x = (screen_width - window_width) // 2
@@ -114,7 +121,7 @@ def setup_window_and_styles(root: tk.Tk) -> Tuple[ttk.Style, tk.StringVar, tk.St
     except Exception:
         root.geometry("1400x800")
     
-    root.minsize(1200, 700)
+    root.minsize(1400, 700)
 
     style = ttk.Style()
     style.theme_use('clam')
@@ -186,25 +193,19 @@ def setup_status_and_autoconnect(root: tk.Tk, status_var: tk.StringVar, config_s
     """
     def _get_connection_status():
         """Generates a status message describing the current connection mode."""
-        try:
-            mode = (getattr(config, 'CONNECTION_MODE', '') or '').lower()
-            if mode == 'online':
-                return f"Online: {config.QBT_PROTOCOL}://{config.QBT_HOST}:{config.QBT_PORT}"
-            if mode == 'offline':
-                return 'Offline'
-            if mode == 'auto':
-                return 'Auto (will try online if available)'
-            return f"Mode: {mode or 'unknown'}"
-        except Exception:
-            return 'Status Unknown'
+        mode = (getattr(config, 'CONNECTION_MODE', '') or '').lower()
+        if mode == 'online':
+            return f"Online: {config.QBT_PROTOCOL}://{config.QBT_HOST}:{config.QBT_PORT}"
+        if mode == 'offline':
+            return 'Offline'
+        if mode == 'auto':
+            return 'Auto (will try online if available)'
+        return f"Mode: {mode or 'unknown'}"
 
     status_var.set(_get_connection_status())
 
     # Check if config file is missing
-    try:
-        config_file_missing = not os.path.exists(getattr(config, 'CONFIG_FILE', 'config.ini'))
-    except Exception:
-        config_file_missing = False
+    config_file_missing = not os.path.exists(getattr(config, 'CONFIG_FILE', 'config.ini'))
 
     if not config_set and config_file_missing:
         status_var.set("🚨 CRITICAL: Please set qBittorrent credentials in Settings.")
@@ -448,6 +449,150 @@ def setup_menu_bar(root: tk.Tk, status_var: tk.StringVar, season_var: tk.StringV
         command=lambda: open_settings_window(root, status_var)
     )
     menubar.add_cascade(label='⚙️ Settings', menu=settings_menu)
+    
+    # Validate menu
+    validate_menu = tk.Menu(menubar, tearoff=0)
+    
+    def _validate_all_titles():
+        """Validates all titles and shows issues in a dialog."""
+        try:
+            import json
+            from src.constants import FileSystem
+            from src.gui.app_state import get_app_state
+            
+            app_state = get_app_state()
+            listbox_items = app_state.listbox_items
+            
+            if not listbox_items:
+                messagebox.showinfo('Validation', 'No titles to validate.')
+                return
+            
+            # Validation helper
+            def _is_valid_folder_name(name):
+                """Validates if a string is a valid folder name."""
+                try:
+                    if not name or not isinstance(name, str) or not str(name).strip():
+                        return False, 'Empty name'
+                    
+                    s = str(name).strip()
+                    
+                    # Check for invalid characters
+                    found_invalid = [c for c in s if c in FileSystem.INVALID_CHARS]
+                    if found_invalid:
+                        return False, f'Contains invalid characters: {"".join(sorted(set(found_invalid)))}'
+                    
+                    # Check for trailing space or dot
+                    if s.endswith(' ') or s.endswith('.'):
+                        return False, 'Ends with a space or dot (invalid on Windows)'
+                    
+                    # Check for Windows reserved names
+                    base = s.split('.')[0].upper()
+                    if base in FileSystem.RESERVED_NAMES:
+                        return False, f'Reserved name: {base}'
+                    
+                    # Check length
+                    if len(s) > FileSystem.MAX_PATH_LENGTH:
+                        return False, f'Name too long (>{FileSystem.MAX_PATH_LENGTH} chars)'
+                    
+                    return True, None
+                except Exception:
+                    return False, 'Validation error'
+            
+            # Validate all items
+            problems = []
+            
+            for title_text, entry in listbox_items:
+                e = entry if isinstance(entry, dict) else {'node': {'title': str(entry)}}
+                
+                try:
+                    node = e.get('node') or {}
+                    node_title = node.get('title') or e.get('mustContain') or title_text
+                except Exception:
+                    node_title = title_text
+                    
+                if not node_title or not str(node_title).strip():
+                    problems.append(f'❌ Missing title for item: {title_text}')
+                
+                # Validate lastMatch JSON
+                try:
+                    lm = e.get('lastMatch', '')
+                    if isinstance(lm, str):
+                        s = lm.strip()
+                        if s and (s.startswith('{') or s.startswith('[') or s.startswith('"')):
+                            try:
+                                json.loads(s)
+                            except Exception as ex:
+                                problems.append(f'❌ Invalid JSON lastMatch for "{title_text}": {ex}')
+                except Exception:
+                    pass
+                
+                # Validate folder name
+                try:
+                    raw = e.get('mustContain') or (e.get('node') or {}).get('title') or e.get('title') or ''
+                    if not raw:
+                        display = (e.get('node') or {}).get('title') or e.get('title') or title_text
+                        if display and ' - ' in display:
+                            parts = display.split(' - ', 1)
+                            if len(parts) == 2:
+                                raw = parts[1]
+                    if raw:
+                        valid, reason = _is_valid_folder_name(raw)
+                        if not valid:
+                            problems.append(f'❌ Invalid folder-name for "{title_text}": {reason}')
+                except Exception:
+                    pass
+            
+            # Show results dialog
+            result_dlg = tk.Toplevel(root)
+            result_dlg.title('Validation Results')
+            result_dlg.geometry('700x500')
+            result_dlg.transient(root)
+            result_dlg.grab_set()
+            
+            # Header
+            header_frame = ttk.Frame(result_dlg, padding=15)
+            header_frame.pack(fill='x')
+            
+            if problems:
+                ttk.Label(header_frame, 
+                         text=f'⚠️ Found {len(problems)} validation issue(s) in {len(listbox_items)} title(s)',
+                         font=('Segoe UI', 11, 'bold'), foreground='#d32f2f').pack(anchor='w')
+            else:
+                ttk.Label(header_frame, 
+                         text=f'✅ All {len(listbox_items)} title(s) validated successfully',
+                         font=('Segoe UI', 11, 'bold'), foreground='#2e7d32').pack(anchor='w')
+            
+            # Issues list
+            if problems:
+                issues_frame = ttk.LabelFrame(result_dlg, text='Validation Issues', padding=10)
+                issues_frame.pack(fill='both', expand=True, padx=15, pady=(0, 15))
+                
+                issues_text = tk.Text(issues_frame, height=20, width=80, font=('Consolas', 9),
+                                     wrap='word', bg='#fff3cd', fg='#856404')
+                issues_text.pack(side='left', fill='both', expand=True)
+                
+                issues_scroll = ttk.Scrollbar(issues_frame, orient='vertical', command=issues_text.yview)
+                issues_scroll.pack(side='right', fill='y')
+                issues_text.configure(yscrollcommand=issues_scroll.set)
+                
+                for p in problems:
+                    issues_text.insert('end', f'{p}\n\n')
+                issues_text.config(state='disabled')
+            
+            # Close button
+            btn_frame = ttk.Frame(result_dlg, padding=15)
+            btn_frame.pack(fill='x', side='bottom')
+            ttk.Button(btn_frame, text='Close', command=result_dlg.destroy, 
+                      style='Accent.TButton').pack(side='right')
+            
+            result_dlg.wait_window()
+            
+        except Exception as e:
+            logger.error(f"Error in validation: {e}")
+            messagebox.showerror('Validation Error', f'An error occurred: {e}')
+    
+    validate_menu.add_command(label='🔍 Validate All Titles', command=_validate_all_titles)
+    menubar.add_cascade(label='✓ Validate', menu=validate_menu)
 
     # Info menu with log viewer
     from src.gui.dialogs import open_log_viewer as dialog_open_log_viewer
@@ -1015,22 +1160,93 @@ def setup_gui() -> tk.Tk:
     action_bar = ttk.Frame(root, padding="8")
     
     def _generate_and_sync():
-        """Generates rules and syncs them to qBittorrent with validation and preview."""
+        """Shows dialog to choose between Export Offline or Sync Online."""
         try:
-            from src.gui.file_operations import dispatch_generation
-            dispatch_generation(root, season_var, year_var, status_var)
+            # Create choice dialog
+            choice_dlg = tk.Toplevel(root)
+            choice_dlg.title('Generate Rules')
+            choice_dlg.geometry('400x200')
+            choice_dlg.transient(root)
+            choice_dlg.grab_set()
+            choice_dlg.resizable(False, False)
+            
+            # Center the dialog
+            choice_dlg.update_idletasks()
+            x = root.winfo_x() + (root.winfo_width() // 2) - (choice_dlg.winfo_width() // 2)
+            y = root.winfo_y() + (root.winfo_height() // 2) - (choice_dlg.winfo_height() // 2)
+            choice_dlg.geometry(f'+{x}+{y}')
+            
+            # Header
+            header_frame = ttk.Frame(choice_dlg, padding=15)
+            header_frame.pack(fill='x')
+            ttk.Label(header_frame, text='Choose Generation Mode', 
+                     font=('Segoe UI', 11, 'bold')).pack(anchor='w')
+            ttk.Label(header_frame, text='Select how you want to generate the RSS rules:', 
+                     font=('Segoe UI', 9)).pack(anchor='w', pady=(5, 0))
+            
+            # Button frame
+            btn_frame = ttk.Frame(choice_dlg, padding=15)
+            btn_frame.pack(fill='both', expand=True)
+            
+            def _export_offline():
+                """Export rules to JSON file."""
+                choice_dlg.destroy()
+                try:
+                    from src.gui.file_operations import export_all_titles
+                    export_all_titles(root, status_var)
+                except Exception as e:
+                    logger.error(f"Error in export: {e}")
+                    messagebox.showerror('Error', f'Export failed: {e}')
+            
+            def _sync_online():
+                """Sync rules to qBittorrent."""
+                choice_dlg.destroy()
+                try:
+                    from src.gui.file_operations import dispatch_generation
+                    dispatch_generation(root, season_var, year_var, status_var)
+                except Exception as e:
+                    logger.error(f"Error in sync: {e}")
+                    messagebox.showerror('Error', f'Sync failed: {e}')
+            
+            # Export button (offline)
+            export_btn = ttk.Button(btn_frame, text='📁 Export to JSON File (Offline)', 
+                                   command=_export_offline, style='Accent.TButton')
+            export_btn.pack(fill='x', pady=(0, 10))
+            create_tooltip(export_btn, 
+                          "Export rules to a JSON file\n"
+                          "• Save rules for later use\n"
+                          "• No qBittorrent connection needed\n"
+                          "• Can be imported later")
+            
+            # Sync button (online)
+            sync_btn = ttk.Button(btn_frame, text='⚡ Sync to qBittorrent (Online)', 
+                                 command=_sync_online)
+            sync_btn.pack(fill='x', pady=(0, 10))
+            create_tooltip(sync_btn, 
+                          "Generate and sync rules to qBittorrent\n"
+                          "• Validates all titles and settings\n"
+                          "• Shows preview before syncing\n"
+                          "• Requires qBittorrent connection")
+            
+            # Cancel button
+            cancel_btn = ttk.Button(btn_frame, text='✕ Cancel', 
+                                   command=choice_dlg.destroy)
+            cancel_btn.pack(fill='x')
+            
+            choice_dlg.wait_window()
+            
         except Exception as e:
             logger.error(f"Error in generate/sync: {e}")
             messagebox.showerror('Error', f'An error occurred: {e}')
     
-    generate_sync_btn = ttk.Button(action_bar, text='⚡ Generate/Sync to qBittorrent', 
+    generate_sync_btn = ttk.Button(action_bar, text='⚡ Generate Rules', 
                                    command=_generate_and_sync, style='Accent.TButton')
     generate_sync_btn.pack(fill='x', pady=(0, 5))
     create_tooltip(generate_sync_btn, 
-                  "Generate RSS rules and sync to qBittorrent\n" +
+                  "Generate RSS rules\n" +
+                  "• Choose to Export (offline) or Sync (online)\n" +
                   "• Validates all titles and settings\n" +
-                  "• Shows preview before syncing\n" +
-                  "• Requires Season and Year to be set")
+                  "• Shows preview before syncing")
     
     # ==================== Status Bar ====================
     # Pack status_frame first (at very bottom)
@@ -1767,9 +1983,9 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
     app_state = AppState.get_instance()
     listbox_items = app_state.listbox_items
     
-    # Create editor container for PanedWindow
+    # Create editor container for PanedWindow (increased weight for more width)
     editor_container = ttk.Frame(paned)
-    paned.add(editor_container, weight=2)
+    paned.add(editor_container, weight=3)
     
     # Create editor scrollable container
     editor_scrollable_container = ttk.Frame(editor_container)
@@ -1855,16 +2071,117 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
     editor_category = tk.StringVar(value='')
     editor_enabled = tk.BooleanVar(value=True)
     
+    # Undo stack for editor changes (stores previous state)
+    editor_undo_stack = []
+    
+    def _save_undo_state():
+        """Saves current editor state to undo stack."""
+        try:
+            sel = treeview.curselection()
+            if not sel:
+                return
+            idx = int(sel[0])
+            title_text, entry = listbox_items[idx]
+            
+            # Create a deep copy of the current state
+            state = {
+                'idx': idx,
+                'title': title_text,
+                'entry': json.loads(json.dumps(entry)),  # Deep copy via JSON
+                'editor_values': {
+                    'rule_name': editor_rule_name.get(),
+                    'must': editor_must.get(),
+                    'savepath': editor_savepath.get(),
+                    'category': editor_category.get(),
+                    'enabled': editor_enabled.get()
+                }
+            }
+            editor_undo_stack.append(state)
+            # Keep only last 10 undo states
+            if len(editor_undo_stack) > 10:
+                editor_undo_stack.pop(0)
+            
+            # Update undo button state
+            try:
+                undo_btn.config(state='normal')
+            except Exception:
+                pass
+        except Exception as e:
+            logger.error(f"Error saving undo state: {e}")
+    
+    def _undo_editor_changes():
+        """Undoes the last editor change."""
+        try:
+            if not editor_undo_stack:
+                messagebox.showinfo('Undo', 'No changes to undo.')
+                return
+            
+            # Pop the last state
+            state = editor_undo_stack.pop()
+            
+            # Restore the entry
+            idx = state['idx']
+            entry = state['entry']
+            title = state['title']
+            
+            # Update listbox_items
+            listbox_items[idx] = (title, entry)
+            
+            # Update config.ALL_TITLES
+            try:
+                if getattr(config, 'ALL_TITLES', None):
+                    for k, lst in (config.ALL_TITLES.items() if isinstance(config.ALL_TITLES, dict) else []):
+                        for i, it in enumerate(lst):
+                            try:
+                                candidate_title = (it.get('node') or {}).get('title') if isinstance(it, dict) else str(it)
+                            except Exception:
+                                candidate_title = str(it)
+                            if candidate_title == state['editor_values']['rule_name']:
+                                config.ALL_TITLES[k][i] = entry
+                                break
+            except Exception as e:
+                logger.error(f"Error updating ALL_TITLES during undo: {e}")
+            
+            # Refresh treeview
+            try:
+                update_treeview_with_titles(config.ALL_TITLES)
+                treeview.selection_set(idx)
+                treeview.see(idx)
+            except Exception:
+                pass
+            
+            # Refresh editor to show restored values
+            try:
+                _populate_editor_from_selection()
+            except Exception:
+                pass
+            
+            # Update undo button state
+            try:
+                if not editor_undo_stack:
+                    undo_btn.config(state='disabled')
+            except Exception:
+                pass
+            
+            status_var.set('Undone last change')
+        except Exception as e:
+            messagebox.showerror('Undo Error', f'Failed to undo: {e}')
+    
     # Improved text widget styling
     editor_lastmatch_text = tk.Text(editor_frame, height=2, width=40, state='disabled',
                                      font=('Consolas', 9), bg='#fafafa', fg='#333333',
                                      relief='flat', bd=1, highlightthickness=1,
                                      highlightbackground='#e0e0e0', highlightcolor='#0078D4')
 
-    # Create header with title only (auto-refreshes on selection change)
+    # Create header with title and undo button
     editor_header = ttk.Frame(editor_frame)
     editor_header.pack(fill='x', pady=(0, 10))
     ttk.Label(editor_header, text='📝 Rule Editor', font=('Segoe UI', 11, 'bold')).pack(side='left')
+    
+    undo_btn = ttk.Button(editor_header, text='↶ Undo', command=_undo_editor_changes, 
+                          width=8, state='disabled')
+    undo_btn.pack(side='right')
+    create_tooltip(undo_btn, 'Undo last auto-applied change (up to 10 changes)')
     
     ttk.Separator(editor_frame, orient='horizontal').pack(fill='x', pady=(0, 10))
     
@@ -1875,69 +2192,49 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
     ttk.Entry(editor_frame, textvariable=editor_must, font=('Segoe UI', 9)).pack(anchor='w', fill='x', pady=(0, 8))
     
     # ==================== Feed Title Lookup Section ====================
-    feed_lookup_frame = ttk.LabelFrame(editor_frame, text='📡 Feed Title Variations', padding=10)
+    feed_lookup_frame = ttk.LabelFrame(editor_frame, text='📡 Title Variations', padding=12)
     feed_lookup_frame.pack(fill='x', pady=(0, 10))
     
-    # SubsPlease title display with tooltip
+    # SubsPlease title display with better layout
     subsplease_title_var = tk.StringVar(value='')
-    subsplease_row = ttk.Frame(feed_lookup_frame)
-    subsplease_row.pack(fill='x', pady=2)
+    fetch_status_var = tk.StringVar(value='')
     
-    feed_label = ttk.Label(subsplease_row, text='Feed Title:', font=('Segoe UI', 9, 'bold'), width=15)
+    # Feed Title label row with cache status
+    title_label_row = ttk.Frame(feed_lookup_frame)
+    title_label_row.pack(fill='x', pady=(0, 2))
+    
+    feed_label = ttk.Label(title_label_row, text='Title:', font=('Segoe UI', 9, 'bold'))
     feed_label.pack(side='left')
     
-    # Add tooltip to feed label
-    def _create_tooltip(widget, text):
-        """Create a tooltip for a widget."""
-        tooltip = None
-        
-        def _on_enter(event):
-            nonlocal tooltip
-            x, y, _, _ = widget.bbox("insert")
-            x += widget.winfo_rootx() + 25
-            y += widget.winfo_rooty() + 25
-            
-            tooltip = tk.Toplevel(widget)
-            tooltip.wm_overrideredirect(True)
-            tooltip.wm_geometry(f"+{x}+{y}")
-            
-            label = tk.Label(tooltip, text=text, background="#ffffe0", 
-                           relief="solid", borderwidth=1, font=("Segoe UI", 8))
-            label.pack()
-        
-        def _on_leave(event):
-            nonlocal tooltip
-            if tooltip:
-                tooltip.destroy()
-                tooltip = None
-        
-        widget.bind("<Enter>", _on_enter)
-        widget.bind("<Leave>", _on_leave)
+    # Cache status next to Title label
+    fetch_status_label = ttk.Label(title_label_row, textvariable=fetch_status_var, 
+                                   font=('Segoe UI', 8), foreground='#0078D4')
+    fetch_status_label.pack(side='left', padx=(8, 0))
     
-    _create_tooltip(feed_label, "Site: SubsPlease")
+    # Title value row (clickable)
+    subsplease_row = ttk.Frame(feed_lookup_frame)
+    subsplease_row.pack(fill='x', pady=(0, 8))
     
-    subsplease_label = ttk.Label(subsplease_row, textvariable=subsplease_title_var, font=('Segoe UI', 9), foreground='#0078D4')
-    subsplease_label.pack(side='left', fill='x', expand=True)
+    subsplease_label = ttk.Label(subsplease_row, textvariable=subsplease_title_var, 
+                                 font=('Segoe UI', 10, 'bold'), foreground='#0066CC',
+                                 cursor='hand2', padding=(4, 4))
+    subsplease_label.pack(fill='x', expand=True)
     
-    # Add tooltip to variations label
-    _create_tooltip(subsplease_label, "Change match pattern to site naming")
+    create_tooltip(subsplease_label, 'Click to apply this title to Match Pattern field')
     
     def _use_subsplease_title():
-        """Copies SubsPlease title to Match Pattern field."""
+        """Copies SubsPlease title to Must Contain field and triggers immediate save."""
         sp_title = subsplease_title_var.get()
         if sp_title and sp_title != 'Not found in cache':
+            # Set the field value
             editor_must.set(sp_title)
+            # Force immediate apply by calling the schedule function with zero delay
+            # The actual function will be defined later
             status_var.set(f'Applied SubsPlease title: {sp_title}')
     
-    use_sp_btn = ttk.Button(subsplease_row, text='Use', command=_use_subsplease_title, width=8)
-    use_sp_btn.pack(side='right', padx=(5, 0))
-    
-    # Status label (above buttons)
-    fetch_status_var = tk.StringVar(value='')
-    fetch_status_label = ttk.Label(feed_lookup_frame, textvariable=fetch_status_var, font=('Segoe UI', 8), foreground='#666')
-    fetch_status_label.pack(fill='x', pady=(5, 3))
-    
-    # Fetch/Refresh buttons frame
+    subsplease_label.bind('<Button-1>', lambda e: _use_subsplease_title())
+        
+    # Fetch button frame (single button since Load auto-loads on startup)
     fetch_btn_frame = ttk.Frame(feed_lookup_frame)
     fetch_btn_frame.pack(fill='x', pady=(0, 0))
     
@@ -1980,17 +2277,30 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
             current_title = editor_rule_name.get()
             if not current_title:
                 subsplease_title_var.set('')
+                subsplease_row.pack_forget()
                 return
             
             # Check cache for match
             sp_match = find_subsplease_title_match(current_title)
             
+            # Get current must contain value to compare
+            current_must = editor_must.get()
+            
             if sp_match:
-                subsplease_title_var.set(sp_match)
-                fetch_status_var.set('✅ Match found in cache')
+                # Only show if SubsPlease match is different from current mustContain
+                if sp_match != current_must:
+                    subsplease_title_var.set(sp_match)
+                    fetch_status_var.set('✅ Match found in cache')
+                    subsplease_row.pack(fill='x', pady=(0, 8), after=title_label_row)
+                else:
+                    # Same as current, hide the label
+                    subsplease_title_var.set('')
+                    subsplease_row.pack_forget()
+                    fetch_status_var.set('✅ Already using SubsPlease title')
             else:
                 subsplease_title_var.set('Not found in cache')
                 fetch_status_var.set('⚠️ No match - click Fetch to update cache')
+                subsplease_row.pack_forget()
         except Exception as e:
             subsplease_title_var.set('Error')
             logger.error(f"Error updating feed variations: {e}")
@@ -2030,25 +2340,19 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
                     pass
                 self.tooltip = None
     
-    # Fetch Fresh button (always fetches from API)
+    # Single Fetch Fresh button (auto-loads cache on startup, so Load button not needed)
     fetch_fresh_btn = ttk.Button(fetch_btn_frame, text='🔄 Fetch Fresh', 
                                   command=lambda: _fetch_subsplease_titles(force_refresh=True))
-    fetch_fresh_btn.pack(side='left', fill='x', expand=True, padx=(0, 3))
-    ToolTip(fetch_fresh_btn, "Always fetches the latest data from SubsPlease API")
+    fetch_fresh_btn.pack(fill='x', expand=True)
+    ToolTip(fetch_fresh_btn, "Fetches the latest data from SubsPlease API")
     
-    # Load Cache button (tries cache first, then API if empty)
-    load_cache_btn = ttk.Button(fetch_btn_frame, text='📦 Load Cache', 
-                                command=lambda: _fetch_subsplease_titles(force_refresh=False))
-    load_cache_btn.pack(side='left', fill='x', expand=True, padx=(3, 0))
-    ToolTip(load_cache_btn, "Loads from local cache, or fetches from API if cache is empty")
-    
-    # Load initial cache status
+    # Load initial cache status (auto-load on startup)
     try:
         cached = load_subsplease_cache()
         if cached:
             fetch_status_var.set(f'📦 {len(cached)} titles in cache')
         else:
-            fetch_status_var.set('📦 Cache empty - click Load Cache to fetch')
+            fetch_status_var.set('📦 Cache empty - click Fetch Fresh')
     except Exception:
         fetch_status_var.set('📦 Cache empty')
     
@@ -2290,7 +2594,7 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
                         break
 
                 save_val = _find(entry, ['savePath', 'save_path']) or (_find(tp, ['save_path', 'savePath', 'download_path']) if tp else None)
-                save = '' if save_val is None else str(save_val).replace('/', '\\')
+                save = '' if save_val is None else str(save_val).replace('\\', '/')
 
                 cat_val = _find(entry, ['assignedCategory', 'assigned_category', 'category']) or (_find(tp, ['category']) if tp else None)
                 cat = '' if cat_val is None else str(cat_val)
@@ -2544,24 +2848,29 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
     except Exception:
         pass
 
-    def _apply_editor_changes():
+    def _apply_editor_changes(silent=False):
         """
         Applies changes from the editor panel to the selected listbox item.
         
         Updates the selected title's configuration with values from the editor
         fields and refreshes the display.
+        
+        Args:
+            silent: If True, don't show success message or validation dialogs
         """
         try:
             sel = treeview.curselection()
             if not sel:
-                messagebox.showwarning('Edit', 'No title selected.')
-                return
+                if not silent:
+                    messagebox.showwarning('Edit', 'No title selected.')
+                return False
             idx = int(sel[0])
             mapped = listbox_items[idx]
             title_text, entry = mapped[0], mapped[1]
         except Exception:
-            messagebox.showerror('Edit', 'Failed to locate selected item.')
-            return
+            if not silent:
+                messagebox.showerror('Edit', 'Failed to locate selected item.')
+            return False
 
         new_title = editor_rule_name.get().strip()
         new_must = editor_must.get().strip()
@@ -2574,16 +2883,38 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
             new_lastmatch = ''
 
         if not new_title:
-            messagebox.showerror('Validation Error', 'Title cannot be empty.')
-            return
+            if not silent:
+                messagebox.showerror('Validation Error', 'Title cannot be empty.')
+            return False
         try:
             if new_save and len(new_save) > 260:
-                if not messagebox.askyesno('Validation Warning', 'Save Path is unusually long. Do you want to continue?'):
-                    return
+                if not silent and not messagebox.askyesno('Validation Warning', 'Save Path is unusually long. Do you want to continue?'):
+                    return False
         except Exception:
             pass
 
+        # Check if anything actually changed
         try:
+            old_title = title_text
+            old_must = entry.get('mustContain', '') if isinstance(entry, dict) else ''
+            old_save = entry.get('savePath', '') if isinstance(entry, dict) else ''
+            old_cat = entry.get('assignedCategory', '') if isinstance(entry, dict) else ''
+            old_en = entry.get('enabled', True) if isinstance(entry, dict) else True
+            
+            # If nothing changed, don't save undo or apply
+            if (new_title == old_title and 
+                new_must == old_must and 
+                new_save == old_save and 
+                new_cat == old_cat and 
+                new_en == old_en):
+                return True  # No changes, but not an error
+        except Exception:
+            pass  # If we can't check, proceed with save
+
+        try:
+            # Save undo state before applying changes (only if there are actual changes)
+            _save_undo_state()
+            
             if not isinstance(entry, dict):
                 entry = {'node': {'title': title_text}}
             entry['mustContain'] = new_must or new_title
@@ -2608,11 +2939,12 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
                         try:
                             lm_val = json.loads(new_lastmatch)
                         except Exception as e:
-                            try:
-                                if not messagebox.askyesno('Invalid JSON', f'Last Match appears to be JSON but is invalid:\n{e}\n\nApply as raw text anyway?'):
-                                    return
-                            except Exception:
-                                return
+                            if not silent:
+                                try:
+                                    if not messagebox.askyesno('Invalid JSON', f'Last Match appears to be JSON but is invalid:\n{e}\n\nApply as raw text anyway?'):
+                                        return False
+                                except Exception:
+                                    return False
                             lm_val = new_lastmatch
                     else:
                         lm_val = new_lastmatch
@@ -2625,35 +2957,114 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
             node = entry.get('node') or {}
             node['title'] = new_title
             entry['node'] = node
+            
+            # Update listbox_items with the modified entry
             listbox_items[idx] = (new_title, entry)
+            logger.debug(f"Updated listbox_items[{idx}], entry id: {id(entry)}, mustContain: {entry.get('mustContain')}")
+            
+            # Update in config.ALL_TITLES - search by the CURRENT title in listbox_items
             try:
                 if getattr(config, 'ALL_TITLES', None):
+                    updated = False
                     for k, lst in (config.ALL_TITLES.items() if isinstance(config.ALL_TITLES, dict) else []):
+                        if not isinstance(lst, list):
+                            continue
                         for i, it in enumerate(lst):
                             try:
                                 candidate_title = (it.get('node') or {}).get('title') if isinstance(it, dict) else str(it)
                             except Exception:
                                 candidate_title = str(it)
-                            if candidate_title == title_text:
+                            # Match by old title OR by object identity OR by new title
+                            if candidate_title == title_text or it is entry or candidate_title == new_title:
+                                logger.debug(f"BEFORE: ALL_TITLES[{k}][{i}] id: {id(it)}, mustContain: {it.get('mustContain')}")
+                                logger.debug(f"Match condition: title={candidate_title==title_text}, identity={it is entry}, new_title={candidate_title==new_title}")
                                 config.ALL_TITLES[k][i] = entry
-                                raise StopIteration
-            except StopIteration:
-                pass
-            try:
-                treeview.delete(idx)
-                treeview.insert(idx, new_title)
-                treeview.selection_set(idx)
-                treeview.see(idx)
-            except Exception:
-                pass
-            # Auto-refresh the editor to show updated values
-            try:
-                _populate_editor_from_selection()
-            except Exception:
-                pass
-            messagebox.showinfo('Edit', 'Changes applied to the selected title.')
+                                updated = True
+                                logger.debug(f"AFTER: Updated ALL_TITLES[{k}][{i}] with entry id: {id(entry)}, mustContain: {entry.get('mustContain')}")
+                                break
+                        if updated:
+                            break
+                    if not updated:
+                        logger.warning(f"Failed to find entry to update in ALL_TITLES for title: {title_text}")
+            except Exception as e:
+                logger.error(f"Error updating ALL_TITLES: {e}", exc_info=True)
+            
+            # Only update treeview if title changed (to update display), otherwise just update the values in place
+            title_changed = (title_text != new_title)
+            if title_changed:
+                try:
+                    # Update treeview - this rebuilds listbox_items from ALL_TITLES
+                    update_treeview_with_titles(config.ALL_TITLES)
+                    treeview.selection_set(idx)
+                    treeview.see(idx)
+                except Exception:
+                    pass
+            else:
+                # Title didn't change, just update the treeview values without rebuilding
+                try:
+                    # Get the treeview item for this index
+                    items = treeview.get_children()
+                    if idx < len(items):
+                        item_id = items[idx]
+                        # Update the treeview item values directly
+                        enabled_mark = '✓' if entry.get('enabled', True) else ''
+                        category = entry.get('assignedCategory') or entry.get('category') or ''
+                        save_path = entry.get('savePath') or entry.get('save_path') or ''
+                        if not save_path:
+                            tp = entry.get('torrentParams') or entry.get('torrent_params') or {}
+                            save_path = tp.get('save_path') or tp.get('savePath') or ''
+                        save_path = str(save_path).replace('\\', '/') if save_path else ''
+                        treeview.item(item_id, values=(enabled_mark, str(idx+1), new_title, category, save_path))
+                except Exception as e:
+                    logger.error(f"Error updating treeview item: {e}")
+            
+            # Don't auto-refresh during silent apply to avoid recursion
+            if not silent:
+                # Auto-refresh the editor to show updated values
+                try:
+                    _populate_editor_from_selection()
+                except Exception:
+                    pass
+                status_var.set('Changes auto-applied')
+            
+            return True
         except Exception as e:
-            messagebox.showerror('Edit Error', f'Failed to apply changes: {e}')
+            if not silent:
+                messagebox.showerror('Edit Error', f'Failed to apply changes: {e}')
+            return False
+    
+    # Auto-apply when fields change (debounced)
+    auto_apply_after_id = {'id': None}
+    
+    def _schedule_auto_apply(*args):
+        """Schedules auto-apply after a short delay (debouncing)."""
+        try:
+            # Cancel previous scheduled apply
+            if auto_apply_after_id['id']:
+                root.after_cancel(auto_apply_after_id['id'])
+            
+            # Schedule new apply after 300ms of no changes (fast response)
+            auto_apply_after_id['id'] = root.after(300, lambda: _apply_editor_changes(silent=True))
+        except Exception:
+            pass
+    
+    # Attach auto-apply to editor fields
+    try:
+        editor_rule_name.trace_add('write', _schedule_auto_apply)
+        editor_must.trace_add('write', _schedule_auto_apply)
+        editor_savepath.trace_add('write', _schedule_auto_apply)
+        editor_category.trace_add('write', _schedule_auto_apply)
+        editor_enabled.trace_add('write', _schedule_auto_apply)
+    except Exception:
+        # Fallback for older Python/Tkinter versions
+        try:
+            editor_rule_name.trace('w', _schedule_auto_apply)
+            editor_must.trace('w', _schedule_auto_apply)
+            editor_savepath.trace('w', _schedule_auto_apply)
+            editor_category.trace('w', _schedule_auto_apply)
+            editor_enabled.trace('w', _schedule_auto_apply)
+        except Exception:
+            pass
 
     def open_full_rule_editor_for_selection():
         """
@@ -2672,10 +3083,6 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
         open_full_rule_editor(root, title_text, entry, idx, _populate_editor_from_selection)
 
     ttk.Button(btns, text='🔧 Advanced Settings...', command=open_full_rule_editor_for_selection, style='Secondary.TButton', width=25).pack(fill='x', pady=(0, 5))
-
-    footer_edit_btns = ttk.Frame(editor_frame)
-    footer_edit_btns.pack(fill='x', pady=(5, 0))
-    ttk.Button(footer_edit_btns, text='✓ Apply', command=_apply_editor_changes, style='Accent.TButton').pack(side='right')
 
     try:
         treeview.bind('<<TreeviewSelect>>', _populate_editor_from_selection)

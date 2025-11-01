@@ -17,24 +17,29 @@ def get_current_anime_season() -> Tuple[str, str]:
     
     Returns:
         Tuple[str, str]: (season_name, year_string)
+        
+    Anime seasons:
+    - Winter: January-March
+    - Spring: April-June
+    - Summer: July-September
+    - Fall: October-December
     """
     now = datetime.now()
     month = now.month
     year = str(now.year)
     
-    # Anime seasons typically are:
-    # Winter: January-March
-    # Spring: April-June
-    # Summer: July-September
-    # Fall: October-December
-    if month in [1, 2, 3]:
-        return "Winter", year
-    elif month in [4, 5, 6]:
-        return "Spring", year
-    elif month in [7, 8, 9]:
-        return "Summer", year
-    else:  # 10, 11, 12
-        return "Fall", year
+    season_map = {
+        (1, 2, 3): "Winter",
+        (4, 5, 6): "Spring",
+        (7, 8, 9): "Summer",
+        (10, 11, 12): "Fall"
+    }
+    
+    for months, season in season_map.items():
+        if month in months:
+            return season, year
+    
+    return "Fall", year  # Fallback (shouldn't happen)
 
 
 def sanitize_folder_name(name: str, replacement_char: str = '_', max_length: int = 255) -> str:

@@ -46,10 +46,12 @@ except ImportError:
 QBT_API_BASE = "/api/v2"
 QBT_AUTH_LOGIN = f"{QBT_API_BASE}/auth/login"
 QBT_APP_VERSION = f"{QBT_API_BASE}/app/version"
+QBT_APP_PREFERENCES = f"{QBT_API_BASE}/app/preferences"
 QBT_TORRENTS_CATEGORIES = f"{QBT_API_BASE}/torrents/categories"
 QBT_RSS_FEEDS = f"{QBT_API_BASE}/rss/items"
 QBT_RSS_ADD_FEED = f"{QBT_API_BASE}/rss/addFeed"
 QBT_RSS_SET_RULE = f"{QBT_API_BASE}/rss/setRule"
+QBT_RSS_REMOVE_RULE = f"{QBT_API_BASE}/rss/removeRule"
 QBT_RSS_RULES = f"{QBT_API_BASE}/rss/rules"
 
 
@@ -89,12 +91,7 @@ class QBittorrentClient:
         self.base_url = f"{self.protocol}://{self.host}:{self.port}"
         
         # SSL verification parameter
-        if not verify_ssl:
-            self.verify_param = False
-        elif ca_cert:
-            self.verify_param = ca_cert
-        else:
-            self.verify_param = verify_ssl
+        self.verify_param = False if not verify_ssl else (ca_cert if ca_cert else verify_ssl)
         
         logger.debug(f"QBittorrentClient initialized: verify_ssl={verify_ssl}, ca_cert={ca_cert}, verify_param={self.verify_param}")
         
@@ -103,12 +100,7 @@ class QBittorrentClient:
         
     def _get_verify_param(self) -> Union[bool, str]:
         """Get SSL verification parameter."""
-        if not self.verify_ssl:
-            return False
-        elif self.ca_cert:
-            return self.ca_cert
-        else:
-            return self.verify_ssl
+        return self.verify_param
     
     def connect(self) -> bool:
         """
@@ -129,7 +121,6 @@ class QBittorrentClient:
     def _connect_with_library(self) -> bool:
         """Connect using qbittorrentapi library."""
         try:
-            # Try with VERIFY_WEBUI_CERTIFICATE parameter (newer versions)
             self._client = Client(
                 host=self.base_url,
                 username=self.username,
@@ -141,27 +132,22 @@ class QBittorrentClient:
             return True
         except TypeError:
             # Fallback: try without certificate parameter, then set session verify manually
-            try:
-                self._client = Client(
-                    host=self.base_url,
-                    username=self.username,
-                    password=self.password
-                )
-                # Manually disable SSL verification if needed
-                if not self.verify_ssl:
-                    # Try to find and set the session's verify attribute
-                    for attr in ('_http_session', '_session', 'http_session', 'session'):
-                        sess = getattr(self._client, attr, None)
-                        if sess is not None and hasattr(sess, 'verify'):
-                            sess.verify = False
-                            logger.debug(f"Disabled SSL verification via {attr}")
-                            break
-                self._client.auth_log_in()
-                logger.info(f"Connected to qBittorrent at {self.base_url} (fallback mode)")
-                return True
-            except Exception as e:
-                logger.error(f"Failed to connect with library: {e}")
-                raise
+            self._client = Client(
+                host=self.base_url,
+                username=self.username,
+                password=self.password
+            )
+            # Manually disable SSL verification if needed
+            if not self.verify_ssl:
+                for attr in ('_http_session', '_session', 'http_session', 'session'):
+                    sess = getattr(self._client, attr, None)
+                    if sess and hasattr(sess, 'verify'):
+                        sess.verify = False
+                        logger.debug(f"Disabled SSL verification via {attr}")
+                        break
+            self._client.auth_log_in()
+            logger.info(f"Connected to qBittorrent at {self.base_url} (fallback mode)")
+            return True
     
     def _connect_with_requests(self) -> bool:
         """Connect using raw requests."""
@@ -170,22 +156,18 @@ class QBittorrentClient:
         
         logger.debug(f"Connecting to {login_url} with verify={self.verify_param}")
         
-        try:
-            response = self._session.post(
-                login_url,
-                data={'username': self.username, 'password': self.password},
-                timeout=self.timeout,
-                verify=self.verify_param
-            )
-            
-            if response.status_code == 200 and response.text.strip().lower() == 'ok':
-                logger.info(f"Connected to qBittorrent at {self.base_url} (requests)")
-                return True
-            else:
-                raise QBittorrentError(f"Authentication failed: {response.text}")
-                
-        except requests.exceptions.RequestException as e:
-            raise APIConnectionError(f"Connection failed: {e}")
+        response = self._session.post(
+            login_url,
+            data={'username': self.username, 'password': self.password},
+            timeout=self.timeout,
+            verify=self.verify_param
+        )
+        
+        if response.status_code == 200 and response.text.strip().lower() == 'ok':
+            logger.info(f"Connected to qBittorrent at {self.base_url} (requests)")
+            return True
+        
+        raise QBittorrentError(f"Authentication failed: {response.text}")
     
     def get_version(self) -> str:
         """
@@ -195,10 +177,7 @@ class QBittorrentClient:
             str: Version string
         """
         if self._client:
-            try:
-                return self._client.app_version()
-            except:
-                pass
+            return self._client.app_version()
         
         if self._session:
             url = f"{self.base_url}{QBT_APP_VERSION}"
@@ -208,6 +187,30 @@ class QBittorrentClient:
         
         return "unknown"
     
+    def get_preferences(self) -> Dict[str, Any]:
+        """
+        Get qBittorrent application preferences/settings.
+        
+        Returns:
+            dict: Preferences dictionary containing settings like save_path
+        """
+        if self._client:
+            if hasattr(self._client, 'app_preferences'):
+                return self._client.app_preferences() or {}
+            elif hasattr(self._client, 'preferences'):
+                return self._client.preferences() or {}
+        
+        if self._session:
+            url = f"{self.base_url}{QBT_APP_PREFERENCES}"
+            try:
+                response = self._session.get(url, timeout=self.timeout, verify=self.verify_param)
+                if response.status_code == 200:
+                    return response.json() or {}
+            except:
+                pass
+        
+        return {}
+    
     def get_categories(self) -> Dict[str, Any]:
         """
         Fetch all categories from qBittorrent.
@@ -216,12 +219,9 @@ class QBittorrentClient:
             dict: Categories dictionary
         """
         if self._client:
-            try:
-                for attr in ('torrents_categories', 'categories', 'torrents_categories_map'):
-                    if hasattr(self._client, attr):
-                        return getattr(self._client, attr)() or {}
-            except:
-                pass
+            for attr in ('torrents_categories', 'categories', 'torrents_categories_map'):
+                if hasattr(self._client, attr):
+                    return getattr(self._client, attr)() or {}
         
         if self._session:
             url = f"{self.base_url}{QBT_TORRENTS_CATEGORIES}"
@@ -239,21 +239,12 @@ class QBittorrentClient:
             dict: Feeds dictionary
         """
         if self._client:
-            try:
-                for attr in ('rss_feeds', 'rss_feed', 'rss_items'):
-                    if hasattr(self._client, attr):
-                        return getattr(self._client, attr)() or {}
-            except:
-                pass
+            for attr in ('rss_feeds', 'rss_feed', 'rss_items'):
+                if hasattr(self._client, attr):
+                    return getattr(self._client, attr)() or {}
         
         if self._session:
-            # Try multiple endpoints
-            endpoints = [
-                QBT_RSS_FEEDS,
-                f"{QBT_API_BASE}/rss/rootItems",
-                f"{QBT_API_BASE}/rss/tree",
-            ]
-            
+            endpoints = [QBT_RSS_FEEDS, f"{QBT_API_BASE}/rss/rootItems", f"{QBT_API_BASE}/rss/tree"]
             for endpoint in endpoints:
                 try:
                     url = f"{self.base_url}{endpoint}"
@@ -273,21 +264,15 @@ class QBittorrentClient:
             dict: Rules dictionary
         """
         if self._client:
-            try:
-                for attr in ('rss_rules', 'rss_rule', 'rss_download_rules'):
-                    if hasattr(self._client, attr):
-                        return getattr(self._client, attr)() or {}
-            except:
-                pass
+            for attr in ('rss_rules', 'rss_rule', 'rss_download_rules'):
+                if hasattr(self._client, attr):
+                    return getattr(self._client, attr)() or {}
         
         if self._session:
             url = f"{self.base_url}{QBT_RSS_RULES}"
-            try:
-                response = self._session.get(url, timeout=self.timeout, verify=self.verify_param)
-                if response.status_code == 200:
-                    return response.json() or {}
-            except:
-                pass
+            response = self._session.get(url, timeout=self.timeout, verify=self.verify_param)
+            if response.status_code == 200:
+                return response.json() or {}
         
         return {}
     
@@ -350,37 +335,49 @@ class QBittorrentClient:
             bool: True if successful
         """
         if self._client:
-            try:
-                self._client.rss_set_rule(rule_name=rule_name, rule_def=rule_def)
-                logger.info(f"Set RSS rule: {rule_name}")
-                return True
-            except Exception as e:
-                logger.error(f"Failed to set RSS rule '{rule_name}': {e}")
-                return False
+            self._client.rss_set_rule(rule_name=rule_name, rule_def=rule_def)
+            logger.info(f"Set RSS rule: {rule_name}")
+            return True
         
         if self._session:
             url = f"{self.base_url}{QBT_RSS_SET_RULE}"
             import json
-            data = {
-                'ruleName': rule_name,
-                'ruleDef': json.dumps(rule_def)
-            }
+            data = {'ruleName': rule_name, 'ruleDef': json.dumps(rule_def)}
             
-            try:
-                response = self._session.post(
-                    url,
-                    data=data,
-                    timeout=self.timeout,
-                    verify=self.verify_param
-                )
-                if response.status_code == 200:
-                    logger.info(f"Set RSS rule: {rule_name}")
-                    return True
-                logger.error(f"Failed to set RSS rule: HTTP {response.status_code}")
-                return False
-            except Exception as e:
-                logger.error(f"Failed to set RSS rule '{rule_name}': {e}")
-                return False
+            response = self._session.post(url, data=data, timeout=self.timeout, verify=self.verify_param)
+            if response.status_code == 200:
+                logger.info(f"Set RSS rule: {rule_name}")
+                return True
+            logger.error(f"Failed to set RSS rule: HTTP {response.status_code}")
+            return False
+        
+        return False
+    
+    def remove_rule(self, rule_name: str) -> bool:
+        """
+        Remove an RSS download rule.
+        
+        Args:
+            rule_name: Name of the rule to remove
+            
+        Returns:
+            bool: True if successful
+        """
+        if self._client:
+            self._client.rss_remove_rule(rule_name=rule_name)
+            logger.info(f"Removed RSS rule: {rule_name}")
+            return True
+        
+        if self._session:
+            url = f"{self.base_url}{QBT_RSS_REMOVE_RULE}"
+            data = {'ruleName': rule_name}
+            
+            response = self._session.post(url, data=data, timeout=self.timeout, verify=self.verify_param)
+            if response.status_code == 200:
+                logger.info(f"Removed RSS rule: {rule_name}")
+                return True
+            logger.error(f"Failed to remove RSS rule: HTTP {response.status_code}")
+            return False
         
         return False
     

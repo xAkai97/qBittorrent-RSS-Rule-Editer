@@ -32,7 +32,7 @@ class ToolTip:
             self.tooltip.wm_overrideredirect(True)
             self.tooltip.wm_geometry(f"+{x}+{y}")
             
-            label = tk.Label(
+            tk.Label(
                 self.tooltip, 
                 text=self.text,
                 background='#ffffe0',
@@ -41,8 +41,7 @@ class ToolTip:
                 font=('Segoe UI', 8),
                 padx=5,
                 pady=3
-            )
-            label.pack()
+            ).pack()
         except Exception:
             pass
     
@@ -92,14 +91,13 @@ class ScrollableFrame(tk.Frame):
     def _bind_mousewheel(self):
         """Bind mouse wheel scrolling."""
         def _on_mousewheel(event):
-            try:
-                self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
-            except Exception:
-                pass
+            self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
         
-        self.canvas.bind_all("<MouseWheel>", _on_mousewheel)
-        self.canvas.bind_all("<Button-4>", lambda e: self.canvas.yview_scroll(-1, "units"))
-        self.canvas.bind_all("<Button-5>", lambda e: self.canvas.yview_scroll(1, "units"))
+        for event in ("<MouseWheel>", "<Button-4>", "<Button-5>"):
+            self.canvas.bind_all(event, 
+                _on_mousewheel if event == "<MouseWheel>" 
+                else lambda e, d=-1 if event == "<Button-4>" else 1: self.canvas.yview_scroll(d, "units")
+            )
 
 
 def create_labeled_entry(parent, label_text: str, var: tk.StringVar, **kwargs) -> tk.Entry:

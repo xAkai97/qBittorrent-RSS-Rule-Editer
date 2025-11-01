@@ -44,39 +44,50 @@ def open_settings_window(root: tk.Tk, status_var: tk.StringVar) -> None:
     settings_win.grab_set()
     settings_win.configure(bg='#f5f5f5')
 
+    # Initialize StringVars with config values
     qbt_protocol_temp = tk.StringVar(value=config.QBT_PROTOCOL or 'http')
     qbt_host_temp = tk.StringVar(value=config.QBT_HOST or 'localhost')
     qbt_port_temp = tk.StringVar(value=config.QBT_PORT or '8080')
     qbt_user_temp = tk.StringVar(value=config.QBT_USER or '')
     qbt_pass_temp = tk.StringVar(value=config.QBT_PASS or '')
     mode_temp = tk.StringVar(value=config.CONNECTION_MODE or 'online')
-    verify_ssl_temp = tk.BooleanVar(value=config.QBT_VERIFY_SSL if config.QBT_VERIFY_SSL is not None else False)
-    ca_cert_temp = tk.StringVar(value=getattr(config, 'QBT_CA_CERT', '') or "")
-    default_save_path_temp = tk.StringVar(value=getattr(config, 'DEFAULT_SAVE_PATH', '') or "")
-    default_category_temp = tk.StringVar(value=getattr(config, 'DEFAULT_CATEGORY', '') or "")
+    verify_ssl_temp = tk.BooleanVar(value=bool(config.QBT_VERIFY_SSL))
+    ca_cert_temp = tk.StringVar(value=config.QBT_CA_CERT or '')
+    default_save_path_temp = tk.StringVar(value=config.DEFAULT_SAVE_PATH or '')
+    default_category_temp = tk.StringVar(value=config.DEFAULT_CATEGORY or '')
+    default_affected_feeds_temp = tk.StringVar(value=', '.join(config.DEFAULT_AFFECTED_FEEDS) if config.DEFAULT_AFFECTED_FEEDS else '')
 
     def save_and_close():
-        """
-        Saves connection settings and closes the settings dialog.
-        """
-        new_qbt_protocol = qbt_protocol_temp.get().strip()
+        """Saves connection settings and closes the settings dialog."""
+        # Get and validate inputs
         new_qbt_host = qbt_host_temp.get().strip()
         new_qbt_port = qbt_port_temp.get().strip()
-        new_qbt_user = qbt_user_temp.get().strip()
-        new_qbt_pass = qbt_pass_temp.get().strip()
-        new_mode = mode_temp.get()
-        new_verify_ssl = verify_ssl_temp.get()
-        new_ca_cert = ca_cert_temp.get().strip()
-        new_default_save_path = default_save_path_temp.get().strip()
-        new_default_category = default_category_temp.get().strip()
-
+        
         if not new_qbt_host or not new_qbt_port:
             messagebox.showwarning("Warning", "Host and Port are required.")
             return
 
-        config.QBT_CA_CERT = new_ca_cert or None
-        config.save_config(new_qbt_protocol, new_qbt_host, new_qbt_port, new_qbt_user, new_qbt_pass, new_mode, new_verify_ssl,
-                          new_default_save_path, new_default_category)
+        # Parse feeds
+        feeds_str = default_affected_feeds_temp.get().strip()
+        new_default_affected_feeds = [f.strip() for f in feeds_str.split(',') if f.strip()] if feeds_str else []
+
+        # Update config
+        config.QBT_CA_CERT = ca_cert_temp.get().strip() or None
+        config.DEFAULT_DOWNLOAD_PATH = default_download_path_temp.get().strip()
+        
+        # Save to file
+        config.save_config(
+            qbt_protocol_temp.get().strip(),
+            new_qbt_host,
+            new_qbt_port,
+            qbt_user_temp.get().strip(),
+            qbt_pass_temp.get().strip(),
+            mode_temp.get(),
+            verify_ssl_temp.get(),
+            default_save_path_temp.get().strip(),
+            default_category_temp.get().strip(),
+            new_default_affected_feeds
+        )
         settings_win.destroy()
 
     # Create canvas with scrollbar for main content
@@ -88,20 +99,18 @@ def open_settings_window(root: tk.Tk, status_var: tk.StringVar) -> None:
     main_container = ttk.Frame(canvas)
     
     def _update_settings_scrollregion(event=None):
+        """Update canvas scroll region and show/hide scrollbar as needed."""
         try:
             canvas.configure(scrollregion=canvas.bbox("all"))
-            # Show/hide scrollbar based on content
-            try:
-                bbox = canvas.bbox("all")
-                if bbox:
-                    content_height = bbox[3] - bbox[1]
-                    canvas_height = canvas.winfo_height()
-                    if content_height > canvas_height:
-                        scrollbar.pack(side="right", fill="y")
-                    else:
-                        scrollbar.pack_forget()
-            except Exception:
-                pass
+            # Auto-hide scrollbar if content fits
+            bbox = canvas.bbox("all")
+            if bbox:
+                content_height = bbox[3] - bbox[1]
+                canvas_height = canvas.winfo_height()
+                if content_height > canvas_height:
+                    scrollbar.pack(side="right", fill="y")
+                else:
+                    scrollbar.pack_forget()
         except Exception:
             pass
     
@@ -118,40 +127,33 @@ def open_settings_window(root: tk.Tk, status_var: tk.StringVar) -> None:
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
     
-    # Enable mouse wheel scrolling - widget-specific binding
-    def _on_settings_mousewheel(event):
-        try:
-            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
-        except Exception:
-            pass
+    # Mouse wheel scrolling
+    def _on_mousewheel(event):
+        """Handle mouse wheel scrolling."""
+        canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
     
-    def _bind_settings_mousewheel(event):
-        try:
-            canvas.bind("<MouseWheel>", _on_settings_mousewheel)
-        except Exception:
-            pass
+    def _bind_mousewheel(event):
+        """Bind mouse wheel when entering canvas area."""
+        canvas.bind("<MouseWheel>", _on_mousewheel)
     
-    def _unbind_settings_mousewheel(event):
-        try:
-            canvas.unbind("<MouseWheel>")
-        except Exception:
-            pass
+    def _unbind_mousewheel(event):
+        """Unbind mouse wheel when leaving canvas area."""
+        canvas.unbind("<MouseWheel>")
     
-    canvas.bind("<Enter>", _bind_settings_mousewheel)
-    canvas.bind("<Leave>", _unbind_settings_mousewheel)
-    main_container.bind("<Enter>", _bind_settings_mousewheel)
-    main_container.bind("<Leave>", _unbind_settings_mousewheel)
+    # Bind to both canvas and container for better coverage
+    for widget in (canvas, main_container):
+        widget.bind("<Enter>", _bind_mousewheel)
+        widget.bind("<Leave>", _unbind_mousewheel)
     
     # Cleanup on close
     def _cleanup_settings():
-        try:
-            canvas.unbind("<Enter>")
-            canvas.unbind("<Leave>")
-            canvas.unbind("<MouseWheel>")
-            main_container.unbind("<Enter>")
-            main_container.unbind("<Leave>")
-        except Exception:
-            pass
+        """Cleanup event bindings and close window."""
+        for widget in (canvas, main_container):
+            for event in ("<Enter>", "<Leave>", "<MouseWheel>"):
+                try:
+                    widget.unbind(event)
+                except Exception:
+                    pass
         settings_win.destroy()
     
     settings_win.protocol("WM_DELETE_WINDOW", _cleanup_settings)
@@ -245,6 +247,46 @@ def open_settings_window(root: tk.Tk, status_var: tk.StringVar) -> None:
     default_save_path_entry = ttk.Entry(defaults_frame, textvariable=default_save_path_temp, width=50)
     default_save_path_entry.grid(row=2, column=1, columnspan=3, sticky='ew', padx=5, pady=8)
     
+    # Default Download Path from qBittorrent
+    default_download_path_temp = tk.StringVar(value=getattr(config, 'DEFAULT_DOWNLOAD_PATH', '') or "")
+    
+    ttk.Label(defaults_frame, text="qBittorrent Download Path:", font=('Segoe UI', 9, 'bold')).grid(row=3, column=0, sticky='w', padx=5, pady=8)
+    default_download_path_entry = ttk.Entry(defaults_frame, textvariable=default_download_path_temp, width=50, state='readonly')
+    default_download_path_entry.grid(row=3, column=1, columnspan=2, sticky='ew', padx=5, pady=8)
+    ttk.Label(defaults_frame, text="💡 Used as base path for auto-generated save paths (Season/Title structure)",
+              font=('Segoe UI', 8), foreground='#666').grid(row=4, column=0, columnspan=4, sticky='w', padx=5, pady=(0, 8))
+    
+    def fetch_download_path():
+        """Fetch default download path from qBittorrent."""
+        try:
+            # Use current settings to connect
+            from src.qbittorrent_api import QBittorrentClient
+            api = QBittorrentClient(
+                protocol=qbt_protocol_temp.get(),
+                host=qbt_host_temp.get(),
+                port=qbt_port_temp.get(),
+                username=qbt_user_temp.get(),
+                password=qbt_pass_temp.get(),
+                verify_ssl=verify_ssl_temp.get(),
+                ca_cert=ca_cert_temp.get().strip() or None
+            )
+            
+            if api.connect():
+                prefs = api.get_preferences()
+                save_path = prefs.get('save_path', '')
+                if save_path:
+                    default_download_path_temp.set(save_path)
+                    messagebox.showinfo('Success', f'Fetched default download path:\n{save_path}')
+                else:
+                    messagebox.showwarning('No Path', 'Could not retrieve default download path from qBittorrent.')
+                api.close()
+            else:
+                messagebox.showerror('Connection Failed', 'Could not connect to qBittorrent.')
+        except Exception as e:
+            messagebox.showerror('Error', f'Failed to fetch download path:\n{e}')
+    
+    ttk.Button(defaults_frame, text='🔄 Fetch from qBittorrent', command=fetch_download_path).grid(row=3, column=3, sticky='w', padx=5, pady=8)
+    
     # Load cached categories into combobox
     def _update_category_combobox():
         try:
@@ -284,31 +326,139 @@ def open_settings_window(root: tk.Tk, status_var: tk.StringVar) -> None:
     
     default_category_combo.bind('<<ComboboxSelected>>', _on_category_selected)
     
-    ttk.Label(defaults_frame, text="💡 Tip: Leave blank to use no defaults. Category will auto-fill its save path when selected.",
-              font=('Segoe UI', 8), foreground='#666').grid(row=3, column=0, columnspan=4, sticky='w', padx=5, pady=(5, 0))
+    # Default Affected Feeds - with listbox for cached feeds
+    ttk.Label(defaults_frame, text="Default Affected Feeds:", font=('Segoe UI', 9, 'bold')).grid(row=5, column=0, sticky='nw', padx=5, pady=8)
+    
+    # Create frame for feeds listbox and buttons
+    feeds_container = ttk.Frame(defaults_frame)
+    feeds_container.grid(row=5, column=1, columnspan=3, sticky='ew', padx=5, pady=8)
+    
+    # Manual entry field
+    manual_feed_entry_frame = ttk.Frame(feeds_container)
+    manual_feed_entry_frame.pack(fill='x', pady=(0, 5))
+    
+    ttk.Label(manual_feed_entry_frame, text="Manual Entry:", font=('Segoe UI', 8)).pack(side='left', padx=(0, 5))
+    default_feeds_entry = ttk.Entry(manual_feed_entry_frame, textvariable=default_affected_feeds_temp, width=45)
+    default_feeds_entry.pack(side='left', fill='x', expand=True)
+    
+    # Listbox for cached feeds
+    feeds_list_frame = ttk.LabelFrame(feeds_container, text="Cached Feeds (click to add)", padding=5)
+    feeds_list_frame.pack(fill='both', expand=True)
+    
+    # Create inner frame for listbox and scrollbar
+    feeds_inner_frame = ttk.Frame(feeds_list_frame)
+    feeds_inner_frame.pack(fill='both', expand=True)
+    
+    feeds_listbox = tk.Listbox(feeds_inner_frame, height=4, font=('Segoe UI', 9),
+                               bg='#ffffff', fg='#333333',
+                               selectbackground='#0078D4', selectforeground='#ffffff',
+                               highlightthickness=0, bd=0, relief='flat')
+    feeds_listbox.pack(side='left', fill='both', expand=True)
+    
+    feeds_scroll = ttk.Scrollbar(feeds_inner_frame, orient='vertical', command=feeds_listbox.yview)
+    feeds_scroll.pack(side='right', fill='y')
+    feeds_listbox.configure(yscrollcommand=feeds_scroll.set)
+    
+    # Prevent feeds listbox scroll from affecting main canvas
+    def _on_feeds_mousewheel(event):
+        try:
+            feeds_listbox.yview_scroll(int(-1*(event.delta/120)), "units")
+            return "break"
+        except Exception:
+            pass
+    
+    feeds_listbox.bind("<MouseWheel>", _on_feeds_mousewheel)
+    
+    # Load cached feeds into listbox
+    def _load_cached_feeds_into_listbox():
+        """Load cached RSS feeds from config and populate listbox."""
+        try:
+            config.load_cached_feeds()
+            feeds = getattr(config, 'CACHED_FEEDS', {}) or {}
+            feeds_listbox.delete(0, 'end')
+            
+            # Extract feed URLs from the feeds structure
+            feed_urls = set()  # Use set to automatically handle duplicates
+            
+            def extract_urls(obj):
+                """Recursively extract URLs from nested feed structure."""
+                if isinstance(obj, dict):
+                    # Check for 'url' key
+                    if 'url' in obj and obj['url'] and isinstance(obj['url'], str):
+                        feed_urls.add(obj['url'].strip())
+                    # Recurse into all values
+                    for value in obj.values():
+                        extract_urls(value)
+                elif isinstance(obj, list):
+                    for item in obj:
+                        extract_urls(item)
+            
+            extract_urls(feeds)
+            
+            # Add sorted URLs to listbox
+            for url in sorted(feed_urls):
+                feeds_listbox.insert('end', url)
+                
+            logger.debug(f"Loaded {len(feed_urls)} cached feed(s) into listbox")
+        except Exception as e:
+            logger.error(f"Error loading cached feeds into listbox: {e}")
+    
+    def _on_feed_select(event):
+        """Add selected feed from listbox to manual entry field."""
+        try:
+            selection = feeds_listbox.curselection()
+            if not selection:
+                return
+                
+            selected_url = feeds_listbox.get(selection[0]).strip()
+            current = default_affected_feeds_temp.get().strip()
+            
+            # Parse current feeds
+            current_feeds = [f.strip() for f in current.split(',') if f.strip()] if current else []
+            
+            # Add if not already present
+            if selected_url not in current_feeds:
+                current_feeds.append(selected_url)
+                default_affected_feeds_temp.set(', '.join(current_feeds))
+                logger.debug(f"Added feed to defaults: {selected_url}")
+        except Exception as e:
+            logger.error(f"Error adding selected feed: {e}")
+    
+    feeds_listbox.bind('<<ListboxSelect>>', _on_feed_select)
+    
+    # Refresh button for feeds
+    refresh_feeds_btn = ttk.Button(feeds_list_frame, text='🔄 Refresh', command=_load_cached_feeds_into_listbox)
+    refresh_feeds_btn.pack(pady=(5, 0))
+    
+    # Initial load of cached feeds
+    _load_cached_feeds_into_listbox()
+    
+    ttk.Label(defaults_frame, text="💡 Click feeds from cache to add them, or manually enter comma-separated URLs.",
+              font=('Segoe UI', 8), foreground='#666').grid(row=6, column=0, columnspan=4, sticky='w', padx=5, pady=(5, 0))
     
     defaults_frame.grid_columnconfigure(1, weight=1)
 
     def _run_test_and_update():
-        """
-        Runs connection test in background thread and updates status.
-        """
+        """Runs connection test in background thread and updates status."""
         def _worker():
+            settings_conn_status.set('⏳ Testing connection...')
             try:
-                settings_conn_status.set('⏳ Testing connection...')
-                ok, msg = qbt_api.ping_qbittorrent(qbt_protocol_temp.get(), qbt_host_temp.get(), qbt_port_temp.get(), qbt_user_temp.get(), qbt_pass_temp.get(), bool(verify_ssl_temp.get()), ca_cert_temp.get() if ca_cert_temp.get().strip() else None)
-                if ok:
-                    settings_conn_status.set('✅ Connected: ' + msg)
-                else:
-                    # Don't truncate - let it wrap
-                    settings_conn_status.set('❌ Failed: ' + msg)
+                ca_cert = ca_cert_temp.get().strip() or None
+                ok, msg = qbt_api.ping_qbittorrent(
+                    qbt_protocol_temp.get(),
+                    qbt_host_temp.get(),
+                    qbt_port_temp.get(),
+                    qbt_user_temp.get(),
+                    qbt_pass_temp.get(),
+                    verify_ssl_temp.get(),
+                    ca_cert
+                )
+                status_icon = '✅ Connected: ' if ok else '❌ Failed: '
+                settings_conn_status.set(status_icon + msg)
             except Exception as e:
-                # Don't truncate - let it wrap
-                settings_conn_status.set('❌ Error: ' + str(e))
-        try:
-            threading.Thread(target=_worker, daemon=True).start()
-        except Exception:
-            settings_conn_status.set('❌ Test failed to start')
+                settings_conn_status.set(f'❌ Error: {e}')
+        
+        threading.Thread(target=_worker, daemon=True).start()
 
     test_btn.configure(command=_run_test_and_update)
 
@@ -327,64 +477,68 @@ def open_settings_window(root: tk.Tk, status_var: tk.StringVar) -> None:
         
         # Prevent category listbox scroll from affecting main canvas
         def _on_cat_mousewheel(event):
-            try:
-                cat_listbox.yview_scroll(int(-1*(event.delta/120)), "units")
-                return "break"  # Prevent event propagation
-            except Exception:
-                pass
+            """Handle mousewheel for category listbox."""
+            cat_listbox.yview_scroll(int(-1 * (event.delta / 120)), "units")
+            return "break"  # Prevent event propagation
         
         cat_listbox.bind("<MouseWheel>", _on_cat_mousewheel)
 
         def _load_cached_categories_into_listbox():
-            try:
-                config.load_cached_categories()
-                cats = getattr(config, 'CACHED_CATEGORIES', {}) or {}
-                cat_listbox.delete(0, 'end')
-                if isinstance(cats, dict):
-                    keys = list(cats.keys())
-                elif isinstance(cats, list):
-                    keys = cats
-                else:
-                    keys = []
-                for k in keys:
-                    cat_listbox.insert('end', str(k))
-                # Also update the combobox
-                _update_category_combobox()
-            except Exception:
-                pass
+            """Load categories from cache into listbox and combobox."""
+            config.load_cached_categories()
+            cats = config.CACHED_CATEGORIES or {}
+            cat_listbox.delete(0, 'end')
+            
+            # Extract category names
+            if isinstance(cats, dict):
+                keys = list(cats.keys())
+            elif isinstance(cats, list):
+                keys = cats
+            else:
+                keys = []
+            
+            # Populate listbox
+            for k in keys:
+                cat_listbox.insert('end', str(k))
+            
+            # Update combobox
+            _update_category_combobox()
 
         def _clear_cached_categories():
-            try:
-                if not messagebox.askyesno('Confirm', 'Clear cached categories? This cannot be undone.'):
-                    return
+            """Clear all cached categories after confirmation."""
+            if messagebox.askyesno('Confirm', 'Clear cached categories? This cannot be undone.'):
                 config.save_cached_categories({})
                 _load_cached_categories_into_listbox()
                 status_var.set('Cached categories cleared.')
-            except Exception:
-                status_var.set('Failed to clear cached categories.')
 
         def _refresh_categories_from_server():
+            """Refresh categories from qBittorrent server."""
             def _worker():
+                settings_conn_status.set('⏳ Refreshing categories...')
                 try:
-                    settings_conn_status.set('Refreshing categories...')
-                    ok, data = qbt_api.fetch_categories(qbt_protocol_temp.get(), qbt_host_temp.get(), qbt_port_temp.get(), qbt_user_temp.get(), qbt_pass_temp.get(), bool(verify_ssl_temp.get()), ca_cert_temp.get() if ca_cert_temp.get().strip() else None)
+                    ca_cert = ca_cert_temp.get().strip() or None
+                    ok, data = qbt_api.fetch_categories(
+                        qbt_protocol_temp.get(),
+                        qbt_host_temp.get(),
+                        qbt_port_temp.get(),
+                        qbt_user_temp.get(),
+                        qbt_pass_temp.get(),
+                        verify_ssl_temp.get(),
+                        ca_cert
+                    )
+                    
                     if ok:
-                        try:
-                            config.save_cached_categories(data)
-                        except Exception:
-                            pass
-                        settings_conn_status.set('Categories refreshed.')
-                        status_var.set('Categories updated from server.')
+                        config.save_cached_categories(data)
                         _load_cached_categories_into_listbox()
+                        settings_conn_status.set('✅ Categories refreshed.')
+                        status_var.set('Categories updated from server.')
                     else:
-                        settings_conn_status.set('Refresh failed: ' + str(data))
+                        settings_conn_status.set(f'❌ Refresh failed: {data}')
                         status_var.set('Failed to refresh categories.')
                 except Exception as e:
-                    settings_conn_status.set('Refresh error: ' + str(e))
-            try:
-                threading.Thread(target=_worker, daemon=True).start()
-            except Exception:
-                settings_conn_status.set('Failed to start refresh thread')
+                    settings_conn_status.set(f'❌ Refresh error: {e}')
+            
+            threading.Thread(target=_worker, daemon=True).start()
 
         btns_frame = ttk.Frame(cat_frame)
         btns_frame.pack(side='left', fill='y', padx=(10, 0), pady=5)
@@ -808,14 +962,14 @@ def open_full_rule_editor(root: tk.Tk, title_text: str, entry: Dict[str, Any], i
     dlg = tk.Toplevel(root)
     dlg.title(f'🔧 Advanced Rule Editor - {title_text}')
     
-    # Auto-size to monitor height (use 85% of screen height)
+    # Auto-size to monitor height (use 85% of screen height), increased width to 1000px
     try:
         screen_height = dlg.winfo_screenheight()
         dialog_height = int(screen_height * 0.85)
         dialog_height = max(600, min(dialog_height, screen_height - 100))
-        dlg.geometry(f'900x{dialog_height}')
+        dlg.geometry(f'1000x{dialog_height}')
     except Exception:
-        dlg.geometry('900x700')
+        dlg.geometry('1000x700')
     
     dlg.transient(root)
     dlg.grab_set()
@@ -945,6 +1099,14 @@ def open_full_rule_editor(root: tk.Tk, title_text: str, entry: Dict[str, Any], i
     scrollable_frame.bind("<Enter>", _bind_mousewheel)
     scrollable_frame.bind("<Leave>", _unbind_mousewheel)
     
+    # Create footer frame FIRST (pack at bottom before canvas)
+    footer = ttk.Frame(dlg, padding=10)
+    footer.pack(side='bottom', fill='x', pady=(0, 0), padx=10)
+    
+    # Add separator above footer for visual distinction
+    footer_separator = ttk.Separator(dlg, orient='horizontal')
+    footer_separator.pack(side='bottom', fill='x', pady=(0, 0))
+    
     # Pack canvas and scrollbar - using pack for main layout
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
@@ -1053,9 +1215,15 @@ def open_full_rule_editor(root: tk.Tk, title_text: str, entry: Dict[str, Any], i
     
     # Place listbox and controls below the label in column 0-1 span
     affected_frame.grid(row=row, column=0, columnspan=2, sticky='ew', padx=5, pady=4)
-    affected_listbox_frame.pack(side='top', fill='both', expand=True, pady=(0, 4))
+    affected_frame.columnconfigure(0, weight=1)  # Make frame expand
+    
+    # Listbox frame with better height
+    affected_listbox_frame.pack(side='top', fill='both', expand=False, pady=(0, 8))
     affected_listbox.pack(side='left', fill='both', expand=True)
     affected_scrollbar.pack(side='right', fill='y')
+    
+    # Set a reasonable height for the listbox
+    affected_listbox.configure(height=6)
     
     try:
         af = entry.get('affectedFeeds') if isinstance(entry, dict) else []
@@ -1089,11 +1257,14 @@ def open_full_rule_editor(root: tk.Tk, title_text: str, entry: Dict[str, Any], i
     except Exception:
         feeds_choices = []
     try:
+        # Control frame for add/delete buttons
         feeds_select_frame = ttk.Frame(affected_frame)
-        feeds_select_frame.pack(side='top', fill='x', pady=(0, 4))
+        feeds_select_frame.pack(side='top', fill='x', pady=(0, 8))
         
-        feeds_combo = ttk.Combobox(feeds_select_frame, values=feeds_choices, state='readonly', width=80)
-        feeds_combo.pack(side='left', padx=(0, 6))
+        ttk.Label(feeds_select_frame, text='Add from cached feeds:', font=('Segoe UI', 9)).pack(side='left', padx=(0, 5))
+        
+        feeds_combo = ttk.Combobox(feeds_select_frame, values=feeds_choices, state='readonly', width=50)
+        feeds_combo.pack(side='left', padx=(0, 5))
         
         def _add_selected_feed():
             try:
@@ -1105,6 +1276,7 @@ def open_full_rule_editor(root: tk.Tk, title_text: str, entry: Dict[str, Any], i
                 current_items = affected_listbox.get(0, 'end')
                 if val not in current_items:
                     affected_listbox.insert('end', val)
+                    feeds_combo.set('')  # Clear selection after adding
             except Exception:
                 pass
         
@@ -1112,14 +1284,15 @@ def open_full_rule_editor(root: tk.Tk, title_text: str, entry: Dict[str, Any], i
             try:
                 selected = affected_listbox.curselection()
                 if not selected:
+                    messagebox.showwarning('Remove Feed', 'Please select one or more feeds to remove from the list above.')
                     return
                 for idx in reversed(selected):
                     affected_listbox.delete(idx)
-            except Exception:
-                pass
+            except Exception as e:
+                messagebox.showerror('Remove Error', f'Failed to remove feeds: {e}')
         
-        ttk.Button(feeds_select_frame, text='Add', command=_add_selected_feed).pack(side='left', padx=2)
-        ttk.Button(feeds_select_frame, text='Delete', command=_delete_selected_feeds).pack(side='left', padx=2)
+        ttk.Button(feeds_select_frame, text='➕ Add', command=_add_selected_feed, width=10).pack(side='left', padx=2)
+        ttk.Button(feeds_select_frame, text='🗑️ Remove', command=_delete_selected_feeds, width=14).pack(side='left', padx=2)
     except Exception:
         pass
     row += 1
@@ -1338,8 +1511,7 @@ def open_full_rule_editor(root: tk.Tk, title_text: str, entry: Dict[str, Any], i
     ttk.Checkbutton(frm, variable=useregex_var, text='Enable regex matching').grid(row=row, column=1, sticky='w', padx=5, pady=4)
     row += 1
 
-    footer = ttk.Frame(dlg, padding=10)
-    footer.pack(side='bottom', fill='x', pady=(0, 5), padx=10)
+    # Footer buttons are defined at the end after _apply_full function
 
     def _apply_full():
         try:

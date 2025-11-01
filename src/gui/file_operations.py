@@ -35,19 +35,15 @@ def normalize_titles_structure(data: Any) -> Optional[Dict[str, List]]:
                 return data
             # If it's a qBittorrent rules export, extract rules
             if 'rules' in data or all(isinstance(v, dict) for v in data.values()):
-                # Looks like qBittorrent format
                 rules = data.get('rules', data)
                 return {'anime': list(rules.values()) if isinstance(rules, dict) else rules}
             # Single level dict, wrap it
             return {'anime': [data]}
         elif isinstance(data, list):
-            # List of titles
             return {'anime': data}
         elif isinstance(data, str):
-            # Single title string
             return {'anime': [{'node': {'title': data}, 'mustContain': data}]}
-        else:
-            return None
+        return None
     except Exception as e:
         logger.error(f"Error normalizing titles structure: {e}")
         return None
@@ -64,14 +60,11 @@ def import_titles_from_text(text: str) -> Optional[Dict[str, List]]:
         Normalized titles structure, or None if parsing fails
     """
     try:
-        # Try parsing as JSON first
         parsed = json.loads(text)
     except Exception:
-        # Fall back to line-separated titles
         lines = [l.strip() for l in text.splitlines() if l.strip()]
-        if lines:
-            parsed = lines
-        else:
+        parsed = lines if lines else None
+        if not parsed:
             return None
     
     return normalize_titles_structure(parsed)
@@ -285,6 +278,7 @@ def populate_missing_rule_fields(
         # Get defaults from config
         default_save_path = getattr(config, 'DEFAULT_SAVE_PATH', '') or ''
         default_category = getattr(config, 'DEFAULT_CATEGORY', '') or ''
+        default_affected_feeds = getattr(config, 'DEFAULT_AFFECTED_FEEDS', []) or []
         
         for media_type, items in all_titles.items():
             if not isinstance(items, list):
@@ -318,6 +312,11 @@ def populate_missing_rule_fields(
                     if not entry.get('savePath') and default_save_path:
                         entry['savePath'] = default_save_path
                         logger.debug(f"Applied default save path '{default_save_path}' to {entry.get('mustContain', 'unknown')}")
+                    
+                    # Apply default affected feeds if missing or empty
+                    if not entry.get('affectedFeeds') and default_affected_feeds:
+                        entry['affectedFeeds'] = default_affected_feeds.copy()
+                        logger.debug(f"Applied default affected feeds to {entry.get('mustContain', 'unknown')}")
                     
                     # Ensure torrentParams exist and sync category/save_path
                     if 'torrentParams' not in entry:
@@ -483,11 +482,8 @@ def import_titles_from_file(
             messagebox.showerror('Import Error', 'Failed to parse JSON from selected file.')
             return False
         
-        # Apply prefix if requested
-        if prefix_imports:
-            season = season_var.get()
-            year = year_var.get()
-            prefix_titles_with_season_year(parsed, season, year)
+        # Note: Prefix will be applied AFTER populate_missing_rule_fields
+        # so that save paths are populated first
         
         # Check for invalid folder names
         try:
@@ -503,14 +499,32 @@ def import_titles_from_file(
                 invalid_titles = collect_invalid_folder_titles(parsed)
             
             if invalid_titles:
-                lines = [f"{display} -> {raw}: {reason}" 
-                        for display, raw, reason in invalid_titles]
+                # Create a more readable display with better formatting
+                lines = []
+                for display, raw, reason in invalid_titles:
+                    # Truncate long titles for display
+                    display_short = display if len(display) <= 60 else display[:57] + "..."
+                    lines.append(f"• {display_short}\n  → {reason}")
+                
+                # Build message with better formatting
+                message_parts = [
+                    'The following imported titles contain characters or names\n'
+                    'invalid for folder names:\n'
+                ]
+                
+                # Show up to 8 items with better spacing
+                display_count = min(8, len(lines))
+                message_parts.append('\n'.join(lines[:display_count]))
+                
+                if len(lines) > display_count:
+                    message_parts.append(f'\n... and {len(lines) - display_count} more titles with issues')
+                
+                message_parts.append('\n\nContinue import anyway?')
+                
                 if not messagebox.askyesno(
                     'Invalid folder names',
-                    'The following imported titles contain characters or names invalid for folder names:\n\n' +
-                    '\n'.join(lines[:10]) +  # Limit display
-                    (f'\n... and {len(lines) - 10} more' if len(lines) > 10 else '') +
-                    '\n\nContinue import anyway?'
+                    '\n'.join(message_parts),
+                    icon='warning'
                 ):
                     return False
         
@@ -548,7 +562,10 @@ def import_titles_from_file(
                         pass
             
             # Merge new titles, skipping duplicates
+            # Track newly added items for prefix application
+            new_items = {media_type: [] for media_type in parsed.keys() if isinstance(parsed.get(media_type), list)}
             new_count = 0
+            
             for media_type, items in parsed.items():
                 if not isinstance(items, list):
                     continue
@@ -586,6 +603,7 @@ def import_titles_from_file(
                     
                     if not is_duplicate:
                         current[media_type].append(item)
+                        new_items[media_type].append(item)  # Track new items
                         if key:
                             existing_titles.add(key)
                         if must:
@@ -612,11 +630,20 @@ def import_titles_from_file(
             config.ALL_TITLES = parsed
             status_msg = f'Imported {sum(len(v) for v in parsed.values())} titles from file.'
         
-        # Populate missing fields
+        # Populate missing fields ONLY for newly imported items (not existing online rules)
         try:
             season = season_var.get()
             year = year_var.get()
-            populate_missing_rule_fields(config.ALL_TITLES, season, year)
+            
+            if 'new_items' in locals():
+                # Only populate defaults for new items
+                logger.debug(f"Populating fields for {sum(len(v) for v in new_items.values())} new items only")
+                populate_missing_rule_fields(new_items, season, year)
+                
+                # Apply prefix ONLY to newly imported items
+                if prefix_imports:
+                    logger.debug(f"Applying prefix to {sum(len(v) for v in new_items.values())} new items only")
+                    prefix_titles_with_season_year(new_items, season, year)
         except Exception as e:
             logger.error(f"Error populating fields: {e}")
         
@@ -709,14 +736,32 @@ def import_titles_from_clipboard(
             invalid_titles = collect_invalid_folder_titles(parsed)
         
         if invalid_titles:
-            lines = [f"{display} -> {raw}: {reason}" 
-                    for display, raw, reason in invalid_titles]
+            # Create a more readable display with better formatting
+            lines = []
+            for display, raw, reason in invalid_titles:
+                # Truncate long titles for display
+                display_short = display if len(display) <= 60 else display[:57] + "..."
+                lines.append(f"• {display_short}\n  → {reason}")
+            
+            # Build message with better formatting
+            message_parts = [
+                'The following imported titles contain characters or names\n'
+                'invalid for folder names:\n'
+            ]
+            
+            # Show up to 8 items with better spacing
+            display_count = min(8, len(lines))
+            message_parts.append('\n'.join(lines[:display_count]))
+            
+            if len(lines) > display_count:
+                message_parts.append(f'\n... and {len(lines) - display_count} more titles with issues')
+            
+            message_parts.append('\n\nContinue import anyway?')
+            
             if not messagebox.askyesno(
                 'Invalid folder names',
-                'The following imported titles contain invalid characters:\n\n' +
-                '\n'.join(lines[:10]) +
-                (f'\n... and {len(lines) - 10} more' if len(lines) > 10 else '') +
-                '\n\nContinue import anyway?'
+                '\n'.join(message_parts),
+                icon='warning'
             ):
                 return False
     
@@ -1197,6 +1242,17 @@ def dispatch_generation(
                 preview_text.insert('1.0', str(preview_list))
         preview_text.config(state='disabled')
 
+        # Sync mode selection frame
+        mode_frame = ttk.LabelFrame(dlg, text='Sync Mode', padding=10)
+        mode_frame.pack(fill='x', padx=10, pady=(0, 10))
+        
+        sync_mode = tk.StringVar(value='replace')
+        
+        ttk.Radiobutton(mode_frame, text='🔄 Replace All Rules (remove old rules, then add new ones)', 
+                       variable=sync_mode, value='replace').pack(anchor='w', pady=2)
+        ttk.Radiobutton(mode_frame, text='➕ Add/Update Only (keep existing rules, add or update new ones)', 
+                       variable=sync_mode, value='add').pack(anchor='w', pady=2)
+
         # Button frame
         btns = ttk.Frame(dlg, padding=10)
         btns.pack(fill='x', side='bottom')
@@ -1208,6 +1264,9 @@ def dispatch_generation(
                     if not messagebox.askyesno('Proceed with Warnings', 
                         f'{len(problems)} validation issue(s) detected.\n\nProceed anyway?'):
                         return
+                
+                # Get selected sync mode
+                selected_mode = sync_mode.get()
                 
                 dlg.destroy()
                 status_var.set(f"⏳ Syncing {len(preview_list)} rules to qBittorrent...")
@@ -1252,6 +1311,25 @@ def dispatch_generation(
                         messagebox.showerror('Connection Failed', 'Could not connect to qBittorrent.')
                         return
                     
+                    removed_count = 0
+                    
+                    # If replace mode, remove all existing rules first
+                    if selected_mode == 'replace':
+                        # Get existing rules
+                        existing_rules = api.get_rules()
+                        
+                        # Remove all existing rules first (to replace them)
+                        if existing_rules:
+                            for old_rule_name in list(existing_rules.keys()):
+                                try:
+                                    if api.remove_rule(old_rule_name):
+                                        removed_count += 1
+                                        status_var.set(f"🗑️ Removing old rules... ({removed_count}/{len(existing_rules)})")
+                                        root.update()
+                                except Exception as e:
+                                    logger.error(f"Failed to remove rule '{old_rule_name}': {e}")
+                    
+                    # Now add/update the new rules
                     success_count = 0
                     failed_count = 0
                     
@@ -1269,14 +1347,19 @@ def dispatch_generation(
                     
                     # Show results
                     if success_count > 0:
+                        if selected_mode == 'replace':
+                            msg = f'✅ Successfully replaced {removed_count} old rule(s) with {success_count} new rule(s)!'
+                        else:
+                            msg = f'✅ Successfully added/updated {success_count} rule(s)!'
+                        
                         status_var.set(f'✅ Synced {success_count} rule(s) for {season} {year}')
                         if failed_count > 0:
                             messagebox.showwarning('Sync Complete', 
-                                f'Successfully synced {success_count} rule(s).\n'
-                                f'{failed_count} rule(s) failed.')
+                                f'{msg}\n\n'
+                                f'{failed_count} rule(s) failed to sync.')
                         else:
                             messagebox.showinfo('Sync Complete', 
-                                f'✅ Successfully synced {success_count} rule(s) to qBittorrent!\n\n'
+                                f'{msg}\n\n'
                                 f'Season: {season} {year}')
                     else:
                         status_var.set('❌ Sync failed')

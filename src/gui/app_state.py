@@ -75,10 +75,7 @@ class AppState:
             message: Status message to display
         """
         if self._status_var:
-            try:
-                self._status_var.set(message)
-            except Exception as e:
-                logger.error(f"Failed to set status: {e}")
+            self._status_var.set(message)
     
     # Treeview widget properties
     @property

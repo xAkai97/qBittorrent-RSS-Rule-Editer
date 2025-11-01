@@ -21,10 +21,11 @@ class AppConfig:
         self.OUTPUT_CONFIG_FILE_NAME: str = 'qbittorrent_rules.json'
         self.CACHE_FILE: str = 'seasonal_cache.json'
         
-        self.DEFAULT_RSS_FEED: str = "https://subsplease.org/rss/?r=1080"
-        self.DEFAULT_SAVE_PREFIX: str = "/downloads/Anime/Web/"
+        self.DEFAULT_RSS_FEED: str = ""
         self.DEFAULT_SAVE_PATH: str = ""
+        self.DEFAULT_DOWNLOAD_PATH: str = ""  # qBittorrent's default download path (used as base path)
         self.DEFAULT_CATEGORY: str = ""
+        self.DEFAULT_AFFECTED_FEEDS: List[str] = []
         
         # Connection configuration
         self.QBT_PROTOCOL: Optional[str] = None
@@ -51,23 +52,15 @@ class AppConfig:
     
     def get_pref(self, key: str, default: Any = None) -> Any:
         """Get a preference value with fallback."""
-        try:
-            cache = self._load_cache_data()
-            prefs = cache.get(CacheKeys.PREFS, {})
-            return prefs.get(key, default)
-        except Exception as e:
-            logger.warning(f"Failed to get preference '{key}': {e}")
-            return default
+        cache = self._load_cache_data()
+        return cache.get(CacheKeys.PREFS, {}).get(key, default)
     
     def set_pref(self, key: str, value: Any) -> bool:
         """Set a preference value."""
         try:
             cache = self._load_cache_data()
-            if CacheKeys.PREFS not in cache:
-                cache[CacheKeys.PREFS] = {}
-            cache[CacheKeys.PREFS][key] = value
-            self._save_cache_data(cache)
-            return True
+            cache.setdefault(CacheKeys.PREFS, {})[key] = value
+            return self._save_cache_data(cache)
         except Exception as e:
             logger.error(f"Failed to set preference '{key}': {e}")
             return False
@@ -94,38 +87,31 @@ class AppConfig:
     
     def load_cached_categories(self) -> None:
         """Load cached categories from file."""
-        try:
-            cache = self._load_cache_data()
-            self.CACHED_CATEGORIES = cache.get(CacheKeys.CATEGORIES, {})
-            logger.info(f"Loaded {len(self.CACHED_CATEGORIES)} cached categories")
-        except Exception as e:
-            logger.error(f"Failed to load cached categories: {e}")
-            self.CACHED_CATEGORIES = {}
+        cache = self._load_cache_data()
+        self.CACHED_CATEGORIES = cache.get(CacheKeys.CATEGORIES, {})
+        logger.info(f"Loaded {len(self.CACHED_CATEGORIES)} cached categories")
     
     def load_cached_feeds(self) -> None:
         """Load cached feeds from file."""
-        try:
-            cache = self._load_cache_data()
-            self.CACHED_FEEDS = cache.get(CacheKeys.FEEDS, {})
-            logger.info(f"Loaded {len(self.CACHED_FEEDS)} cached feeds")
-        except Exception as e:
-            logger.error(f"Failed to load cached feeds: {e}")
-            self.CACHED_FEEDS = {}
+        cache = self._load_cache_data()
+        self.CACHED_FEEDS = cache.get(CacheKeys.FEEDS, {})
+        logger.info(f"Loaded {len(self.CACHED_FEEDS)} cached feeds")
     
     def add_recent_file(self, filepath: str) -> None:
         """Add a file to the recent files list."""
-        try:
-            if filepath in self.RECENT_FILES:
-                self.RECENT_FILES.remove(filepath)
-            self.RECENT_FILES.insert(0, filepath)
-            self.RECENT_FILES = self.RECENT_FILES[:10]  # Keep only last 10
-            
-            cache = self._load_cache_data()
-            cache[CacheKeys.RECENT_FILES] = self.RECENT_FILES
-            self._save_cache_data(cache)
-            logger.info(f"Added recent file: {filepath}")
-        except Exception as e:
-            logger.error(f"Failed to add recent file: {e}")
+        # Remove if already exists to avoid duplicates
+        if filepath in self.RECENT_FILES:
+            self.RECENT_FILES.remove(filepath)
+        
+        # Add to front and keep only last 10
+        self.RECENT_FILES.insert(0, filepath)
+        self.RECENT_FILES = self.RECENT_FILES[:10]
+        
+        # Save to cache
+        cache = self._load_cache_data()
+        cache[CacheKeys.RECENT_FILES] = self.RECENT_FILES
+        self._save_cache_data(cache)
+        logger.info(f"Added recent file: {filepath}")
     
     def load_config(self) -> bool:
         """
@@ -144,19 +130,28 @@ class AppConfig:
 
             qbt_loaded = 'QBITTORRENT_API' in cfg
             if qbt_loaded:
-                self.QBT_PROTOCOL = cfg['QBITTORRENT_API'].get('protocol', 'http')
-                self.QBT_HOST = cfg['QBITTORRENT_API'].get('host', 'localhost')
-                self.QBT_PORT = cfg['QBITTORRENT_API'].get('port', '8080')
-                self.QBT_USER = cfg['QBITTORRENT_API'].get('username', '')
-                self.QBT_PASS = cfg['QBITTORRENT_API'].get('password', '')
-                self.CONNECTION_MODE = cfg['QBITTORRENT_API'].get('mode', 'online')
-                self.QBT_VERIFY_SSL = cfg['QBITTORRENT_API'].get('verify_ssl', 'True').lower() == 'true'
-                self.QBT_CA_CERT = cfg['QBITTORRENT_API'].get('ca_cert', '') or None
-                self.DEFAULT_SAVE_PATH = cfg['QBITTORRENT_API'].get('default_save_path', '')
-                self.DEFAULT_CATEGORY = cfg['QBITTORRENT_API'].get('default_category', '')
+                qbt = cfg['QBITTORRENT_API']
+                self.QBT_PROTOCOL = qbt.get('protocol', 'http')
+                self.QBT_HOST = qbt.get('host', 'localhost')
+                self.QBT_PORT = qbt.get('port', '8080')
+                self.QBT_USER = qbt.get('username', '')
+                self.QBT_PASS = qbt.get('password', '')
+                self.CONNECTION_MODE = qbt.get('mode', 'online')
+                self.QBT_VERIFY_SSL = qbt.get('verify_ssl', 'True').lower() == 'true'
+                self.QBT_CA_CERT = qbt.get('ca_cert') or None
+                self.DEFAULT_SAVE_PATH = qbt.get('default_save_path', '')
+                self.DEFAULT_DOWNLOAD_PATH = qbt.get('default_download_path', '')
+                self.DEFAULT_CATEGORY = qbt.get('default_category', '')
+                
+                # Load default affected feeds (comma-separated list)
+                feeds_str = qbt.get('default_affected_feeds', '')
+                self.DEFAULT_AFFECTED_FEEDS = [f.strip() for f in feeds_str.split(',') if f.strip()]
+                
                 logger.info(f"Loaded qBittorrent config: {self.QBT_PROTOCOL}://{self.QBT_HOST}:{self.QBT_PORT} (mode: {self.CONNECTION_MODE})")
             else:
-                self.QBT_PROTOCOL, self.QBT_HOST, self.QBT_PORT, self.QBT_USER, self.QBT_PASS = ('http', 'localhost', '8080', '', '')
+                # Set defaults
+                self.QBT_PROTOCOL, self.QBT_HOST, self.QBT_PORT = 'http', 'localhost', '8080'
+                self.QBT_USER, self.QBT_PASS = '', ''
                 self.QBT_VERIFY_SSL = False
                 self.CONNECTION_MODE = 'online'
                 logger.warning("No QBITTORRENT_API section found in config.ini, using defaults")
@@ -164,10 +159,13 @@ class AppConfig:
             return bool(self.QBT_HOST and self.QBT_PORT)
         except Exception as e:
             logger.error(f"Failed to load config from INI: {e}")
+            self.QBT_PROTOCOL, self.QBT_HOST, self.QBT_PORT = 'http', 'localhost', '8080'
+            self.QBT_USER, self.QBT_PASS = '', ''
+            self.CONNECTION_MODE = 'online'
             return False
     
     def save_config(self, protocol: str, host: str, port: str, user: str, password: str, mode: str, verify_ssl: bool, 
-                    default_save_path: str = '', default_category: str = '') -> bool:
+                    default_save_path: str = '', default_category: str = '', default_affected_feeds: List[str] = None) -> bool:
         """
         Saves qBittorrent connection configuration to config.ini file.
         
@@ -181,13 +179,17 @@ class AppConfig:
             verify_ssl: Whether to verify SSL certificates
             default_save_path: Default save path for new rules
             default_category: Default category for new rules
+            default_affected_feeds: Default affected feeds for new rules (list of feed URLs)
         
         Returns:
             bool: True if save was successful, False otherwise
         """
-        try:
-            cfg = ConfigParser()
-            cfg['QBITTORRENT_API'] = {
+        cfg = ConfigParser()
+        
+        # Prepare default affected feeds as comma-separated string
+        feeds_str = ', '.join(default_affected_feeds) if default_affected_feeds else ''
+        
+        cfg['QBITTORRENT_API'] = {
                 'protocol': protocol,
                 'host': host,
                 'port': port,
@@ -197,21 +199,26 @@ class AppConfig:
                 'verify_ssl': str(verify_ssl),
                 'ca_cert': self.QBT_CA_CERT or '',
                 'default_save_path': default_save_path,
-                'default_category': default_category,
-            }
+                'default_download_path': self.DEFAULT_DOWNLOAD_PATH or '',
+            'default_category': default_category,
+            'default_affected_feeds': feeds_str,
+        }
+        
+        try:
             with open(self.CONFIG_FILE, 'w') as f:
                 cfg.write(f)
-
-            self.QBT_PROTOCOL, self.QBT_HOST, self.QBT_PORT, self.QBT_USER, self.QBT_PASS, self.CONNECTION_MODE, self.QBT_VERIFY_SSL = (
-                protocol, host, port, user, password, mode, verify_ssl
-            )
-            self.DEFAULT_SAVE_PATH = default_save_path
-            self.DEFAULT_CATEGORY = default_category
-            logger.info(f"Saved qBittorrent config: {protocol}://{host}:{port} (mode: {mode})")
-            return True
         except Exception as e:
             logger.error(f"Failed to save config to INI: {e}")
             return False
+
+        self.QBT_PROTOCOL, self.QBT_HOST, self.QBT_PORT, self.QBT_USER, self.QBT_PASS, self.CONNECTION_MODE, self.QBT_VERIFY_SSL = (
+            protocol, host, port, user, password, mode, verify_ssl
+        )
+        self.DEFAULT_SAVE_PATH = default_save_path
+        self.DEFAULT_CATEGORY = default_category
+        self.DEFAULT_AFFECTED_FEEDS = default_affected_feeds or []
+        logger.info(f"Saved qBittorrent config: {protocol}://{host}:{port} (mode: {mode})")
+        return True
     
     def save_cached_categories(self, categories: Dict[str, Any]) -> bool:
         """Save cached categories to file."""

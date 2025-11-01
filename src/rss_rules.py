@@ -89,7 +89,7 @@ class RSSRule:
             "enabled": self.enabled,
             "episodeFilter": self.episode_filter,
             "ignoreDays": self.ignore_days,
-            "lastMatch": self.last_match if self.last_match else None,
+            "lastMatch": self.last_match or None,
             "mustContain": self.must_contain,
             "mustNotContain": self.must_not_contain,
             "previouslyMatchedEpisodes": self.previously_matched,
@@ -185,7 +185,6 @@ class RSSRule:
             return False, "Rule must have at least one RSS feed"
         
         if self.save_path:
-            # Validate path doesn't contain invalid characters
             try:
                 validate_folder_name(self.save_path)
             except ValueError as e:
@@ -233,17 +232,12 @@ def build_save_path(title: str, season: Optional[str] = None,
     """
     try:
         sanitized = sanitize_folder_name(title)
-        prefix = config.DEFAULT_SAVE_PREFIX or ''
+        prefix = config.DEFAULT_DOWNLOAD_PATH or ''
         
         if not prefix:
             return sanitized
         
-        if season and year:
-            path = os.path.join(prefix, f"{season} {year}", sanitized)
-        else:
-            path = os.path.join(prefix, sanitized)
-        
-        # qBittorrent uses forward slashes for all paths
+        path = os.path.join(prefix, f"{season} {year}", sanitized) if (season and year) else os.path.join(prefix, sanitized)
         return path.replace('\\', '/')
         
     except Exception as e:
@@ -266,13 +260,10 @@ def parse_title_metadata(entry: Any) -> Tuple[str, str, Optional[str], Optional[
         node = entry.get('node', {})
         display_title = node.get('title') or entry.get('title') or entry.get('mustContain', '')
         raw_name = entry.get('mustContain') or display_title
-        season = entry.get('season')
-        year = entry.get('year')
-    else:
-        display_title = raw_name = str(entry)
-        season = year = None
+        return display_title, raw_name, entry.get('season'), entry.get('year')
     
-    return display_title, raw_name, season, year
+    display_title = raw_name = str(entry)
+    return display_title, raw_name, None, None
 
 
 def build_rules_from_titles(titles: Dict[str, List[Any]], 
@@ -310,8 +301,15 @@ def build_rules_from_titles(titles: Dict[str, List[Any]],
                 except Exception:
                     sanitized = raw_name
                 
-                # Build save path
-                save_path = build_save_path(sanitized, season, year)
+                # Get save path from entry, or build default if not present
+                if isinstance(entry, dict):
+                    save_path = entry.get('savePath') or entry.get('save_path')
+                    if not save_path:
+                        # Build default save path only if not specified
+                        save_path = build_save_path(sanitized, season, year)
+                else:
+                    # Build default save path for non-dict entries
+                    save_path = build_save_path(sanitized, season, year)
                 
                 # Get feed URL
                 if isinstance(entry, dict):
@@ -327,9 +325,12 @@ def build_rules_from_titles(titles: Dict[str, List[Any]],
                 if isinstance(entry, dict):
                     # Load from existing dict
                     rule = RSSRule.from_dict(display_title, entry)
-                    # Update computed fields
-                    rule.save_path = save_path
-                    rule.must_contain = sanitized
+                    # Update save_path if it was just computed (not from entry)
+                    if not entry.get('savePath') and not entry.get('save_path'):
+                        rule.save_path = save_path
+                    # Update must_contain to sanitized version if needed
+                    if not entry.get('mustContain'):
+                        rule.must_contain = sanitized
                 else:
                     # Create new rule
                     rule = create_rule(

@@ -19,15 +19,17 @@ def _load_cache_data() -> Dict[str, Any]:
     Returns:
         Dict containing all cached data, or empty dict if file doesn't exist
     """
+    if not os.path.exists(config.CACHE_FILE):
+        return {}
+    
     try:
-        if os.path.exists(config.CACHE_FILE):
-            with open(config.CACHE_FILE, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                logger.debug(f"Loaded cache data with keys: {list(data.keys())}")
-                return data
+        with open(config.CACHE_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        logger.debug(f"Loaded cache data with keys: {list(data.keys())}")
+        return data
     except Exception as e:
         logger.error(f"Failed to load cache file '{config.CACHE_FILE}': {e}")
-    return {}
+        return {}
 
 
 def _save_cache_data(data: Dict[str, Any]) -> bool:
@@ -61,13 +63,9 @@ def _update_cache_key(key: str, value: Any) -> bool:
     Returns:
         bool: True if successful
     """
-    try:
-        data = _load_cache_data()
-        data[key] = value
-        return _save_cache_data(data)
-    except Exception as e:
-        logger.error(f"Failed to update cache key '{key}': {e}")
-        return False
+    data = _load_cache_data()
+    data[key] = value
+    return _save_cache_data(data)
 
 
 def load_recent_files() -> List[str]:
@@ -77,14 +75,10 @@ def load_recent_files() -> List[str]:
     Returns:
         List of file paths
     """
-    try:
-        data = _load_cache_data()
-        files = data.get(CacheKeys.RECENT_FILES, [])
-        logger.info(f"Loaded {len(files)} recent files")
-        return files
-    except Exception as e:
-        logger.error(f"Failed to load recent files: {e}")
-        return []
+    data = _load_cache_data()
+    files = data.get(CacheKeys.RECENT_FILES, [])
+    logger.info(f"Loaded {len(files)} recent files")
+    return files
 
 
 def load_cached_categories() -> Dict[str, Any]:
@@ -94,14 +88,10 @@ def load_cached_categories() -> Dict[str, Any]:
     Returns:
         Dict of categories
     """
-    try:
-        data = _load_cache_data()
-        categories = data.get(CacheKeys.CATEGORIES, {})
-        logger.info(f"Loaded {len(categories)} cached categories")
-        return categories
-    except Exception as e:
-        logger.error(f"Failed to load cached categories: {e}")
-        return {}
+    data = _load_cache_data()
+    categories = data.get(CacheKeys.CATEGORIES, {})
+    logger.info(f"Loaded {len(categories)} cached categories")
+    return categories
 
 
 def load_cached_feeds() -> Dict[str, Any]:
@@ -111,14 +101,10 @@ def load_cached_feeds() -> Dict[str, Any]:
     Returns:
         Dict of feeds
     """
-    try:
-        data = _load_cache_data()
-        feeds = data.get(CacheKeys.FEEDS, {})
-        logger.info(f"Loaded {len(feeds)} cached feeds")
-        return feeds
-    except Exception as e:
-        logger.error(f"Failed to load cached feeds: {e}")
-        return {}
+    data = _load_cache_data()
+    feeds = data.get(CacheKeys.FEEDS, {})
+    logger.info(f"Loaded {len(feeds)} cached feeds")
+    return feeds
 
 
 def save_cached_feeds(feeds: Dict[str, Any]) -> bool:

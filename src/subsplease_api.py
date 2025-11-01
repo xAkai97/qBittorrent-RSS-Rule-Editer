@@ -28,16 +28,18 @@ def load_subsplease_cache() -> Dict[str, Dict[str, Any]]:
         Dict with title as key and metadata dict as value:
         {
             "Anime Title": {
-                      "subsplease": "SubsPlease Title",
-                      "last_updated": "2024-01-15T10:30:00",
-                      "exact_match": True
-                  }
+                "subsplease": "SubsPlease Title",
+                "last_updated": "2024-01-15T10:30:00",
+                "exact_match": True
+            }
         }
     """
+    if not os.path.exists(config.CACHE_FILE):
+        return {}
+    
     try:
-        if os.path.exists(config.CACHE_FILE):
-            with open(config.CACHE_FILE, 'r', encoding='utf-8') as f:
-                data = json.load(f)
+        with open(config.CACHE_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
         cached = data.get(CacheKeys.SUBSPLEASE_TITLES, {}) or {}
         logger.info(f"Loaded {len(cached)} cached SubsPlease titles")
         return cached
@@ -57,7 +59,6 @@ def save_subsplease_cache(titles_dict: Dict[str, Dict[str, Any]]) -> bool:
         bool: True if successful
     """
     try:
-        # Import here to avoid circular dependency
         from . import cache as cache_module
         success = cache_module._update_cache_key(CacheKeys.SUBSPLEASE_TITLES, titles_dict)
         if success:
@@ -162,7 +163,10 @@ def find_subsplease_title_match(mal_title: str) -> Optional[str]:
     """
     Finds matching SubsPlease title for a given MAL title from cache.
     
-    Uses fuzzy matching if exact match not found.
+    Uses improved fuzzy matching to handle title variations like:
+    - "One Punch Man 3" vs "One-Punch Man S3"
+    - Different punctuation (spaces, hyphens, colons)
+    - Season numbering formats (3, S3, Season 3)
     
     Args:
         mal_title: The anime title from MyAnimeList
@@ -171,6 +175,18 @@ def find_subsplease_title_match(mal_title: str) -> Optional[str]:
         Optional[str]: Matching SubsPlease title or None if no match
     """
     cached = load_subsplease_cache()
+    
+    def normalize_title(title: str) -> str:
+        """Normalize title for comparison by removing special chars and standardizing format."""
+        normalized = title.lower()
+        # Remove common punctuation and standardize
+        normalized = normalized.replace('-', ' ').replace(':', ' ').replace('!', '').replace('?', '')
+        normalized = normalized.replace('  ', ' ').strip()
+        # Normalize season formats: "S3" -> "3", "season 3" -> "3"
+        import re
+        normalized = re.sub(r'\bs(\d+)\b', r'\1', normalized)  # S3 -> 3
+        normalized = re.sub(r'\bseason\s+(\d+)\b', r'\1', normalized)  # season 3 -> 3
+        return normalized
     
     # Try exact match first
     if mal_title in cached:
@@ -187,20 +203,41 @@ def find_subsplease_title_match(mal_title: str) -> Optional[str]:
                 return data.get('subsplease', cached_title)
             return cached_title
     
-    # Try partial match (simple fuzzy matching)
-    # Look for titles that contain the MAL title or vice versa
+    # Try normalized fuzzy matching
+    mal_normalized = normalize_title(mal_title)
     best_match = None
     best_score = 0
     
     for cached_title, data in cached.items():
-        cached_lower = cached_title.lower()
+        cached_normalized = normalize_title(cached_title)
         
-        # Check if one contains the other
-        if mal_lower in cached_lower or cached_lower in mal_lower:
-            # Calculate simple match score (length of match)
-            score = min(len(mal_lower), len(cached_lower))
+        # Exact normalized match (handles punctuation differences)
+        if mal_normalized == cached_normalized:
+            if isinstance(data, dict):
+                return data.get('subsplease', cached_title)
+            return cached_title
+        
+        # Check if one contains the other (with normalized versions)
+        if mal_normalized in cached_normalized or cached_normalized in mal_normalized:
+            # Calculate match score based on length similarity
+            score = min(len(mal_normalized), len(cached_normalized))
             if score > best_score:
                 best_score = score
                 best_match = data.get('subsplease', cached_title) if isinstance(data, dict) else cached_title
+    
+    # Try partial word matching for multi-word titles
+    if not best_match:
+        mal_words = set(mal_normalized.split())
+        for cached_title, data in cached.items():
+            cached_words = set(normalize_title(cached_title).split())
+            
+            # Calculate word overlap
+            common_words = mal_words & cached_words
+            if len(common_words) >= 2:  # At least 2 words in common
+                # Score based on percentage of words matched
+                score = len(common_words) / max(len(mal_words), len(cached_words))
+                if score > 0.6 and score * 100 > best_score:  # At least 60% word match
+                    best_score = score * 100
+                    best_match = data.get('subsplease', cached_title) if isinstance(data, dict) else cached_title
     
     return best_match
