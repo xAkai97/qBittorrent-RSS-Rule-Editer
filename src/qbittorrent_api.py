@@ -7,20 +7,23 @@ needed for RSS rule management.
 
 Phase 4: qBittorrent Integration
 """
+# Standard library imports
 import logging
 import typing
 import warnings
-from typing import Tuple, Optional, Union, Dict, List, Any
+from typing import Any, Dict, List, Optional, Tuple, Union
 
+# Third-party imports
 import requests
+import urllib3
 from requests.auth import HTTPBasicAuth
 
-# Suppress SSL warnings when verify_ssl is disabled
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
+# Local application imports
 from src.config import config
 from src.constants import QBittorrentError
+
+# Suppress SSL warnings when verify_ssl is disabled
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
 

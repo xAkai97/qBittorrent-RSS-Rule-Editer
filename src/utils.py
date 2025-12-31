@@ -1,14 +1,388 @@
 """
 Utility functions for the application.
+
+Includes helper functions for title entry handling (hybrid format) and
+filesystem operations.
 """
+# Standard library imports
 import logging
 import re
 from datetime import datetime
-from typing import Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
+# Local application imports
 from .constants import FileSystem
 
 logger = logging.getLogger(__name__)
+
+# ============================================================================
+# TITLE ENTRY HELPERS
+# ============================================================================
+# These functions provide safe access to the hybrid title entry format used
+# in config.ALL_TITLES. Entries contain both qBittorrent fields and internal
+# tracking fields ('node', 'ruleName'). See config.py for full documentation.
+# ============================================================================
+
+# Internal tracking fields that should be filtered before export
+INTERNAL_FIELDS = frozenset(['node', 'ruleName'])
+
+
+def get_display_title(entry: Any, fallback: str = '') -> str:
+    """
+    Get the display title from a title entry.
+    
+    Tries to extract the title in this priority order:
+    1. entry['node']['title'] - primary display title
+    2. entry['title'] - direct title field
+    3. entry['mustContain'] - qBittorrent search pattern
+    4. str(entry) - convert non-dict entries to string
+    5. fallback - provided fallback value
+    
+    Args:
+        entry: Title entry (dict or string)
+        fallback: Value to return if no title found
+        
+    Returns:
+        str: Display title for the entry
+    """
+    if not entry:
+        return fallback
+        
+    if isinstance(entry, dict):
+        node = entry.get('node') or {}
+        title = node.get('title') or entry.get('title') or entry.get('mustContain')
+        return str(title) if title else fallback
+    
+    return str(entry) if entry else fallback
+
+
+def get_rule_name(entry: Any, fallback: str = '') -> str:
+    """
+    Get the rule name from a title entry.
+    
+    The rule name is used as the key when syncing to qBittorrent.
+    
+    Tries to extract in this priority order:
+    1. entry['ruleName'] - explicit rule name
+    2. entry['name'] - alternative name field
+    3. entry['node']['title'] - display title as fallback
+    4. entry['mustContain'] - search pattern
+    5. fallback - provided fallback value
+    
+    Args:
+        entry: Title entry (dict or string)
+        fallback: Value to return if no name found
+        
+    Returns:
+        str: Rule name for the entry
+    """
+    if not entry:
+        return fallback
+        
+    if isinstance(entry, dict):
+        name = entry.get('ruleName') or entry.get('name')
+        if name:
+            return str(name)
+        # Fall back to display title
+        node = entry.get('node') or {}
+        title = node.get('title') or entry.get('mustContain')
+        return str(title) if title else fallback
+    
+    return str(entry) if entry else fallback
+
+
+def get_must_contain(entry: Any, fallback: str = '') -> str:
+    """
+    Get the mustContain pattern from a title entry.
+    
+    Args:
+        entry: Title entry (dict or string)
+        fallback: Value to return if not found
+        
+    Returns:
+        str: The search pattern for RSS matching
+    """
+    if not entry:
+        return fallback
+        
+    if isinstance(entry, dict):
+        must = entry.get('mustContain')
+        if must:
+            return str(must)
+        # Fall back to display title
+        return get_display_title(entry, fallback)
+    
+    return str(entry) if entry else fallback
+
+
+def strip_internal_fields(entry: Any) -> Any:
+    """
+    Remove internal tracking fields from a title entry.
+    
+    Creates a clean copy of the entry without 'node' and 'ruleName' fields,
+    suitable for export to JSON or syncing to qBittorrent.
+    
+    Args:
+        entry: Title entry (dict or any type)
+        
+    Returns:
+        Clean entry without internal fields (dict entries are copied)
+    """
+    if not isinstance(entry, dict):
+        return entry
+    
+    return {k: v for k, v in entry.items() if k not in INTERNAL_FIELDS}
+
+
+def strip_internal_fields_from_titles(titles: Dict[str, List[Any]]) -> Dict[str, List[Any]]:
+    """
+    Remove internal tracking fields from all entries in a titles structure.
+    
+    Creates a clean copy of the entire ALL_TITLES structure without
+    'node' and 'ruleName' fields, suitable for export.
+    
+    Args:
+        titles: Dictionary of titles organized by media type
+        
+    Returns:
+        Clean titles structure without internal fields
+    """
+    clean_titles = {}
+    for media_type, items in titles.items():
+        clean_items = []
+        for item in items:
+            if isinstance(item, dict):
+                clean_items.append(strip_internal_fields(item))
+            else:
+                clean_items.append(item)
+        clean_titles[media_type] = clean_items
+    return clean_titles
+
+
+def create_title_entry(
+    display_title: str,
+    must_contain: Optional[str] = None,
+    rule_name: Optional[str] = None,
+    save_path: Optional[str] = None,
+    category: Optional[str] = None,
+    feed_url: Optional[str] = None,
+    enabled: bool = True,
+    **extra_fields
+) -> Dict[str, Any]:
+    """
+    Create a properly structured title entry.
+    
+    Creates an entry with both qBittorrent fields and internal tracking fields.
+    
+    Args:
+        display_title: Title to display in the GUI
+        must_contain: RSS search pattern (defaults to display_title)
+        rule_name: Rule name for qBittorrent (defaults to display_title)
+        save_path: Download save path
+        category: qBittorrent category
+        feed_url: RSS feed URL
+        enabled: Whether rule is enabled
+        **extra_fields: Additional qBittorrent fields to include
+        
+    Returns:
+        dict: Properly structured title entry
+    """
+    entry = {
+        # Internal tracking fields
+        'node': {'title': display_title},
+        'ruleName': rule_name or display_title,
+        # qBittorrent fields
+        'mustContain': must_contain or display_title,
+        'enabled': enabled,
+    }
+    
+    if save_path:
+        entry['savePath'] = save_path
+    if category:
+        entry['assignedCategory'] = category
+    if feed_url:
+        entry['affectedFeeds'] = [feed_url]
+    
+    # Add any extra fields
+    entry.update(extra_fields)
+    
+    return entry
+
+
+def find_entry_by_title(
+    titles: Dict[str, List[Any]], 
+    search_title: str, 
+    case_sensitive: bool = False
+) -> Optional[Tuple[str, int, Dict[str, Any]]]:
+    """
+    Find a title entry by its display title.
+    
+    Args:
+        titles: Dictionary of titles organized by media type
+        search_title: Title to search for
+        case_sensitive: Whether to match case-sensitively
+        
+    Returns:
+        Tuple of (media_type, index, entry) if found, None otherwise
+    """
+    search = search_title if case_sensitive else search_title.lower()
+    
+    for media_type, items in titles.items():
+        for idx, item in enumerate(items):
+            title = get_display_title(item)
+            compare = title if case_sensitive else title.lower()
+            if compare == search:
+                return (media_type, idx, item)
+    
+    return None
+
+
+def is_duplicate_title(
+    titles: Dict[str, List[Any]], 
+    check_title: str,
+    case_sensitive: bool = False
+) -> bool:
+    """
+    Check if a title already exists in the titles structure.
+    
+    Args:
+        titles: Dictionary of titles organized by media type
+        check_title: Title to check for duplicates
+        case_sensitive: Whether to match case-sensitively
+        
+    Returns:
+        bool: True if title already exists
+    """
+    return find_entry_by_title(titles, check_title, case_sensitive) is not None
+
+
+# ============================================================================
+# VALIDATION FUNCTIONS
+# ============================================================================
+# These functions validate title entries to prevent metadata pollution
+# and ensure data integrity.
+# ============================================================================
+
+# Valid qBittorrent RSS rule fields (from qBittorrent API)
+VALID_QBT_FIELDS = frozenset([
+    'addPaused', 'affectedFeeds', 'assignedCategory', 'enabled',
+    'episodeFilter', 'ignoreDays', 'lastMatch', 'mustContain',
+    'mustNotContain', 'previouslyMatchedEpisodes', 'priority',
+    'savePath', 'smartFilter', 'torrentContentLayout', 'torrentParams',
+    'useRegex'
+])
+
+# Valid torrentParams sub-fields
+VALID_TORRENT_PARAMS_FIELDS = frozenset([
+    'category', 'download_limit', 'download_path', 'inactive_seeding_time_limit',
+    'operating_mode', 'ratio_limit', 'save_path', 'seeding_time_limit',
+    'share_limit_action', 'skip_checking', 'ssl_certificate', 'ssl_dh_params',
+    'ssl_private_key', 'stopped', 'tags', 'upload_limit', 'use_auto_tmm'
+])
+
+
+def validate_entry_structure(entry: Any) -> Tuple[bool, List[str]]:
+    """
+    Validate that a title entry has the correct structure.
+    
+    Checks for:
+    - Required fields present
+    - No unexpected fields that could indicate metadata pollution
+    - Valid field types
+    
+    Args:
+        entry: Title entry to validate
+        
+    Returns:
+        Tuple[bool, List[str]]: (is_valid, list_of_warnings)
+    """
+    warnings = []
+    
+    if not isinstance(entry, dict):
+        return True, []  # Non-dict entries are allowed (simple strings)
+    
+    # Check for unexpected fields (not qBT fields or known internal fields)
+    all_valid_fields = VALID_QBT_FIELDS | INTERNAL_FIELDS
+    for key in entry.keys():
+        if key not in all_valid_fields:
+            warnings.append(f"Unexpected field '{key}' found (may be metadata pollution)")
+    
+    # Validate torrentParams if present
+    torrent_params = entry.get('torrentParams')
+    if isinstance(torrent_params, dict):
+        for key in torrent_params.keys():
+            if key not in VALID_TORRENT_PARAMS_FIELDS:
+                warnings.append(f"Unexpected torrentParams field '{key}'")
+    
+    # Check internal fields have correct structure
+    node = entry.get('node')
+    if node is not None and not isinstance(node, dict):
+        warnings.append("'node' field should be a dictionary")
+    
+    rule_name = entry.get('ruleName')
+    if rule_name is not None and not isinstance(rule_name, str):
+        warnings.append("'ruleName' field should be a string")
+    
+    return len(warnings) == 0, warnings
+
+
+def validate_entries_for_export(titles: Dict[str, List[Any]]) -> Tuple[bool, List[str]]:
+    """
+    Validate all entries in a titles structure before export.
+    
+    Checks that no internal fields or unexpected data will leak into export.
+    
+    Args:
+        titles: Dictionary of titles organized by media type
+        
+    Returns:
+        Tuple[bool, List[str]]: (all_valid, list_of_all_warnings)
+    """
+    all_warnings = []
+    
+    for media_type, items in titles.items():
+        for idx, item in enumerate(items):
+            if isinstance(item, dict):
+                # Check for internal fields that shouldn't be in export
+                for field in INTERNAL_FIELDS:
+                    if field in item:
+                        # This is expected - just note it will be filtered
+                        pass
+                
+                # Validate structure
+                _, warnings = validate_entry_structure(item)
+                for warning in warnings:
+                    all_warnings.append(f"{media_type}[{idx}]: {warning}")
+    
+    return len(all_warnings) == 0, all_warnings
+
+
+def sanitize_entry_for_export(entry: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Sanitize an entry for export, removing internal fields and unknown fields.
+    
+    This is more aggressive than strip_internal_fields - it only keeps
+    known qBittorrent fields to prevent any metadata pollution.
+    
+    Args:
+        entry: Title entry to sanitize
+        
+    Returns:
+        dict: Clean entry with only valid qBittorrent fields
+    """
+    if not isinstance(entry, dict):
+        return entry
+    
+    clean = {}
+    for key, value in entry.items():
+        if key in VALID_QBT_FIELDS:
+            # Deep copy torrentParams to sanitize it too
+            if key == 'torrentParams' and isinstance(value, dict):
+                clean[key] = {k: v for k, v in value.items() if k in VALID_TORRENT_PARAMS_FIELDS}
+            else:
+                clean[key] = value
+    
+    return clean
 
 
 def get_current_anime_season() -> Tuple[str, str]:

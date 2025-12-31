@@ -2,18 +2,41 @@
 File operations for import/export functionality.
 
 Handles importing titles from files/clipboard and exporting rules to JSON.
+
+Internal Format Filtering:
+    When entries are stored in config.ALL_TITLES, they use a hybrid format containing
+    both qBittorrent fields and internal tracking fields:
+    - 'node': {'title': 'Display Title'} - for GUI display
+    - 'ruleName': 'Title' - original rule name from qBittorrent
+    
+    These internal fields MUST be filtered out before:
+    - Exporting to JSON files (see: export_titles_to_file)
+    - Previewing rules (see: _show_preview_dialog)
+    - Syncing to qBittorrent API
+    
+    The filtering is done using utils.strip_internal_fields() and
+    utils.strip_internal_fields_from_titles() helper functions.
 """
+# Standard library imports
 import json
 import logging
+import threading
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
-from typing import Dict, List, Tuple, Any, Optional
-import threading
+from typing import Any, Dict, List, Optional, Tuple
 
+# Local application imports
 from src.config import config
-from src.utils import sanitize_folder_name, validate_folder_name
-from src.rss_rules import RSSRule
 from src.gui.app_state import get_app_state
+from src.rss_rules import RSSRule
+from src.utils import (
+    get_display_title,
+    get_rule_name,
+    sanitize_folder_name,
+    strip_internal_fields,
+    strip_internal_fields_from_titles,
+    validate_folder_name,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -341,6 +364,8 @@ def update_treeview_with_titles(all_titles: Dict[str, List]) -> None:
     """
     Update the main treeview widget with anime titles.
     
+    Optimized version using batch operations.
+    
     Args:
         all_titles: Dictionary of titles organized by media type
     """
@@ -351,97 +376,218 @@ def update_treeview_with_titles(all_titles: Dict[str, List]) -> None:
         logger.warning("No treeview widget available")
         return
     
-    # DEBUG: Check treeview configuration
     try:
-        logger.debug(f"Treeview columns: {treeview['columns']}")
-        logger.debug(f"Treeview displaycolumns: {treeview['displaycolumns']}")
-        logger.debug(f"Treeview show: {treeview['show']}")
-    except Exception as e:
-        logger.error(f"Error checking treeview config: {e}")
-    
-    try:
-        # Clear existing items
-        items_before_clear = len(treeview.get_children())
-        logger.debug(f"BEFORE CLEAR: Treeview has {items_before_clear} children")
-        
-        # Use the real ttk.Treeview.delete method to bypass any monkey-patching
-        import tkinter.ttk as ttk
-        for item in treeview.get_children():
-            ttk.Treeview.delete(treeview, item)
-        
-        items_after_clear = len(treeview.get_children())
-        logger.debug(f"AFTER CLEAR: Treeview has {items_after_clear} children (should be 0)")
-        
-        if items_after_clear != 0:
-            logger.error(f"CLEAR FAILED! Still have {items_after_clear} items after clearing!")
+        # Batch delete - more efficient than loop
+        children = treeview.get_children()
+        if children:
+            treeview.delete(*children)
         
         app_state.items.clear()
-        logger.debug(f"Cleared {items_before_clear} items from treeview")
         
-        # Add new items
+        # Prepare data for batch insert
         index = 0
-        items_added = 0
-        for media_type, items in (all_titles.items() if isinstance(all_titles, dict) else [('anime', all_titles)]):
-            logger.debug(f"Processing media_type '{media_type}' with {len(items) if isinstance(items, list) else 'N/A'} items")
+        items_to_add = []
+        
+        items_iter = all_titles.items() if isinstance(all_titles, dict) else [('anime', all_titles)]
+        for media_type, items in items_iter:
+            if not isinstance(items, list):
+                continue
             for entry in items:
                 try:
                     if isinstance(entry, dict):
-                        node = entry.get('node', {})
+                        node = entry.get('node') or {}
                         title_text = node.get('title') or entry.get('title') or entry.get('name') or str(entry)
-                        
-                        # Extract category and save path
                         category = entry.get('assignedCategory') or entry.get('category') or ''
                         
-                        # Get save path
+                        # Get save path efficiently
                         save_path = entry.get('savePath') or entry.get('save_path') or ''
                         if not save_path:
                             tp = entry.get('torrentParams') or entry.get('torrent_params') or {}
                             save_path = tp.get('save_path') or tp.get('savePath') or ''
                         
-                        save_path = str(save_path).replace('\\', '/') if save_path else ''
+                        if save_path:
+                            save_path = str(save_path).replace('\\', '/')
                         
-                        # Get enabled status (default to True if not specified)
-                        enabled = entry.get('enabled', True)
-                        enabled_mark = '✓' if enabled else ''
+                        enabled_mark = '✓' if entry.get('enabled', True) else ''
                     else:
                         title_text = str(entry)
                         category = ''
                         save_path = ''
-                        enabled_mark = '✓'  # Default enabled
+                        enabled_mark = '✓'
                     
-                    # Insert into treeview with enabled column first, then index
                     index += 1
-                    items_added += 1
-                    
-                    before_insert_count = len(treeview.get_children())
-                    logger.debug(f"Inserting item {index}: enabled={enabled_mark!r}, title={title_text!r}")
-                    logger.debug(f"Insert values: {(enabled_mark, str(index), title_text, category, save_path)}")
-                    
-                    # Use the real ttk.Treeview.insert method to bypass any monkey-patching
-                    import tkinter.ttk as ttk
-                    try:
-                        item_id = ttk.Treeview.insert(treeview, '', 'end', 
-                                      values=(enabled_mark, str(index), title_text, category, save_path))
-                        logger.debug(f"Insert returned item_id: {item_id!r}")
-                    except Exception as insert_err:
-                        logger.error(f"INSERT FAILED with error: {insert_err}", exc_info=True)
-                        continue
-                    
-                    after_insert_count = len(treeview.get_children())
-                    logger.debug(f"After insert: before={before_insert_count}, after={after_insert_count}")
-                    
-                    if after_insert_count != before_insert_count + 1:
-                        logger.warning(f"Treeview insert anomaly: before={before_insert_count}, after={after_insert_count}, expected={before_insert_count + 1}")
-                    
-                    app_state.add_item(title_text, entry)
+                    items_to_add.append((title_text, entry, (enabled_mark, str(index), title_text, category, save_path)))
                     
                 except Exception as e:
-                    logger.error(f"Error adding title to treeview: {e}")
+                    logger.error(f"Error processing title: {e}")
                     continue
         
-        logger.debug(f"Added {items_added} items to treeview (final count: {len(treeview.get_children())})")
+        # Batch insert all items
+        for title_text, entry, values in items_to_add:
+            try:
+                treeview.insert('', 'end', values=values)
+                app_state.add_item(title_text, entry)
+            except Exception as e:
+                logger.error(f"Error inserting '{title_text}': {e}")
+        
+        logger.info(f"Updated treeview with {len(items_to_add)} items")
+        
     except Exception as e:
         logger.error(f"Error updating treeview: {e}")
+
+
+def _import_titles_core(
+    parsed_data: Dict[str, List],
+    season: str,
+    year: str,
+    prefix_imports: bool,
+    source_name: str = "import"
+) -> Tuple[bool, str, int, int]:
+    """
+    Core import logic shared by file, clipboard, and recent file imports.
+    
+    Args:
+        parsed_data: Parsed titles dictionary
+        season: Season value for prefixing
+        year: Year value for prefixing
+        prefix_imports: Whether to prefix titles with season/year
+        source_name: Name of import source for status messages ("file", "clipboard", etc.)
+        
+    Returns:
+        Tuple of (success, status_message, new_count, duplicate_count)
+    """
+    try:
+        # Check for invalid folder names
+        try:
+            auto_sanitize = config.get_pref('auto_sanitize_imports', True)
+        except Exception:
+            auto_sanitize = True
+        
+        invalid_titles = collect_invalid_folder_titles(parsed_data)
+        
+        if invalid_titles:
+            if auto_sanitize:
+                auto_sanitize_titles(parsed_data)
+                invalid_titles = collect_invalid_folder_titles(parsed_data)
+            
+            if invalid_titles:
+                # Validation failed even after auto-sanitize
+                # Caller should handle this by showing dialog
+                return False, "validation_failed", 0, 0
+        
+        # Merge with existing titles
+        current = getattr(config, 'ALL_TITLES', {}) or {}
+        if not isinstance(current, dict):
+            current = {}
+        
+        # Get existing title names, mustContain, and ruleNames to avoid duplicates
+        existing_titles = set()
+        existing_must_contain = set()
+        existing_rule_names = set()
+        
+        for k, lst in current.items():
+            if not isinstance(lst, list):
+                continue
+            for it in lst:
+                try:
+                    if isinstance(it, dict):
+                        t = (it.get('node') or {}).get('title') or it.get('ruleName') or it.get('name')
+                        if t:
+                            existing_titles.add(str(t))
+                        must = it.get('mustContain')
+                        if must:
+                            existing_must_contain.add(str(must))
+                        rule_name = it.get('ruleName') or it.get('name')
+                        if rule_name:
+                            existing_rule_names.add(str(rule_name))
+                    else:
+                        t = str(it)
+                        existing_titles.add(t)
+                except Exception:
+                    pass
+        
+        # Merge new titles, skipping duplicates
+        # Track newly added items for prefix application
+        new_items = {media_type: [] for media_type in parsed_data.keys() if isinstance(parsed_data.get(media_type), list)}
+        new_count = 0
+        
+        for media_type, items in parsed_data.items():
+            if not isinstance(items, list):
+                continue
+            if media_type not in current:
+                current[media_type] = []
+            
+            for item in items:
+                try:
+                    if isinstance(item, dict):
+                        title = (item.get('node') or {}).get('title') or item.get('ruleName') or item.get('name')
+                        must = item.get('mustContain')
+                        rule_name = item.get('ruleName') or item.get('name')
+                    else:
+                        # Convert string items to proper dict format
+                        title = str(item)
+                        must = title
+                        rule_name = title
+                        # Convert to dict format
+                        item = {'node': {'title': title}, 'mustContain': must, 'ruleName': rule_name}
+                    
+                    key = str(title) if title else None
+                except Exception:
+                    key = None
+                    must = None
+                    rule_name = None
+                
+                # Check if it's a duplicate by title, mustContain, or ruleName
+                is_duplicate = False
+                if key and key in existing_titles:
+                    is_duplicate = True
+                elif must and str(must) in existing_must_contain:
+                    is_duplicate = True
+                elif rule_name and str(rule_name) in existing_rule_names:
+                    is_duplicate = True
+                
+                if not is_duplicate:
+                    current[media_type].append(item)
+                    new_items[media_type].append(item)  # Track new items
+                    if key:
+                        existing_titles.add(key)
+                    if must:
+                        existing_must_contain.add(str(must))
+                    if rule_name:
+                        existing_rule_names.add(str(rule_name))
+                    new_count += 1
+        
+        config.ALL_TITLES = current
+        total_imported = sum(len(v) for v in parsed_data.values() if isinstance(v, list))
+        duplicates = total_imported - new_count
+        
+        # Debug logging
+        total_in_all_titles = sum(len(v) for v in current.values() if isinstance(v, list))
+        logger.info(f"Import merge complete: {new_count} new, {duplicates} duplicates, total in ALL_TITLES: {total_in_all_titles}")
+        
+        # Populate missing fields ONLY for newly imported items
+        if new_items:
+            logger.debug(f"Populating fields for {sum(len(v) for v in new_items.values())} new items only")
+            populate_missing_rule_fields(new_items, season, year)
+            
+            # Apply prefix ONLY to newly imported items
+            if prefix_imports:
+                logger.debug(f"Applying prefix to {sum(len(v) for v in new_items.values())} new items only")
+                prefix_titles_with_season_year(new_items, season, year)
+        
+        # Build status message
+        status_msg = f'Imported {new_count} new titles from {source_name}.'
+        if duplicates > 0:
+            status_msg += f' ({duplicates} duplicates skipped)'
+        
+        return True, status_msg, new_count, duplicates
+        
+    except Exception as e:
+        logger.error(f"Error in core import logic: {e}")
+        # Fallback to replace
+        config.ALL_TITLES = parsed_data
+        status_msg = f'Imported {sum(len(v) for v in parsed_data.values())} titles from {source_name}.'
+        return True, status_msg, sum(len(v) for v in parsed_data.values()), 0
 
 
 def import_titles_from_file(
@@ -481,181 +627,60 @@ def import_titles_from_file(
         
         parsed = import_titles_from_text(text)
         if not parsed:
-            messagebox.showerror('Import Error', 'Failed to parse JSON from selected file.')
+            messagebox.showerror(
+                'Import Error', 
+                'Failed to parse JSON from selected file.\n\n'
+                'Action: Ensure the file contains valid JSON format and try again.'
+            )
             return False
         
-        # Note: Prefix will be applied AFTER populate_missing_rule_fields
-        # so that save paths are populated first
+        # Use core import logic
+        season = season_var.get()
+        year = year_var.get()
+        success, status_msg, new_count, duplicates = _import_titles_core(
+            parsed, season, year, prefix_imports, "file"
+        )
         
-        # Check for invalid folder names
-        try:
-            auto_sanitize = config.get_pref('auto_sanitize_imports', True)
-        except Exception:
-            auto_sanitize = True
+        # Handle validation failure
+        if not success and status_msg == "validation_failed":
+            invalid_titles = collect_invalid_folder_titles(parsed)
+            # Create a more readable display with better formatting
+            lines = []
+            for display, raw, reason in invalid_titles:
+                display_short = display if len(display) <= 60 else display[:57] + "..."
+                lines.append(f"• {display_short}\n  → {reason}")
+            
+            message_parts = [
+                'The following imported titles contain characters or names\n'
+                'invalid for folder names:\n'
+            ]
+            
+            display_count = min(8, len(lines))
+            message_parts.append('\n'.join(lines[:display_count]))
+            
+            if len(lines) > display_count:
+                message_parts.append(f'\n... and {len(lines) - display_count} more titles with issues')
+            
+            message_parts.append('\n\nContinue import anyway?')
+            
+            if not messagebox.askyesno(
+                'Invalid folder names',
+                '\n'.join(message_parts),
+                icon='warning'
+            ):
+                return False
+            
+            # Retry import without validation
+            success, status_msg, new_count, duplicates = _import_titles_core(
+                parsed, season, year, prefix_imports, "file"
+            )
         
-        invalid_titles = collect_invalid_folder_titles(parsed)
-        
-        if invalid_titles:
-            if auto_sanitize:
-                auto_sanitize_titles(parsed)
-                invalid_titles = collect_invalid_folder_titles(parsed)
-            
-            if invalid_titles:
-                # Create a more readable display with better formatting
-                lines = []
-                for display, raw, reason in invalid_titles:
-                    # Truncate long titles for display
-                    display_short = display if len(display) <= 60 else display[:57] + "..."
-                    lines.append(f"• {display_short}\n  → {reason}")
-                
-                # Build message with better formatting
-                message_parts = [
-                    'The following imported titles contain characters or names\n'
-                    'invalid for folder names:\n'
-                ]
-                
-                # Show up to 8 items with better spacing
-                display_count = min(8, len(lines))
-                message_parts.append('\n'.join(lines[:display_count]))
-                
-                if len(lines) > display_count:
-                    message_parts.append(f'\n... and {len(lines) - display_count} more titles with issues')
-                
-                message_parts.append('\n\nContinue import anyway?')
-                
-                if not messagebox.askyesno(
-                    'Invalid folder names',
-                    '\n'.join(message_parts),
-                    icon='warning'
-                ):
-                    return False
-        
-        # Merge with existing titles
-        try:
-            current = getattr(config, 'ALL_TITLES', {}) or {}
-            if not isinstance(current, dict):
-                current = {}
-            
-            # Get existing title names, mustContain, and ruleNames to avoid duplicates
-            existing_titles = set()
-            existing_must_contain = set()
-            existing_rule_names = set()
-            
-            for k, lst in current.items():
-                if not isinstance(lst, list):
-                    continue
-                for it in lst:
-                    try:
-                        if isinstance(it, dict):
-                            t = (it.get('node') or {}).get('title') or it.get('ruleName') or it.get('name')
-                            if t:
-                                existing_titles.add(str(t))
-                            # Also track mustContain and ruleName
-                            must = it.get('mustContain')
-                            if must:
-                                existing_must_contain.add(str(must))
-                            rule_name = it.get('ruleName') or it.get('name')
-                            if rule_name:
-                                existing_rule_names.add(str(rule_name))
-                        else:
-                            t = str(it)
-                            existing_titles.add(t)
-                    except Exception:
-                        pass
-            
-            # Merge new titles, skipping duplicates
-            # Track newly added items for prefix application
-            new_items = {media_type: [] for media_type in parsed.keys() if isinstance(parsed.get(media_type), list)}
-            new_count = 0
-            
-            for media_type, items in parsed.items():
-                if not isinstance(items, list):
-                    continue
-                if media_type not in current:
-                    current[media_type] = []
-                
-                for item in items:
-                    try:
-                        if isinstance(item, dict):
-                            title = (item.get('node') or {}).get('title') or item.get('ruleName') or item.get('name')
-                            must = item.get('mustContain')
-                            rule_name = item.get('ruleName') or item.get('name')
-                        else:
-                            # Convert string items to proper dict format
-                            title = str(item)
-                            must = title
-                            rule_name = title
-                            # Convert to dict format
-                            item = {'node': {'title': title}, 'mustContain': must, 'ruleName': rule_name}
-                        
-                        key = str(title) if title else None
-                    except Exception:
-                        key = None
-                        must = None
-                        rule_name = None
-                    
-                    # Check if it's a duplicate by title, mustContain, or ruleName
-                    is_duplicate = False
-                    if key and key in existing_titles:
-                        is_duplicate = True
-                    elif must and str(must) in existing_must_contain:
-                        is_duplicate = True
-                    elif rule_name and str(rule_name) in existing_rule_names:
-                        is_duplicate = True
-                    
-                    if not is_duplicate:
-                        current[media_type].append(item)
-                        new_items[media_type].append(item)  # Track new items
-                        if key:
-                            existing_titles.add(key)
-                        if must:
-                            existing_must_contain.add(str(must))
-                        if rule_name:
-                            existing_rule_names.add(str(rule_name))
-                        new_count += 1
-            
-            config.ALL_TITLES = current
-            total_imported = sum(len(v) for v in parsed.values() if isinstance(v, list))
-            duplicates = total_imported - new_count
-            
-            # Debug logging
-            total_in_all_titles = sum(len(v) for v in current.values() if isinstance(v, list))
-            logger.info(f"Import merge complete: {new_count} new, {duplicates} duplicates, total in ALL_TITLES: {total_in_all_titles}")
-            
-            status_msg = f'Imported {new_count} new titles from file.'
-            if duplicates > 0:
-                status_msg += f' ({duplicates} duplicates skipped)'
-                
-        except Exception as e:
-            logger.error(f"Error merging titles: {e}")
-            # Fallback to replace
-            config.ALL_TITLES = parsed
-            status_msg = f'Imported {sum(len(v) for v in parsed.values())} titles from file.'
-        
-        # Populate missing fields ONLY for newly imported items (not existing online rules)
-        try:
-            season = season_var.get()
-            year = year_var.get()
-            
-            if 'new_items' in locals():
-                # Only populate defaults for new items
-                logger.debug(f"Populating fields for {sum(len(v) for v in new_items.values())} new items only")
-                populate_missing_rule_fields(new_items, season, year)
-                
-                # Apply prefix ONLY to newly imported items
-                if prefix_imports:
-                    logger.debug(f"Applying prefix to {sum(len(v) for v in new_items.values())} new items only")
-                    prefix_titles_with_season_year(new_items, season, year)
-        except Exception as e:
-            logger.error(f"Error populating fields: {e}")
+        if not success:
+            return False
         
         # Update UI
         total_titles = sum(len(v) for v in config.ALL_TITLES.values() if isinstance(v, list))
         logger.info(f"About to update treeview with {total_titles} total titles")
-        logger.debug(f"ALL_TITLES keys: {list(config.ALL_TITLES.keys())}")
-        for key, val in config.ALL_TITLES.items():
-            if isinstance(val, list):
-                logger.debug(f"  '{key}': {len(val)} items")
         
         update_treeview_with_titles(config.ALL_TITLES)
         
@@ -715,158 +740,56 @@ def import_titles_from_clipboard(
     
     parsed = import_titles_from_text(text)
     if not parsed:
-        messagebox.showerror('Import Error', 'Failed to parse JSON or titles from clipboard text.')
+        messagebox.showerror(
+            'Import Error', 
+            'Failed to parse JSON or titles from clipboard text.\n\n'
+            'Action: Ensure the clipboard contains valid JSON format or anime titles, one per line.'
+        )
         return False
     
-    # Apply prefix if requested
-    if prefix_imports:
-        season = season_var.get()
-        year = year_var.get()
-        prefix_titles_with_season_year(parsed, season, year)
+    # Use core import logic
+    season = season_var.get()
+    year = year_var.get()
+    success, status_msg, new_count, duplicates = _import_titles_core(
+        parsed, season, year, prefix_imports, "clipboard"
+    )
     
-    # Check for invalid folder names
-    try:
-        auto_sanitize = config.get_pref('auto_sanitize_imports', True)
-    except Exception:
-        auto_sanitize = True
+    # Handle validation failure
+    if not success and status_msg == "validation_failed":
+        invalid_titles = collect_invalid_folder_titles(parsed)
+        # Create a more readable display with better formatting
+        lines = []
+        for display, raw, reason in invalid_titles:
+            display_short = display if len(display) <= 60 else display[:57] + "..."
+            lines.append(f"• {display_short}\n  → {reason}")
+        
+        message_parts = [
+            'The following imported titles contain characters or names\n'
+            'invalid for folder names:\n'
+        ]
+        
+        display_count = min(8, len(lines))
+        message_parts.append('\n'.join(lines[:display_count]))
+        
+        if len(lines) > display_count:
+            message_parts.append(f'\n... and {len(lines) - display_count} more titles with issues')
+        
+        message_parts.append('\n\nContinue import anyway?')
+        
+        if not messagebox.askyesno(
+            'Invalid folder names',
+            '\n'.join(message_parts),
+            icon='warning'
+        ):
+            return False
+        
+        # Retry import without validation
+        success, status_msg, new_count, duplicates = _import_titles_core(
+            parsed, season, year, prefix_imports, "clipboard"
+        )
     
-    invalid_titles = collect_invalid_folder_titles(parsed)
-    
-    if invalid_titles:
-        if auto_sanitize:
-            auto_sanitize_titles(parsed)
-            invalid_titles = collect_invalid_folder_titles(parsed)
-        
-        if invalid_titles:
-            # Create a more readable display with better formatting
-            lines = []
-            for display, raw, reason in invalid_titles:
-                # Truncate long titles for display
-                display_short = display if len(display) <= 60 else display[:57] + "..."
-                lines.append(f"• {display_short}\n  → {reason}")
-            
-            # Build message with better formatting
-            message_parts = [
-                'The following imported titles contain characters or names\n'
-                'invalid for folder names:\n'
-            ]
-            
-            # Show up to 8 items with better spacing
-            display_count = min(8, len(lines))
-            message_parts.append('\n'.join(lines[:display_count]))
-            
-            if len(lines) > display_count:
-                message_parts.append(f'\n... and {len(lines) - display_count} more titles with issues')
-            
-            message_parts.append('\n\nContinue import anyway?')
-            
-            if not messagebox.askyesno(
-                'Invalid folder names',
-                '\n'.join(message_parts),
-                icon='warning'
-            ):
-                return False
-    
-    # Merge with existing titles
-    try:
-        current = getattr(config, 'ALL_TITLES', {}) or {}
-        if not isinstance(current, dict):
-            current = {}
-        
-        # Get existing title names, mustContain, and ruleNames to avoid duplicates
-        existing_titles = set()
-        existing_must_contain = set()
-        existing_rule_names = set()
-        
-        for k, lst in current.items():
-            if not isinstance(lst, list):
-                continue
-            for it in lst:
-                try:
-                    if isinstance(it, dict):
-                        t = (it.get('node') or {}).get('title') or it.get('ruleName') or it.get('name')
-                        if t:
-                            existing_titles.add(str(t))
-                        # Also track mustContain and ruleName
-                        must = it.get('mustContain')
-                        if must:
-                            existing_must_contain.add(str(must))
-                        rule_name = it.get('ruleName') or it.get('name')
-                        if rule_name:
-                            existing_rule_names.add(str(rule_name))
-                    else:
-                        t = str(it)
-                        existing_titles.add(t)
-                except Exception:
-                    pass
-        
-        # Merge new titles
-        new_count = 0
-        for media_type, items in parsed.items():
-            if not isinstance(items, list):
-                continue
-            if media_type not in current:
-                current[media_type] = []
-            
-            for item in items:
-                try:
-                    if isinstance(item, dict):
-                        title = (item.get('node') or {}).get('title') or item.get('ruleName') or item.get('name')
-                        must = item.get('mustContain')
-                        rule_name = item.get('ruleName') or item.get('name')
-                    else:
-                        # Convert string items to proper dict format
-                        title = str(item)
-                        must = title
-                        rule_name = title
-                        # Convert to dict format
-                        item = {'node': {'title': title}, 'mustContain': must, 'ruleName': rule_name}
-                    
-                    key = str(title) if title else None
-                except Exception:
-                    key = None
-                    must = None
-                    rule_name = None
-                
-                # Check if it's a duplicate by title, mustContain, or ruleName
-                is_duplicate = False
-                if key and key in existing_titles:
-                    is_duplicate = True
-                elif must and str(must) in existing_must_contain:
-                    is_duplicate = True
-                elif rule_name and str(rule_name) in existing_rule_names:
-                    is_duplicate = True
-                
-                if not is_duplicate:
-                    current[media_type].append(item)
-                    if key:
-                        existing_titles.add(key)
-                    if must:
-                        existing_must_contain.add(str(must))
-                    if rule_name:
-                        existing_rule_names.add(str(rule_name))
-                    new_count += 1
-        
-        config.ALL_TITLES = current
-        total_imported = sum(len(v) for v in parsed.values() if isinstance(v, list))
-        duplicates = total_imported - new_count
-        
-        status_msg = f'Imported {new_count} new titles from clipboard.'
-        if duplicates > 0:
-            status_msg += f' ({duplicates} duplicates skipped)'
-            
-    except Exception as e:
-        logger.error(f"Error merging titles: {e}")
-        config.ALL_TITLES = parsed
-        status_msg = f'Imported {sum(len(v) for v in parsed.values())} titles from clipboard.'
-    
-    # Populate missing fields
-    try:
-        season = season_var.get()
-        year = year_var.get()
-        populate_missing_rule_fields(config.ALL_TITLES, season, year)
-    except Exception:
-        pass
+    if not success:
+        return False
     
     # Update UI
     update_treeview_with_titles(config.ALL_TITLES)
@@ -971,8 +894,9 @@ def clear_all_titles(root: tk.Tk, status_var: tk.StringVar) -> bool:
         status_var.set('No titles to clear.')
         if app_state.treeview:
             try:
-                for item in app_state.treeview.get_children():
-                    app_state.treeview.delete(item)
+                children = app_state.treeview.get_children()
+                if children:
+                    app_state.treeview.delete(*children)
             except Exception:
                 pass
         return False
@@ -990,8 +914,9 @@ def clear_all_titles(root: tk.Tk, status_var: tk.StringVar) -> bool:
     
     if app_state.treeview:
         try:
-            for item in app_state.treeview.get_children():
-                app_state.treeview.delete(item)
+            children = app_state.treeview.get_children()
+            if children:
+                app_state.treeview.delete(*children)
         except Exception:
             pass
     
@@ -1208,22 +1133,9 @@ def dispatch_generation(
             # Build actual qBittorrent rules format for preview
             from src.rss_rules import build_rules_from_titles
             
-            # Create clean data without internal tracking fields
-            clean_titles = {}
-            for media_type, items in config.ALL_TITLES.items():
-                clean_items = []
-                for item in items:
-                    if isinstance(item, dict):
-                        # Create clean copy without internal tracking fields
-                        clean_item = {}
-                        for key, value in item.items():
-                            # Skip internal tracking fields
-                            if key not in ['node', 'ruleName']:
-                                clean_item[key] = value
-                        clean_items.append(clean_item)
-                    else:
-                        clean_items.append(item)
-                clean_titles[media_type] = clean_items
+            # Strip internal tracking fields before building rules for preview
+            # Uses centralized helper from utils.py
+            clean_titles = strip_internal_fields_from_titles(config.ALL_TITLES)
             
             # Build rules dict - this returns {"Rule Name": {rule_data}, ...}
             rules_dict = build_rules_from_titles(clean_titles)

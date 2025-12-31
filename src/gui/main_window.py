@@ -21,6 +21,7 @@ Progress: GUI MODULE 100% COMPLETE - Fully Modular!
 - ✅ All event handlers integrated
 - ✅ Final setup_gui() integration
 """
+# Standard library imports
 import logging
 import os
 import sys
@@ -30,22 +31,27 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 from typing import Tuple
 
+# Local application imports
+import src.qbittorrent_api as qbt_api
 from src.config import config
 from src.gui.app_state import AppState
 from src.gui.dialogs import open_settings_window
 from src.gui.file_operations import (
-    import_titles_from_file, 
-    import_titles_from_clipboard, 
-    import_titles_from_text, 
-    update_treeview_with_titles
+    import_titles_from_clipboard,
+    import_titles_from_file,
+    import_titles_from_text,
+    update_treeview_with_titles,
 )
-from src.utils import get_current_anime_season
-import src.qbittorrent_api as qbt_api
+from src.utils import (
+    get_current_anime_season,
+    get_display_title,
+    get_rule_name,
+)
 
 logger = logging.getLogger(__name__)
 
 
-def create_tooltip(widget, text):
+def create_tooltip(widget: tk.Widget, text: str) -> None:
     """
     Creates a tooltip for a widget that appears on hover.
     
@@ -294,15 +300,18 @@ def refresh_treeview_display() -> None:
     Useful to fix display issues or synchronize the view with data.
     """
     try:
-        from src.gui.file_operations import update_treeview_with_titles
-        import src.config as config
         update_treeview_with_titles(config.ALL_TITLES)
         logger.info("Treeview display refreshed")
     except Exception as e:
         logger.error(f"Error refreshing treeview: {e}")
 
 
-def setup_menu_bar(root: tk.Tk, status_var: tk.StringVar, season_var: tk.StringVar, year_var: tk.StringVar) -> Tuple[tk.Menu, tk.Menu, tk.Menu]:
+def setup_menu_bar(
+    root: tk.Tk, 
+    status_var: tk.StringVar, 
+    season_var: tk.StringVar, 
+    year_var: tk.StringVar
+) -> Tuple[tk.Menu, tk.Menu, tk.Menu]:
     """
     Creates and configures the main menu bar.
     
@@ -418,7 +427,11 @@ def setup_menu_bar(root: tk.Tk, status_var: tk.StringVar, season_var: tk.StringV
                         if result:
                             update_treeview_with_titles(config.ALL_TITLES)
                     except Exception as e:
-                        messagebox.showerror('Open Recent', f'Failed to open {os.path.basename(p)}: {e}')
+                        messagebox.showerror(
+                            'Open Recent', 
+                            f'Failed to open {os.path.basename(p)}: {e}\n\n'
+                            'Action: Check if the file still exists and is not corrupted.'
+                        )
                 
                 # Show filename with full path as tooltip-like info
                 display_name = os.path.basename(path)
@@ -528,9 +541,9 @@ def setup_menu_bar(root: tk.Tk, status_var: tk.StringVar, season_var: tk.StringV
                 
                 # Validate folder name
                 try:
-                    raw = e.get('mustContain') or (e.get('node') or {}).get('title') or e.get('title') or ''
+                    raw = e.get('mustContain') or get_display_title(e) or ''
                     if not raw:
-                        display = (e.get('node') or {}).get('title') or e.get('title') or title_text
+                        display = get_display_title(e, title_text)
                         if display and ' - ' in display:
                             parts = display.split(' - ', 1)
                             if len(parts) == 2:
@@ -589,7 +602,11 @@ def setup_menu_bar(root: tk.Tk, status_var: tk.StringVar, season_var: tk.StringV
             
         except Exception as e:
             logger.error(f"Error in validation: {e}")
-            messagebox.showerror('Validation Error', f'An error occurred: {e}')
+            messagebox.showerror(
+                'Validation Error', 
+                f'An error occurred: {e}\n\n'
+                'Action: Check that all required fields are filled correctly.'
+            )
     
     validate_menu.add_command(label='🔍 Validate All Titles', command=_validate_all_titles)
     menubar.add_cascade(label='✓ Validate', menu=validate_menu)
@@ -639,30 +656,32 @@ def setup_keyboard_shortcuts(root: tk.Tk, season_var: tk.StringVar, year_var: tk
         status_var: StringVar for status updates
     """
     # Import functions that will be called by shortcuts
-    from src.gui.file_operations import export_selected_titles, clear_all_titles
+    from src.gui.file_operations import (
+        export_selected_titles, clear_all_titles, 
+        export_all_titles, dispatch_generation
+    )
     
     try:
-        # Note: dispatch_generation, undo_last_delete, export_all_titles 
-        # will be added in later sessions when we extract those functions
-        
+        # File operations
         root.bind_all('<Control-o>', lambda e: import_titles_from_file(root, status_var))
         root.bind_all('<Control-O>', lambda e: import_titles_from_file(root, status_var))
         
-        # Ctrl+S will be bound to dispatch_generation in Session 4D
-        # root.bind_all('<Control-s>', lambda e: dispatch_generation(root, season_var, year_var, treeview, status_var))
-        # root.bind_all('<Control-S>', lambda e: dispatch_generation(root, season_var, year_var, treeview, status_var))
+        # Ctrl+S - Generate/Sync rules
+        root.bind_all('<Control-s>', lambda e: dispatch_generation(root, season_var, year_var, status_var))
+        root.bind_all('<Control-S>', lambda e: dispatch_generation(root, season_var, year_var, status_var))
         
+        # Export shortcuts
         root.bind_all('<Control-e>', lambda e: export_selected_titles())
         root.bind_all('<Control-E>', lambda e: export_selected_titles())
         
-        # Ctrl+Shift+E will be bound to export_all_titles in Session 4D
-        # root.bind_all('<Control-Shift-E>', lambda e: export_all_titles())
-        # root.bind_all('<Control-Shift-e>', lambda e: export_all_titles())
+        root.bind_all('<Control-Shift-E>', lambda e: export_all_titles())
+        root.bind_all('<Control-Shift-e>', lambda e: export_all_titles())
         
-        # Ctrl+Z will be bound to undo_last_delete in Session 4D
+        # Ctrl+Z - Undo (not yet implemented)
         # root.bind_all('<Control-z>', lambda e: undo_last_delete())
         # root.bind_all('<Control-Z>', lambda e: undo_last_delete())
         
+        # App controls
         root.bind_all('<Control-q>', lambda e: root.quit())
         root.bind_all('<Control-Q>', lambda e: root.quit())
         
@@ -670,8 +689,82 @@ def setup_keyboard_shortcuts(root: tk.Tk, season_var: tk.StringVar, year_var: tk
         root.bind_all('<Control-Shift-c>', lambda e: clear_all_titles(root, status_var))
         
         root.bind_all('<F5>', lambda e: refresh_treeview_display())
+        
+        # Ctrl+F - Focus search
+        from src.gui.app_state import get_app_state
+        def _global_focus_search(e):
+            get_app_state().focus_search()
+            return 'break'
+        root.bind_all('<Control-f>', _global_focus_search)
+        root.bind_all('<Control-F>', _global_focus_search)
     except Exception:
         pass
+
+
+def setup_drag_and_drop(root: tk.Tk, status_var: tk.StringVar, 
+                        season_var: tk.StringVar = None, year_var: tk.StringVar = None) -> None:
+    """
+    Setup drag-and-drop support for JSON file import.
+    
+    Attempts to use tkinterdnd2 for native drag-and-drop. If not available,
+    logs a warning but continues without DnD support.
+    
+    Args:
+        root: Tkinter root window
+        status_var: Status bar variable for feedback
+        season_var: Season selection variable (optional)
+        year_var: Year selection variable (optional)
+    """
+    try:
+        # Try to import tkinterdnd2
+        from tkinterdnd2 import DND_FILES
+        
+        # Check if root is a TkinterDnD.Tk instance
+        if not hasattr(root, 'drop_target_register'):
+            logger.info("Drag-and-drop: root window not DnD-enabled, skipping")
+            return
+        
+        def _handle_drop(event):
+            """Handle dropped files."""
+            try:
+                # Parse dropped file paths (may be wrapped in braces on Windows)
+                files = root.tk.splitlist(event.data)
+                
+                json_files = [f for f in files if f.lower().endswith('.json')]
+                
+                if not json_files:
+                    status_var.set("Drop a .json file to import")
+                    return
+                
+                # Import the first JSON file
+                file_path = json_files[0]
+                
+                # Use existing import function
+                from src.gui.file_operations import import_titles_from_file
+                
+                # Get season/year vars - use empty StringVars as fallback
+                sv = season_var if season_var else tk.StringVar(value="")
+                yv = year_var if year_var else tk.StringVar(value="")
+                
+                success = import_titles_from_file(root, status_var, sv, yv, path=file_path)
+                
+                if success:
+                    status_var.set(f"Imported: {os.path.basename(file_path)}")
+                
+            except Exception as e:
+                logger.error(f"Drag-and-drop import failed: {e}")
+                status_var.set(f"Drop failed: {e}")
+        
+        # Register the root window as a drop target
+        root.drop_target_register(DND_FILES)
+        root.dnd_bind('<<Drop>>', _handle_drop)
+        
+        logger.info("Drag-and-drop enabled for JSON file import")
+        
+    except ImportError:
+        logger.info("tkinterdnd2 not installed - drag-and-drop disabled. Install with: pip install tkinterdnd2")
+    except Exception as e:
+        logger.warning(f"Could not setup drag-and-drop: {e}")
 
 
 def exit_handler() -> None:
@@ -725,8 +818,15 @@ def setup_gui() -> tk.Tk:
         logger.error(f"Failed to load config: {e}", exc_info=True)
         config_set = False
     
-    # Create root window
-    root = tk.Tk()
+    # Create root window - try TkinterDnD for drag-and-drop support
+    try:
+        from tkinterdnd2 import TkinterDnD
+        root = TkinterDnD.Tk()
+        logger.info("Using TkinterDnD for drag-and-drop support")
+    except ImportError:
+        root = tk.Tk()
+        logger.info("TkinterDnD not available - using standard Tk")
+    
     app_state.root = root
     
     # Setup exception handler
@@ -765,6 +865,9 @@ def setup_gui() -> tk.Tk:
     # Setup keyboard shortcuts
     setup_keyboard_shortcuts(root, season_var, year_var, status_var)
     
+    # Setup drag-and-drop for JSON file import
+    setup_drag_and_drop(root, status_var, season_var, year_var)
+    
     # ==================== Context Menu Setup ====================
     # Context menu handlers for right-click operations
     
@@ -791,14 +894,22 @@ def setup_gui() -> tk.Tk:
             
             open_full_rule_editor(root, title_text, entry, idx, _populate_callback)
         except Exception as e:
-            messagebox.showerror('Edit Error', f'Failed to open editor: {e}')
+            messagebox.showerror(
+                'Edit Error', 
+                f'Failed to open editor: {e}\n\n'
+                'Action: Try closing and reopening the application.'
+            )
     
     def _ctx_delete_selected():
         """Moves selected items to trash with undo support."""
         try:
             sel = treeview.curselection()
             if not sel:
-                messagebox.showwarning('Delete', 'No title selected.')
+                messagebox.showwarning(
+                    'Delete', 
+                    'No title selected.\n\n'
+                    'Action: Select one or more titles from the list, then try again.'
+                )
                 return
             if not messagebox.askyesno('Confirm Delete', f'Delete {len(sel)} selected title(s)?'):
                 return
@@ -840,7 +951,7 @@ def setup_gui() -> tk.Tk:
                             for i in range(len(config.ALL_TITLES.get(k, [])) - 1, -1, -1):
                                 it = config.ALL_TITLES[k][i]
                                 try:
-                                    candidate = (it.get('node') or {}).get('title') if isinstance(it, dict) else str(it)
+                                    candidate = get_display_title(it) if isinstance(it, dict) else str(it)
                                 except Exception:
                                     candidate = str(it)
                                 if candidate == title_text:
@@ -854,20 +965,27 @@ def setup_gui() -> tk.Tk:
                 removed += 1
             
             # Refresh treeview to ensure display is synchronized
-            from src.gui.file_operations import update_treeview_with_titles
             update_treeview_with_titles(config.ALL_TITLES)
             
             messagebox.showinfo('Delete', f'Moved {removed} title(s) to Trash (undo available).')
             status_var.set(f'Deleted {removed} title(s) - view trash to restore')
         except Exception as e:
-            messagebox.showerror('Delete Error', f'Failed to delete selected titles: {e}')
+            messagebox.showerror(
+                'Delete Error', 
+                f'Failed to delete selected titles: {e}\n\n'
+                'Action: Try refreshing the list and attempting again.'
+            )
     
     def _ctx_copy_selected():
         """Copies selected items as JSON to clipboard."""
         try:
             sel = treeview.curselection()
             if not sel:
-                messagebox.showwarning('Copy', 'No title selected to copy.')
+                messagebox.showwarning(
+                    'Copy', 
+                    'No title selected to copy.\n\n'
+                    'Action: Select one or more titles from the list to copy as JSON.'
+                )
                 return
             
             export_map = {}
@@ -897,7 +1015,11 @@ def setup_gui() -> tk.Tk:
             try:
                 text = json.dumps(export_map, indent=4)
             except Exception as e:
-                messagebox.showerror('Copy Error', f'Failed to serialize selection to JSON: {e}')
+                messagebox.showerror(
+                    'Copy Error', 
+                    f'Failed to serialize selection to JSON: {e}\n\n'
+                    'Action: The selected data may be corrupted. Try selecting different items.'
+                )
                 return
             
             try:
@@ -951,7 +1073,7 @@ def setup_gui() -> tk.Tk:
                     for k, lst in (config.ALL_TITLES.items() if isinstance(config.ALL_TITLES, dict) else []):
                         for i, it in enumerate(lst):
                             try:
-                                candidate_title = (it.get('node') or {}).get('title') if isinstance(it, dict) else str(it)
+                                candidate_title = get_display_title(it) if isinstance(it, dict) else str(it)
                             except Exception:
                                 candidate_title = str(it)
                             if candidate_title == title_text:
@@ -1014,7 +1136,7 @@ def setup_gui() -> tk.Tk:
                     for k, lst in (config.ALL_TITLES.items() if isinstance(config.ALL_TITLES, dict) else []):
                         for i, it in enumerate(lst):
                             try:
-                                candidate_title = (it.get('node') or {}).get('title') if isinstance(it, dict) else str(it)
+                                candidate_title = get_display_title(it) if isinstance(it, dict) else str(it)
                             except Exception:
                                 candidate_title = str(it)
                             if candidate_title == title_text:
@@ -1075,7 +1197,7 @@ def setup_gui() -> tk.Tk:
                     for k, lst in (config.ALL_TITLES.items() if isinstance(config.ALL_TITLES, dict) else []):
                         for i, it in enumerate(lst):
                             try:
-                                candidate_title = (it.get('node') or {}).get('title') if isinstance(it, dict) else str(it)
+                                candidate_title = get_display_title(it) if isinstance(it, dict) else str(it)
                             except Exception:
                                 candidate_title = str(it)
                             if candidate_title == title_text:
@@ -1262,7 +1384,6 @@ def setup_gui() -> tk.Tk:
     # Load initial data if available
     try:
         if config.ALL_TITLES:
-            from src.gui.file_operations import update_treeview_with_titles
             update_treeview_with_titles(config.ALL_TITLES)
             total_count = sum(len(v) for v in config.ALL_TITLES.values() if isinstance(v, list))
             status_var.set(f'Loaded {total_count} titles from config')
@@ -1403,7 +1524,7 @@ def setup_season_controls(root: tk.Tk, main_frame: ttk.Frame, season_var: tk.Str
                                         for it in lst:
                                             try:
                                                 if isinstance(it, dict):
-                                                    t = (it.get('node') or {}).get('title') or it.get('ruleName') or it.get('name')
+                                                    t = get_display_title(it) or get_rule_name(it)
                                                     if t is not None:
                                                         existing_titles.add(str(t))
                                                     # Also track mustContain and ruleName for better duplicate detection
@@ -1427,7 +1548,7 @@ def setup_season_controls(root: tk.Tk, main_frame: ttk.Frame, season_var: tk.Str
                                 for e in entries:
                                     try:
                                         if isinstance(e, dict):
-                                            title = (e.get('node') or {}).get('title') or e.get('ruleName') or e.get('name')
+                                            title = get_display_title(e) or get_rule_name(e)
                                             must = e.get('mustContain')
                                             rule_name = e.get('ruleName') or e.get('name')
                                         else:
@@ -1527,7 +1648,11 @@ def setup_season_controls(root: tk.Tk, main_frame: ttk.Frame, season_var: tk.Str
     return top_config_frame
 
 
-def setup_library_panel(main_frame: ttk.Frame, style: ttk.Style, edit_menu: tk.Menu = None) -> Tuple[ttk.PanedWindow, ttk.Treeview]:
+def setup_library_panel(
+    main_frame: ttk.Frame, 
+    style: ttk.Style, 
+    edit_menu: tk.Menu = None
+) -> Tuple[ttk.PanedWindow, ttk.Treeview]:
     """
     Creates the title library panel with treeview and all features.
     
@@ -1549,6 +1674,37 @@ def setup_library_panel(main_frame: ttk.Frame, style: ttk.Style, edit_menu: tk.M
     """
     list_frame_container = ttk.LabelFrame(main_frame, text="📋 Title Rules Library", padding="15")
     list_frame_container.pack(fill='both', expand=True, pady=(10, 5))
+    
+    # Search/Filter bar
+    search_frame = ttk.Frame(list_frame_container)
+    search_frame.pack(fill='x', pady=(0, 8))
+    
+    ttk.Label(search_frame, text="🔍 Filter:").pack(side='left', padx=(0, 5))
+    
+    search_var = tk.StringVar()
+    search_entry = ttk.Entry(search_frame, textvariable=search_var, width=30)
+    search_entry.pack(side='left', fill='x', expand=True, padx=(0, 5))
+    
+    # Store in app_state for global access
+    from src.gui.app_state import get_app_state
+    app_state = get_app_state()
+    app_state.search_entry = search_entry
+    app_state.search_var = search_var
+    
+    # Filter type dropdown
+    filter_type_var = tk.StringVar(value="Title")
+    filter_type = ttk.Combobox(search_frame, textvariable=filter_type_var, 
+                               values=["Title", "Category", "Save Path", "All"], 
+                               state='readonly', width=10)
+    filter_type.pack(side='left', padx=(0, 5))
+    
+    # Clear button
+    def clear_filter():
+        search_var.set("")
+        _apply_filter()
+    
+    clear_btn = ttk.Button(search_frame, text="✕", width=3, command=clear_filter)
+    clear_btn.pack(side='left')
 
     # Use PanedWindow to allow resizable split between library and editor
     paned = ttk.PanedWindow(list_frame_container, orient='horizontal')
@@ -1935,6 +2091,97 @@ def setup_library_panel(main_frame: ttk.Frame, style: ttk.Style, edit_menu: tk.M
     treeview.see = _see
     treeview.selection_set = _selection_set
     
+    # Filter function for search with debouncing
+    _filter_job = None
+    _all_items_cache = []  # Cache all items for faster filtering
+    
+    def _rebuild_items_cache():
+        """Rebuild the items cache from treeview."""
+        nonlocal _all_items_cache
+        _all_items_cache = []
+        for item in treeview.get_children():
+            values = treeview.item(item, 'values')
+            if values and len(values) >= 5:
+                _all_items_cache.append((item, values))
+    
+    def _apply_filter_impl():
+        """Filter treeview items based on search text."""
+        nonlocal _filter_job
+        _filter_job = None
+        
+        search_text = search_var.get().lower().strip()
+        filter_by = filter_type_var.get()
+        
+        # Rebuild cache if needed
+        if not _all_items_cache:
+            _rebuild_items_cache()
+        
+        if not search_text:
+            # Show all items efficiently
+            for item, _ in _all_items_cache:
+                try:
+                    treeview.reattach(item, '', 'end')
+                except Exception:
+                    pass
+            return
+        
+        # Filter items using cached data
+        for item, values in _all_items_cache:
+            enabled, idx, title, category, savepath = values[:5]
+            
+            # Build match text based on filter type
+            if filter_by == "Title":
+                match_text = title.lower()
+            elif filter_by == "Category":
+                match_text = category.lower()
+            elif filter_by == "Save Path":
+                match_text = savepath.lower()
+            else:  # All
+                match_text = f"{title} {category} {savepath}".lower()
+            
+            try:
+                if search_text in match_text:
+                    treeview.reattach(item, '', 'end')
+                else:
+                    treeview.detach(item)
+            except Exception:
+                pass
+    
+    def _apply_filter(*args):
+        """Debounced filter - waits 150ms before applying."""
+        nonlocal _filter_job
+        if _filter_job:
+            treeview.after_cancel(_filter_job)
+        _filter_job = treeview.after(150, _apply_filter_impl)
+    
+    def _invalidate_filter_cache(*args):
+        """Invalidate cache when treeview content changes."""
+        nonlocal _all_items_cache
+        _all_items_cache = []
+    
+    # Bind filter to search entry
+    search_var.trace_add('write', _apply_filter)
+    filter_type_var.trace_add('write', _apply_filter)
+    
+    # Bind Ctrl+F to focus search
+    def _focus_search(event=None):
+        search_entry.focus_set()
+        search_entry.select_range(0, 'end')
+        return 'break'
+    
+    treeview.bind('<Control-f>', _focus_search)
+    treeview.bind('<Control-F>', _focus_search)
+    
+    # Bind Escape to clear filter when in search entry
+    def _escape_search(event=None):
+        if search_var.get():
+            clear_filter()
+        else:
+            treeview.focus_set()
+        return 'break'
+    
+    search_entry.bind('<Escape>', _escape_search)
+    
     # Restore sash position after widget is fully rendered
     paned.after_idle(_restore_or_set_default_sash)
     
@@ -2133,7 +2380,7 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
                     for k, lst in (config.ALL_TITLES.items() if isinstance(config.ALL_TITLES, dict) else []):
                         for i, it in enumerate(lst):
                             try:
-                                candidate_title = (it.get('node') or {}).get('title') if isinstance(it, dict) else str(it)
+                                candidate_title = get_display_title(it) if isinstance(it, dict) else str(it)
                             except Exception:
                                 candidate_title = str(it)
                             if candidate_title == state['editor_values']['rule_name']:
@@ -2512,7 +2759,7 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
                     for k, lst in (config.ALL_TITLES.items() if isinstance(config.ALL_TITLES, dict) else []):
                         for i, it in enumerate(lst):
                             try:
-                                candidate_title = (it.get('node') or {}).get('title') if isinstance(it, dict) else str(it)
+                                candidate_title = get_display_title(it) if isinstance(it, dict) else str(it)
                             except Exception:
                                 candidate_title = str(it)
                             if candidate_title == title_text:
@@ -2522,7 +2769,6 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
                 pass
             
             # Refresh treeview to show updated titles
-            from src.gui.file_operations import update_treeview_with_titles
             update_treeview_with_titles(config.ALL_TITLES)
             
             # Re-select the item after refresh
@@ -2971,7 +3217,7 @@ def setup_editor_panel(root: tk.Tk, paned: tk.PanedWindow, treeview: ttk.Treevie
                             continue
                         for i, it in enumerate(lst):
                             try:
-                                candidate_title = (it.get('node') or {}).get('title') if isinstance(it, dict) else str(it)
+                                candidate_title = get_display_title(it) if isinstance(it, dict) else str(it)
                             except Exception:
                                 candidate_title = str(it)
                             # Match by old title OR by object identity OR by new title

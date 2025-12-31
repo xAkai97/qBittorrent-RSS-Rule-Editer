@@ -3,14 +3,16 @@ SubsPlease API integration for fetching anime schedule and titles.
 
 IMPORTANT: This uses SubsPlease's public API responsibly with caching.
 """
+# Standard library imports
 import json
 import logging
 import os
 from datetime import datetime
-from typing import Dict, List, Optional, Tuple, Union, Any
+from typing import Any, Dict, List, Optional, Tuple, Union
 
-from .constants import CacheKeys
+# Local application imports
 from .config import config
+from .constants import CacheKeys
 
 logger = logging.getLogger(__name__)
 

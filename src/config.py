@@ -1,12 +1,14 @@
 """
 Application configuration management.
 """
+# Standard library imports
 import json
 import logging
 import os
 from configparser import ConfigParser
 from typing import Any, Dict, List, Optional
 
+# Local application imports
 from .constants import CacheKeys
 
 logger = logging.getLogger(__name__)
@@ -41,6 +43,34 @@ class AppConfig:
         self.RECENT_FILES: List[str] = []
         self.CACHED_CATEGORIES: Dict[str, Any] = {}
         self.CACHED_FEEDS: Dict[str, Any] = {}
+        
+        # ALL_TITLES uses a hybrid format where each entry contains both:
+        # 1. qBittorrent RSS rule fields (mustContain, savePath, affectedFeeds, etc.)
+        # 2. Internal tracking fields for display purposes:
+        #    - 'node': {'title': 'Display Title'} - used for treeview display
+        #    - 'ruleName': 'Title' - original rule name from qBittorrent
+        #
+        # Structure:
+        # {
+        #   'existing': [  # or 'anime', 'manga', etc.
+        #     {
+        #       # qBittorrent fields
+        #       'mustContain': 'Title',
+        #       'savePath': '/path/to/save',
+        #       'assignedCategory': 'Category',
+        #       'enabled': True,
+        #       'affectedFeeds': ['url'],
+        #       'torrentParams': {...},
+        #       # Internal tracking fields (filtered out on export)
+        #       'node': {'title': 'Display Title'},
+        #       'ruleName': 'Title'
+        #     }
+        #   ]
+        # }
+        #
+        # When exporting or previewing, internal fields ('node', 'ruleName') must be
+        # filtered out to produce clean qBittorrent-compatible JSON.
+        # See file_operations.py: _show_preview_dialog() for the filtering logic.
         self.ALL_TITLES: Dict[str, List[Any]] = {}
         
         # API Endpoints

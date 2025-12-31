@@ -11,13 +11,8 @@ def test_imports():
     """Test that all modules can be imported."""
     print("Testing module imports...")
     
-    try:
-        from src import constants, config, cache, utils, subsplease_api
-        print("✅ All core modules imported successfully")
-        return True
-    except ImportError as e:
-        print(f"❌ Import failed: {e}")
-        return False
+    from src import constants, config, cache, utils, subsplease_api
+    print("✅ All core modules imported successfully")
 
 
 def test_constants():
@@ -33,10 +28,9 @@ def test_constants():
         assert '<' in FileSystem.INVALID_CHARS
         
         print("✅ Constants module works correctly")
-        return True
     except Exception as e:
         print(f"❌ Constants test failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_config():
@@ -52,10 +46,9 @@ def test_config():
         assert hasattr(config, 'set_pref')
         
         print("✅ Config module works correctly")
-        return True
     except Exception as e:
         print(f"❌ Config test failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_utils():
@@ -74,10 +67,9 @@ def test_utils():
         assert '>' not in sanitized
         
         print(f"✅ Utils module works correctly (Current: {season} {year})")
-        return True
     except Exception as e:
         print(f"❌ Utils test failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_cache():
@@ -95,10 +87,9 @@ def test_cache():
         assert value == 'default_value'
         
         print("✅ Cache module works correctly")
-        return True
     except Exception as e:
         print(f"❌ Cache test failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_subsplease():
@@ -112,10 +103,9 @@ def test_subsplease():
         assert isinstance(cached, dict)
         
         print(f"✅ SubsPlease module works (Cache: {len(cached)} titles)")
-        return True
     except Exception as e:
         print(f"❌ SubsPlease test failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def main():

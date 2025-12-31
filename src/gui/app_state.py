@@ -4,9 +4,10 @@ Application state management for GUI.
 This module manages global state that was previously stored in module-level variables.
 Provides a clean interface for accessing and updating application state.
 """
-import tkinter as tk
-from typing import Optional, List, Tuple, Any, Dict
+# Standard library imports
 import logging
+import tkinter as tk
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,10 @@ class AppState:
         
         # Treeview widget (the main title list)
         self._treeview_widget: Optional[tk.Widget] = None
+        
+        # Search/Filter entry widget
+        self._search_entry: Optional[tk.Widget] = None
+        self._search_var: Optional[tk.StringVar] = None
         
         # Listbox items: List of (title_text, entry_dict) tuples
         self._listbox_items: List[Tuple[str, Dict[str, Any]]] = []
@@ -98,6 +103,38 @@ class AppState:
         """Alias for treeview setter for backward compatibility."""
         self._treeview_widget = value
     
+    # Search entry properties
+    @property
+    def search_entry(self) -> Optional[tk.Widget]:
+        """Get the search/filter entry widget."""
+        return self._search_entry
+    
+    @search_entry.setter
+    def search_entry(self, value: tk.Widget) -> None:
+        """Set the search/filter entry widget."""
+        self._search_entry = value
+    
+    @property
+    def search_var(self) -> Optional[tk.StringVar]:
+        """Get the search/filter StringVar."""
+        return self._search_var
+    
+    @search_var.setter
+    def search_var(self, value: tk.StringVar) -> None:
+        """Set the search/filter StringVar."""
+        self._search_var = value
+    
+    def focus_search(self) -> None:
+        """Focus the search entry and select all text."""
+        if self._search_entry:
+            self._search_entry.focus_set()
+            self._search_entry.select_range(0, 'end')
+    
+    def clear_search(self) -> None:
+        """Clear the search filter."""
+        if self._search_var:
+            self._search_var.set("")
+
     # Listbox items properties
     @property
     def items(self) -> List[Tuple[str, Dict[str, Any]]]:
@@ -225,26 +262,36 @@ def get_app_state() -> AppState:
 # Convenience functions for backward compatibility
 def get_root() -> Optional[tk.Tk]:
     """Get the main application window."""
+    if _app_state is None:
+        return None
     return _app_state.root
 
 
 def get_status_var() -> Optional[tk.StringVar]:
     """Get the status bar variable."""
+    if _app_state is None:
+        return None
     return _app_state.status_var
 
 
 def get_treeview() -> Optional[tk.Widget]:
     """Get the main treeview widget."""
+    if _app_state is None:
+        return None
     return _app_state.treeview
 
 
 def get_items() -> List[Tuple[str, Dict[str, Any]]]:
     """Get the list of title items."""
+    if _app_state is None:
+        return []
     return _app_state.items
 
 
 def get_trash() -> List[Dict[str, Any]]:
     """Get the trash items list."""
+    if _app_state is None:
+        return []
     return _app_state.trash
 
 

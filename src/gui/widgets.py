@@ -2,6 +2,7 @@
 Custom widgets and reusable GUI components.
 """
 import tkinter as tk
+from tkinter import ttk
 from typing import Optional
 
 
@@ -113,8 +114,6 @@ def create_labeled_entry(parent, label_text: str, var: tk.StringVar, **kwargs) -
     Returns:
         The created Entry widget
     """
-    from tkinter import ttk
-    
     ttk.Label(parent, text=label_text, font=('Segoe UI', 9, 'bold')).pack(anchor='w', pady=(0, 2))
     entry = ttk.Entry(parent, textvariable=var, font=('Segoe UI', 9), **kwargs)
     entry.pack(anchor='w', fill='x', pady=(0, 8))
@@ -135,8 +134,6 @@ def create_labeled_combobox(parent, label_text: str, var: tk.StringVar, values: 
     Returns:
         The created Combobox widget
     """
-    from tkinter import ttk
-    
     ttk.Label(parent, text=label_text, font=('Segoe UI', 9, 'bold')).pack(anchor='w', pady=(0, 2))
     combo = ttk.Combobox(parent, textvariable=var, values=values, font=('Segoe UI', 9), **kwargs)
     combo.pack(anchor='w', fill='x', pady=(0, 8))
@@ -157,8 +154,6 @@ def create_labeled_text(parent, label_text: str, height: int = 10, width: int = 
     Returns:
         The created Text widget
     """
-    from tkinter import ttk
-    
     # Create label
     ttk.Label(parent, text=label_text, font=('Segoe UI', 9, 'bold')).pack(anchor='w', pady=(0, 2))
     

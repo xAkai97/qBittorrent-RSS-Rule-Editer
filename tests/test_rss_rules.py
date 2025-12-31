@@ -34,10 +34,9 @@ def test_rss_rules_imports():
         )
         print("✓ All RSS rules components imported")
         
-        return True
     except ImportError as e:
         print(f"✗ Import failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_rss_rule_creation():
@@ -69,10 +68,9 @@ def test_rss_rule_creation():
         )
         print(f"✓ Rule created via helper: {rule2.title}")
         
-        return True
     except Exception as e:
         print(f"✗ Rule creation failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_rule_to_dict():
@@ -106,10 +104,9 @@ def test_rule_to_dict():
         print(f"  Keys: {len(rule_dict)} top-level fields")
         print(f"  torrentParams keys: {len(rule_dict['torrentParams'])}")
         
-        return True
     except Exception as e:
         print(f"✗ Rule to dict failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_rule_from_dict():
@@ -147,10 +144,9 @@ def test_rule_from_dict():
         print(f"  Title: {rule.title}")
         print(f"  Category: {rule.category}")
         
-        return True
     except Exception as e:
         print(f"✗ Rule from dict failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_save_path_building():
@@ -174,10 +170,9 @@ def test_save_path_building():
         assert '\\' not in path2, "Path contains backslashes"
         print("✓ Paths use forward slashes")
         
-        return True
     except Exception as e:
         print(f"✗ Save path building failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_rules_from_titles():
@@ -217,10 +212,9 @@ def test_rules_from_titles():
         for name in rules.keys():
             print(f"  - {name}")
         
-        return True
     except Exception as e:
         print(f"✗ Build rules from titles failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_export_import_json():
@@ -260,7 +254,6 @@ def test_export_import_json():
             assert len(imported) == 2, f"Expected 2 rules, got {len(imported)}"
             print(f"✓ Imported {len(imported)} rules")
             
-            return True
         finally:
             # Clean up temp file
             if os.path.exists(temp_path):
@@ -268,7 +261,7 @@ def test_export_import_json():
         
     except Exception as e:
         print(f"✗ Export/Import failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_rule_validation():
@@ -309,10 +302,9 @@ def test_rule_validation():
         assert len(errors) == 1, f"Expected 1 error, got {len(errors)}"
         print(f"✓ Batch validation found {len(errors)} error(s)")
         
-        return True
     except Exception as e:
         print(f"✗ Validation failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_rule_sanitization():
@@ -349,10 +341,9 @@ def test_rule_sanitization():
         assert '\\' not in save_path, "Backslashes not converted"
         print(f"✓ Sanitized savePath: '{save_path}'")
         
-        return True
     except Exception as e:
         print(f"✗ Sanitization failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def main():

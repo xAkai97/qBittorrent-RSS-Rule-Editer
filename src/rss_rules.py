@@ -1,5 +1,4 @@
-"""
-RSS Rules Management Module
+"""RSS Rules Management Module
 
 This module handles the creation, validation, and management of qBittorrent
 RSS auto-download rules. It provides functionality for:
@@ -9,21 +8,35 @@ RSS auto-download rules. It provides functionality for:
 - Exporting rules to JSON
 - Validating rule configurations
 
+Internal Format Note:
+    The application uses a hybrid format where title entries contain both qBittorrent
+    fields AND internal tracking fields ('node', 'ruleName'). These internal fields
+    are used for display purposes in the GUI but must be filtered out before:
+    - Exporting to JSON files
+    - Previewing rules
+    - Syncing to qBittorrent
+    
+    See config.py ALL_TITLES for the full format documentation.
+
 Phase 5: RSS Rule Management
 """
+# Standard library imports
+import json
 import logging
 import os
-import json
-from typing import Dict, List, Any, Optional, Tuple
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
+# Local application imports
 from src.config import config
-from src.utils import sanitize_folder_name, validate_folder_name
 from src.constants import Season
+from src.utils import sanitize_folder_name, validate_folder_name
 
 logger = logging.getLogger(__name__)
 
 
+@dataclass
 class RSSRule:
     """
     Represents a qBittorrent RSS auto-download rule.
@@ -31,49 +44,51 @@ class RSSRule:
     This class encapsulates all the fields and logic for a single RSS rule,
     making it easier to create, modify, and validate rules.
     """
+    # Required fields
+    title: str
+    must_contain: str = ""
+    save_path: str = ""
+    feed_url: str = ""
+    category: str = ""
     
-    def __init__(self, title: str, must_contain: str = "", save_path: str = "",
-                 feed_url: str = "", category: str = ""):
-        """
-        Initialize an RSS rule.
+    # Optional boolean flags
+    add_paused: bool = False
+    enabled: bool = True
+    smart_filter: bool = False
+    use_regex: bool = False
+    skip_checking: bool = False
+    use_auto_tmm: bool = False
+    
+    # Optional string fields
+    episode_filter: str = ""
+    last_match: str = ""
+    must_not_contain: str = ""
+    torrent_content_layout: Optional[str] = None
+    operating_mode: str = "AutoManaged"
+    share_limit_action: str = "Default"
+    
+    # Optional numeric fields
+    ignore_days: int = 0
+    priority: int = 0
+    download_limit: int = -1
+    upload_limit: int = -1
+    ratio_limit: int = -2
+    seeding_time_limit: int = -2
+    inactive_seeding_time_limit: int = -2
+    
+    # List fields
+    previously_matched: List[str] = field(default_factory=list)
+    tags: List[str] = field(default_factory=list)
+    
+    def __post_init__(self) -> None:
+        """Normalize values after initialization."""
+        # Set must_contain to title if empty
+        if not self.must_contain:
+            self.must_contain = self.title
         
-        Args:
-            title: Display title for the rule
-            must_contain: Pattern that RSS items must contain
-            save_path: Where to save downloads
-            feed_url: RSS feed URL to monitor
-            category: qBittorrent category to assign
-        """
-        self.title = title
-        self.must_contain = must_contain or title
-        self.save_path = save_path.replace('\\', '/')  # Normalize to forward slashes
-        self.feed_url = feed_url
-        self.category = category
-        
-        # Additional fields with defaults
-        self.add_paused = False
-        self.enabled = True
-        self.episode_filter = ""
-        self.ignore_days = 0
-        self.last_match = ""
-        self.must_not_contain = ""
-        self.previously_matched = []
-        self.priority = 0
-        self.smart_filter = False
-        self.use_regex = False
-        self.torrent_content_layout = None
-        
-        # Advanced torrent parameters
-        self.download_limit = -1
-        self.upload_limit = -1
-        self.ratio_limit = -2
-        self.seeding_time_limit = -2
-        self.inactive_seeding_time_limit = -2
-        self.operating_mode = "AutoManaged"
-        self.share_limit_action = "Default"
-        self.skip_checking = False
-        self.use_auto_tmm = False
-        self.tags = []
+        # Normalize save path to forward slashes
+        if self.save_path:
+            self.save_path = self.save_path.replace('\\', '/')
     
     def to_dict(self) -> Dict[str, Any]:
         """
@@ -134,42 +149,39 @@ class RSSRule:
         feeds = rule_dict.get('affectedFeeds', [])
         feed_url = feeds[0] if feeds else ""
         
-        rule = cls(
+        # Extract torrent params
+        params = rule_dict.get('torrentParams', {})
+        
+        return cls(
             title=title,
             must_contain=rule_dict.get('mustContain', title),
             save_path=rule_dict.get('savePath', ''),
             feed_url=feed_url,
-            category=rule_dict.get('assignedCategory', '')
+            category=rule_dict.get('assignedCategory', ''),
+            # Optional fields
+            add_paused=rule_dict.get('addPaused', False),
+            enabled=rule_dict.get('enabled', True),
+            episode_filter=rule_dict.get('episodeFilter', ''),
+            ignore_days=rule_dict.get('ignoreDays', 0),
+            last_match=rule_dict.get('lastMatch', '') or '',
+            must_not_contain=rule_dict.get('mustNotContain', ''),
+            previously_matched=rule_dict.get('previouslyMatchedEpisodes', []),
+            priority=rule_dict.get('priority', 0),
+            smart_filter=rule_dict.get('smartFilter', False),
+            use_regex=rule_dict.get('useRegex', False),
+            torrent_content_layout=rule_dict.get('torrentContentLayout'),
+            # Torrent params
+            download_limit=params.get('download_limit', -1),
+            upload_limit=params.get('upload_limit', -1),
+            ratio_limit=params.get('ratio_limit', -2),
+            seeding_time_limit=params.get('seeding_time_limit', -2),
+            inactive_seeding_time_limit=params.get('inactive_seeding_time_limit', -2),
+            operating_mode=params.get('operating_mode', 'AutoManaged'),
+            share_limit_action=params.get('share_limit_action', 'Default'),
+            skip_checking=params.get('skip_checking', False),
+            use_auto_tmm=params.get('use_auto_tmm', False),
+            tags=params.get('tags', [])
         )
-        
-        # Load optional fields
-        rule.add_paused = rule_dict.get('addPaused', False)
-        rule.enabled = rule_dict.get('enabled', True)
-        rule.episode_filter = rule_dict.get('episodeFilter', '')
-        rule.ignore_days = rule_dict.get('ignoreDays', 0)
-        rule.last_match = rule_dict.get('lastMatch', '') or ''
-        rule.must_not_contain = rule_dict.get('mustNotContain', '')
-        rule.previously_matched = rule_dict.get('previouslyMatchedEpisodes', [])
-        rule.priority = rule_dict.get('priority', 0)
-        rule.smart_filter = rule_dict.get('smartFilter', False)
-        rule.use_regex = rule_dict.get('useRegex', False)
-        rule.torrent_content_layout = rule_dict.get('torrentContentLayout')
-        
-        # Load torrent params
-        params = rule_dict.get('torrentParams', {})
-        if params:
-            rule.download_limit = params.get('download_limit', -1)
-            rule.upload_limit = params.get('upload_limit', -1)
-            rule.ratio_limit = params.get('ratio_limit', -2)
-            rule.seeding_time_limit = params.get('seeding_time_limit', -2)
-            rule.inactive_seeding_time_limit = params.get('inactive_seeding_time_limit', -2)
-            rule.operating_mode = params.get('operating_mode', 'AutoManaged')
-            rule.share_limit_action = params.get('share_limit_action', 'Default')
-            rule.skip_checking = params.get('skip_checking', False)
-            rule.use_auto_tmm = params.get('use_auto_tmm', False)
-            rule.tags = params.get('tags', [])
-        
-        return rule
     
     def validate(self) -> Tuple[bool, str]:
         """
@@ -185,10 +197,9 @@ class RSSRule:
             return False, "Rule must have at least one RSS feed"
         
         if self.save_path:
-            try:
-                validate_folder_name(self.save_path)
-            except ValueError as e:
-                return False, f"Invalid save path: {e}"
+            is_valid, error_msg = validate_folder_name(self.save_path)
+            if not is_valid:
+                return False, f"Invalid save path: {error_msg}"
         
         return True, "Valid"
 

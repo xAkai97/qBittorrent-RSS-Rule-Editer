@@ -21,26 +21,20 @@ def test_complete_module_integration():
     print("Test 1: Complete Module Integration")
     print("="*60)
     
-    try:
-        # Import all main modules
-        from src import config, qbittorrent_api, rss_rules, subsplease_api
-        from src import cache, utils, constants
-        from src.gui import widgets
-        
-        print("✓ All core modules imported")
-        print(f"  - config (v{config.__dict__.get('__version__', 'N/A')})")
-        print("  - qbittorrent_api")
-        print("  - rss_rules")
-        print("  - subsplease_api")
-        print("  - cache")
-        print("  - utils")
-        print("  - constants")
-        print("  - gui.widgets")
-        
-        return True
-    except ImportError as e:
-        print(f"✗ Integration import failed: {e}")
-        return False
+    # Import all main modules
+    from src import config, qbittorrent_api, rss_rules, subsplease_api
+    from src import cache, utils, constants
+    from src.gui import widgets
+    
+    print("✓ All core modules imported")
+    print(f"  - config (v{config.__dict__.get('__version__', 'N/A')})")
+    print("  - qbittorrent_api")
+    print("  - rss_rules")
+    print("  - subsplease_api")
+    print("  - cache")
+    print("  - utils")
+    print("  - constants")
+    print("  - gui.widgets")
 
 
 def test_config_to_cache_integration():
@@ -64,10 +58,9 @@ def test_config_to_cache_integration():
         assert loaded == test_files, "Recent files mismatch"
         print(f"✓ Loaded {len(loaded)} recent files")
         
-        return True
     except Exception as e:
         print(f"✗ Config-Cache integration failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_utils_to_rss_rules_integration():
@@ -98,10 +91,9 @@ def test_utils_to_rss_rules_integration():
         path = build_save_path("Test Show", season, year)
         print(f"✓ Built seasonal path: {path}")
         
-        return True
     except Exception as e:
         print(f"✗ Utils-RSS Rules integration failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_rss_rules_to_qbt_api_integration():
@@ -141,10 +133,9 @@ def test_rss_rules_to_qbt_api_integration():
         )
         print("✓ QBittorrent client can be initialized with rules")
         
-        return True
     except Exception as e:
         print(f"✗ RSS Rules-QBT API integration failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_subsplease_to_rss_rules_integration():
@@ -178,10 +169,9 @@ def test_subsplease_to_rss_rules_integration():
         rules = build_rules_from_titles(rules_data)
         print(f"✓ Built {len(rules)} rules from titles")
         
-        return True
     except Exception as e:
         print(f"✗ SubsPlease-RSS Rules integration failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_complete_workflow():
@@ -257,13 +247,12 @@ def test_complete_workflow():
                 os.unlink(temp_path)
         
         print("✓ Complete workflow successful!")
-        return True
         
     except Exception as e:
         print(f"✗ Complete workflow failed: {e}")
         import traceback
         traceback.print_exc()
-        return False
+        assert False, str(e)
 
 
 def test_error_handling():
@@ -301,10 +290,9 @@ def test_error_handling():
         assert not success, "Invalid connection succeeded"
         print(f"✓ Invalid connection caught: {msg[:50]}...")
         
-        return True
     except Exception as e:
         print(f"✗ Error handling test failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_all_exports():
@@ -339,10 +327,9 @@ def test_all_exports():
                 exports = module.__all__
                 print(f"✓ {name}.__all__ has {len(exports)} exports")
         
-        return True
     except Exception as e:
         print(f"✗ Module exports test failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_version_consistency():
@@ -361,10 +348,9 @@ def test_version_consistency():
         assert len(src_version) > 0, "Version is empty"
         print(f"✓ Version format valid")
         
-        return True
     except Exception as e:
         print(f"✗ Version consistency test failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def test_documentation_exists():
@@ -390,10 +376,9 @@ def test_documentation_exists():
             else:
                 print(f"⚠ {doc} missing")
         
-        return True
     except Exception as e:
         print(f"✗ Documentation check failed: {e}")
-        return False
+        assert False, str(e)
 
 
 def main():

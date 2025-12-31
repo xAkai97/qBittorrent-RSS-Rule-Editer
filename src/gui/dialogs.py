@@ -3,6 +3,7 @@ Dialog windows for the application.
 
 Contains settings dialog, import/export dialogs, and other modal windows.
 """
+# Standard library imports
 import json
 import logging
 import os
@@ -10,13 +11,14 @@ import sys
 import threading
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
-from typing import Optional, Dict, Any, List
+from typing import Any, Dict, List, Optional
 
+# Local application imports
+import src.qbittorrent_api as qbt_api
 from src.config import config
 from src.gui.app_state import AppState
+from src.gui.file_operations import import_titles_from_file, update_treeview_with_titles
 from src.gui.helpers import center_window
-from src.gui.file_operations import update_treeview_with_titles, import_titles_from_file
-import src.qbittorrent_api as qbt_api
 
 logger = logging.getLogger(__name__)
 

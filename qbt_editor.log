@@ -5222,3 +5222,526 @@
 2025-10-31 23:39:40 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
 2025-10-31 23:41:22 - src.config - INFO - Loaded 10 cached categories
 2025-10-31 23:41:22 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 00:57:36 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-11-03 00:57:36 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2025-11-03 00:57:37 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-11-03 00:57:37 - src.config - INFO - Loaded 2 recent files
+2025-11-03 00:57:37 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-11-03 00:57:37 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-11-03 00:57:37 - src.cache - INFO - Saved 0 recent files to cache
+2025-11-03 00:57:37 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-11-03 00:57:37 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-11-03 00:57:37 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 00:57:37 - src.config - INFO - Loaded 10 cached categories
+2025-11-03 00:57:37 - src.gui.main_window - ERROR - Failed to setup context menu: bad event type or keysym "Space"
+2025-11-03 00:57:37 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2025-11-03 00:57:37 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-03 00:57:37 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-11-03 00:57:37 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-11-03 00:57:37 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-11-03 00:57:37 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-03 00:57:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-11-03 00:57:37 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-11-03 00:57:37 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-11-03 00:57:37 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-03 00:57:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-03 00:57:37 - qbittorrentapi.auth - DEBUG - Login successful
+2025-11-03 00:57:37 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-11-03 00:57:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-11-03 00:57:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-11-03 00:57:37 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 1 total titles
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Sanda
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Sanda
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Applied default affected feeds to Sanda
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 0 children
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Cleared 0 items from treeview
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 1 items
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - Sanda'
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web')
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I001'
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 00:57:40 - src.gui.file_operations - DEBUG - Added 1 items to treeview (final count: 1)
+2025-11-03 00:57:41 - src.config - INFO - Loaded 10 cached categories
+2025-11-03 00:57:41 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 00:57:46 - src.gui.main_window - DEBUG - Updated listbox_items[0], entry id: 2079497833728, mustContain: Sanda
+2025-11-03 00:57:46 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][0] id: 2079497833728, mustContain: Sanda
+2025-11-03 00:57:46 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2025-11-03 00:57:46 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][0] with entry id: 2079497833728, mustContain: Sanda
+2025-11-03 00:57:47 - src.gui.main_window - DEBUG - Updated listbox_items[0], entry id: 2079497833728, mustContain: Sanda
+2025-11-03 00:57:47 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][0] id: 2079497833728, mustContain: Sanda
+2025-11-03 00:57:47 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2025-11-03 00:57:47 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][0] with entry id: 2079497833728, mustContain: Sanda
+2025-11-03 00:57:48 - src.gui.main_window - DEBUG - Updated listbox_items[0], entry id: 2079497833728, mustContain: Sanda
+2025-11-03 00:57:48 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][0] id: 2079497833728, mustContain: Sanda
+2025-11-03 00:57:48 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2025-11-03 00:57:48 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][0] with entry id: 2079497833728, mustContain: Sanda
+2025-11-03 00:57:51 - src.gui.main_window - DEBUG - Updated listbox_items[0], entry id: 2079497833728, mustContain: Sanda
+2025-11-03 00:57:51 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][0] id: 2079497833728, mustContain: Sanda
+2025-11-03 00:57:51 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2025-11-03 00:57:51 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][0] with entry id: 2079497833728, mustContain: Sanda
+2025-11-03 00:58:49 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:58:49 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:58:49 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:58:49 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 1 children
+2025-11-03 00:58:49 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:58:49 - src.gui.file_operations - DEBUG - Cleared 1 items from treeview
+2025-11-03 00:58:49 - src.gui.file_operations - DEBUG - Added 0 items to treeview (final count: 0)
+2025-11-03 00:58:55 - src.gui.file_operations - INFO - Import merge complete: 3 new, 0 duplicates, total in ALL_TITLES: 3
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Populating fields for 3 new items only
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 3 total titles
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to {
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to {
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Applied default affected feeds to {
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Sanda
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Sanda
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Applied default affected feeds to Sanda
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to }
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to }
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Applied default affected feeds to }
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Applying prefix to 3 new items only
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Fall 2025/{'
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Fall 2025/Sanda'
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Fall 2025/}'
+2025-11-03 00:58:55 - src.gui.file_operations - INFO - About to update treeview with 3 total titles
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - ALL_TITLES keys: ['anime']
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG -   'anime': 3 items
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 0 children
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Cleared 0 items from treeview
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 3 items
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - {'
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - {', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/{')
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I002'
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Inserting item 2: enabled='\u2713', title='Fall 2025 - Sanda'
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '2', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Sanda')
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I003'
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - After insert: before=1, after=2
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Inserting item 3: enabled='\u2713', title='Fall 2025 - }'
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '3', 'Fall 2025 - }', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/}')
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I004'
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - After insert: before=2, after=3
+2025-11-03 00:58:55 - src.gui.file_operations - DEBUG - Added 3 items to treeview (final count: 3)
+2025-11-03 00:58:55 - src.gui.file_operations - INFO - Treeview now has 3 visible items
+2025-11-03 00:58:55 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-11-03 00:58:55 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-11-03 00:58:55 - src.cache - INFO - Saved 1 recent files to cache
+2025-11-03 00:58:55 - src.config - INFO - Loaded 1 recent files
+2025-11-03 00:58:57 - src.config - INFO - Loaded 10 cached categories
+2025-11-03 00:58:57 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 3 total titles
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 3 children
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Cleared 3 items from treeview
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 3 items
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - {'
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - {', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/{')
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I005'
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Inserting item 2: enabled='\u2713', title='Fall 2025 - Sanda'
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '2', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Sanda')
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I006'
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - After insert: before=1, after=2
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Inserting item 3: enabled='\u2713', title='Fall 2025 - }'
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '3', 'Fall 2025 - }', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/}')
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I007'
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - After insert: before=2, after=3
+2025-11-03 00:59:02 - src.gui.file_operations - DEBUG - Added 3 items to treeview (final count: 3)
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 3 total titles
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 3 children
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Cleared 3 items from treeview
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 3 items
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - {'
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - {', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/{')
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I008'
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Inserting item 2: enabled='\u2713', title='Fall 2025 - Sanda'
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '2', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Sanda')
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I009'
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - After insert: before=1, after=2
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Inserting item 3: enabled='\u2713', title='Fall 2025 - }'
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '3', 'Fall 2025 - }', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/}')
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00A'
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - After insert: before=2, after=3
+2025-11-03 00:59:12 - src.gui.file_operations - DEBUG - Added 3 items to treeview (final count: 3)
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 3 total titles
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 3 children
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Cleared 3 items from treeview
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 3 items
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - {'
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - {', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/{')
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00B'
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Inserting item 2: enabled='\u2713', title='Fall 2025 - Sanda'
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '2', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Sanda')
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00C'
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - After insert: before=1, after=2
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Inserting item 3: enabled='\u2713', title='Fall 2025 - }'
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '3', 'Fall 2025 - }', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/}')
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00D'
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - After insert: before=2, after=3
+2025-11-03 00:59:14 - src.gui.file_operations - DEBUG - Added 3 items to treeview (final count: 3)
+2025-11-03 00:59:15 - src.config - INFO - Loaded 10 cached categories
+2025-11-03 00:59:15 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 00:59:20 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:20 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:20 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:59:20 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 3 children
+2025-11-03 00:59:20 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:59:20 - src.gui.file_operations - DEBUG - Cleared 3 items from treeview
+2025-11-03 00:59:20 - src.gui.file_operations - DEBUG - Added 0 items to treeview (final count: 0)
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 1 total titles
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Sanda
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Sanda
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Applied default affected feeds to Sanda
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 0 children
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Cleared 0 items from treeview
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 1 items
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - Sanda'
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web')
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00E'
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 00:59:22 - src.gui.file_operations - DEBUG - Added 1 items to treeview (final count: 1)
+2025-11-03 00:59:23 - src.config - INFO - Loaded 10 cached categories
+2025-11-03 00:59:23 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 00:59:41 - src.gui.file_operations - INFO - Import merge complete: 2 new, 1 duplicates, total in ALL_TITLES: 3
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Populating fields for 2 new items only
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 2 total titles
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to {
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to {
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Applied default affected feeds to {
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to }
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to }
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Applied default affected feeds to }
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Applying prefix to 2 new items only
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Fall 2025/{'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Fall 2025/}'
+2025-11-03 00:59:41 - src.gui.file_operations - INFO - About to update treeview with 3 total titles
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - ALL_TITLES keys: ['anime']
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG -   'anime': 3 items
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 1 children
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Cleared 1 items from treeview
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 3 items
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - Sanda'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web')
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I00F'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Inserting item 2: enabled='\u2713', title='Fall 2025 - {'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '2', 'Fall 2025 - {', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/{')
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I010'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - After insert: before=1, after=2
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Inserting item 3: enabled='\u2713', title='Fall 2025 - }'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '3', 'Fall 2025 - }', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/}')
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I011'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - After insert: before=2, after=3
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Added 3 items to treeview (final count: 3)
+2025-11-03 00:59:41 - src.gui.file_operations - INFO - Treeview now has 3 visible items
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 3 children
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Cleared 3 items from treeview
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 3 items
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - Sanda'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web')
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I012'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Inserting item 2: enabled='\u2713', title='Fall 2025 - {'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '2', 'Fall 2025 - {', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/{')
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I013'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - After insert: before=1, after=2
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Inserting item 3: enabled='\u2713', title='Fall 2025 - }'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '3', 'Fall 2025 - }', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/}')
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I014'
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - After insert: before=2, after=3
+2025-11-03 00:59:41 - src.gui.file_operations - DEBUG - Added 3 items to treeview (final count: 3)
+2025-11-03 00:59:46 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:46 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:46 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:59:46 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 3 children
+2025-11-03 00:59:46 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:59:46 - src.gui.file_operations - DEBUG - Cleared 3 items from treeview
+2025-11-03 00:59:46 - src.gui.file_operations - DEBUG - Added 0 items to treeview (final count: 0)
+2025-11-03 00:59:55 - src.gui.file_operations - INFO - Import merge complete: 1 new, 0 duplicates, total in ALL_TITLES: 1
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Populating fields for 1 new items only
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 1 total titles
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Sanda
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Sanda
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Applied default affected feeds to Sanda
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Applying prefix to 1 new items only
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Fall 2025/Sanda'
+2025-11-03 00:59:55 - src.gui.file_operations - INFO - About to update treeview with 1 total titles
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - ALL_TITLES keys: ['anime']
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG -   'anime': 1 items
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 0 children
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Cleared 0 items from treeview
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 1 items
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - Sanda'
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Sanda')
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I015'
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Added 1 items to treeview (final count: 1)
+2025-11-03 00:59:55 - src.gui.file_operations - INFO - Treeview now has 1 visible items
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 1 children
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Cleared 1 items from treeview
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 1 items
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - Sanda'
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Sanda')
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I016'
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 00:59:55 - src.gui.file_operations - DEBUG - Added 1 items to treeview (final count: 1)
+2025-11-03 00:59:56 - src.config - INFO - Loaded 10 cached categories
+2025-11-03 00:59:56 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 01:08:48 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-11-03 01:08:48 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2025-11-03 01:08:48 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-11-03 01:08:48 - src.config - INFO - Loaded 1 recent files
+2025-11-03 01:08:48 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-11-03 01:08:48 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-11-03 01:08:48 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 01:08:48 - src.config - INFO - Loaded 10 cached categories
+2025-11-03 01:08:48 - src.gui.main_window - ERROR - Failed to setup context menu: bad event type or keysym "Space"
+2025-11-03 01:08:48 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2025-11-03 01:08:48 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-03 01:08:48 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-11-03 01:08:48 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-11-03 01:08:48 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-11-03 01:08:48 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-03 01:08:48 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-11-03 01:08:48 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-11-03 01:08:48 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-11-03 01:08:48 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-03 01:08:49 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-03 01:08:49 - qbittorrentapi.auth - DEBUG - Login successful
+2025-11-03 01:08:49 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-11-03 01:08:49 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-11-03 01:08:49 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-11-03 01:08:49 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-11-03 01:08:51 - src.gui.file_operations - INFO - Import merge complete: 1 new, 0 duplicates, total in ALL_TITLES: 1
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Populating fields for 1 new items only
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 1 total titles
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Sanda
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Sanda
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Applied default affected feeds to Sanda
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Applying prefix to 1 new items only
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Fall 2025/Sanda'
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 0 children
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Cleared 0 items from treeview
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 1 items
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - Sanda'
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - Sanda', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Sanda')
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I001'
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 01:08:51 - src.gui.file_operations - DEBUG - Added 1 items to treeview (final count: 1)
+2025-11-03 01:08:53 - src.config - INFO - Loaded 10 cached categories
+2025-11-03 01:08:53 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 01:09:00 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
+2025-11-03 01:09:00 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
+2025-11-03 01:09:00 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
+2025-11-03 01:09:00 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-11-03 01:09:00 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-11-03 01:09:00 - src.subsplease_api - INFO - Saved 53 SubsPlease titles to cache
+2025-11-03 01:09:00 - src.subsplease_api - INFO - Successfully fetched 53 titles from SubsPlease API
+2025-11-03 01:09:00 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 02:44:20 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-11-03 02:44:20 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2025-11-03 02:44:20 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-11-03 02:44:20 - src.config - INFO - Loaded 1 recent files
+2025-11-03 02:44:20 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-11-03 02:44:20 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-11-03 02:44:20 - src.cache - INFO - Saved 0 recent files to cache
+2025-11-03 02:44:20 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-11-03 02:44:20 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-11-03 02:44:20 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 02:44:20 - src.config - INFO - Loaded 10 cached categories
+2025-11-03 02:44:20 - src.gui.main_window - ERROR - Failed to setup context menu: bad event type or keysym "Space"
+2025-11-03 02:44:20 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2025-11-03 02:44:21 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-03 02:44:21 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-11-03 02:44:21 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-11-03 02:44:21 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-11-03 02:44:21 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-03 02:44:21 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-11-03 02:44:21 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-11-03 02:44:21 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-11-03 02:44:21 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-03 02:44:21 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-03 02:44:21 - qbittorrentapi.auth - DEBUG - Login successful
+2025-11-03 02:44:21 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-11-03 02:44:21 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-11-03 02:44:21 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-11-03 02:44:21 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-11-03 02:44:35 - src.gui.file_operations - INFO - Import merge complete: 1 new, 0 duplicates, total in ALL_TITLES: 1
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Populating fields for 1 new items only
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 1 total titles
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Chanto Suenai Kyuuketsuki-chan
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Chanto Suenai Kyuuketsuki-chan
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Applied default affected feeds to Chanto Suenai Kyuuketsuki-chan
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Applying prefix to 1 new items only
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Fall 2025/Chanto Suenai Kyuuketsuki-chan'
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - BEFORE CLEAR: Treeview has 0 children
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - AFTER CLEAR: Treeview has 0 children (should be 0)
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Cleared 0 items from treeview
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Processing media_type 'anime' with 1 items
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Inserting item 1: enabled='\u2713', title='Fall 2025 - Chanto Suenai Kyuuketsuki-chan'
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Insert values: ('\u2713', '1', 'Fall 2025 - Chanto Suenai Kyuuketsuki-chan', 'Disk5 - Web', 'disk5/Anime/Web/Fall 2025/Chanto Suenai Kyuuketsuki-chan')
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Insert returned item_id: 'I001'
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - After insert: before=0, after=1
+2025-11-03 02:44:35 - src.gui.file_operations - DEBUG - Added 1 items to treeview (final count: 1)
+2025-11-03 02:44:46 - src.config - INFO - Loaded 10 cached categories
+2025-11-03 02:44:46 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-03 02:45:03 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-03 02:45:03 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-11-03 02:45:03 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-11-03 02:45:03 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-11-03 02:45:03 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-03 02:45:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-11-03 02:45:03 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-11-03 02:45:03 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-11-03 02:45:03 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-03 02:45:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-03 02:45:03 - qbittorrentapi.auth - DEBUG - Login successful
+2025-11-03 02:45:03 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-11-03 02:45:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2025-11-03 02:45:03 - src.qbittorrent_api - INFO - Set RSS rule: Fall 2025 - Chanto Suenai Kyuuketsuki-chan
+2025-11-30 23:52:33 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-11-30 23:52:33 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2025-11-30 23:52:33 - src.qbittorrent_api - WARNING - qbittorrentapi not available, using requests fallback
+2025-11-30 23:52:33 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-11-30 23:52:33 - src.gui.main_window - INFO - TkinterDnD not available - using standard Tk
+2025-11-30 23:52:33 - src.config - INFO - Loaded 2 recent files
+2025-11-30 23:52:33 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-11-30 23:52:33 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles']
+2025-11-30 23:52:33 - src.cache - INFO - Saved 0 recent files to cache
+2025-11-30 23:52:33 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-11-30 23:52:33 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-11-30 23:52:33 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-30 23:52:33 - src.config - INFO - Loaded 10 cached categories
+2025-11-30 23:52:33 - src.gui.main_window - INFO - tkinterdnd2 not installed - drag-and-drop disabled. Install with: pip install tkinterdnd2
+2025-11-30 23:52:33 - src.gui.main_window - ERROR - Failed to setup context menu: bad event type or keysym "Space"
+2025-11-30 23:52:33 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2025-11-30 23:52:33 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-30 23:52:33 - src.qbittorrent_api - DEBUG - Connecting to https://192.168.1.21:8080/api/v2/auth/login with verify=False
+2025-11-30 23:52:33 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-30 23:52:33 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-30 23:52:42 - src.config - INFO - Loaded 10 cached categories
+2025-11-30 23:52:42 - src.config - INFO - Loaded 5 cached feeds
+2025-11-30 23:52:42 - src.gui.dialogs - DEBUG - Loaded 5 cached feed(s) into listbox
+2025-11-30 23:52:42 - src.config - INFO - Loaded 10 cached categories
+2025-11-30 23:52:42 - src.config - INFO - Loaded 10 cached categories
+2025-11-30 23:52:42 - src.config - INFO - Loaded 5 cached feeds
+2025-11-30 23:52:44 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-30 23:52:44 - src.qbittorrent_api - DEBUG - Connecting to https://192.168.1.21:8080/api/v2/auth/login with verify=False
+2025-11-30 23:52:44 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-30 23:52:44 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-30 23:52:45 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-30 23:52:45 - src.qbittorrent_api - DEBUG - Connecting to https://192.168.1.21:8080/api/v2/auth/login with verify=False
+2025-11-30 23:52:45 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-30 23:52:45 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-30 23:52:58 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-30 23:52:58 - src.qbittorrent_api - DEBUG - Connecting to https://192.168.1.21:8080/api/v2/auth/login with verify=False
+2025-11-30 23:52:58 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-30 23:52:58 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-30 23:52:59 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-30 23:52:59 - src.qbittorrent_api - DEBUG - Connecting to https://192.168.1.21:8080/api/v2/auth/login with verify=False
+2025-11-30 23:52:59 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-30 23:52:59 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-30 23:52:59 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-30 23:52:59 - src.qbittorrent_api - DEBUG - Connecting to https://192.168.1.21:8080/api/v2/auth/login with verify=False
+2025-11-30 23:52:59 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-30 23:52:59 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-30 23:52:59 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-30 23:52:59 - src.qbittorrent_api - DEBUG - Connecting to https://192.168.1.21:8080/api/v2/auth/login with verify=False
+2025-11-30 23:52:59 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-30 23:52:59 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-30 23:53:39 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2025-11-30 23:53:39 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2025-11-30 23:53:39 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2025-11-30 23:53:39 - src.gui.main_window - INFO - TkinterDnD not available - using standard Tk
+2025-11-30 23:53:39 - src.config - INFO - Loaded 0 recent files
+2025-11-30 23:53:40 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-11-30 23:53:40 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
+2025-11-30 23:53:40 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
+2025-11-30 23:53:40 - src.config - INFO - Loaded 10 cached categories
+2025-11-30 23:53:40 - src.gui.main_window - INFO - tkinterdnd2 not installed - drag-and-drop disabled. Install with: pip install tkinterdnd2
+2025-11-30 23:53:40 - src.gui.main_window - ERROR - Failed to setup context menu: bad event type or keysym "Space"
+2025-11-30 23:53:40 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2025-11-30 23:53:40 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-30 23:53:40 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-11-30 23:53:40 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-11-30 23:53:40 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-11-30 23:53:40 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-30 23:53:40 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-11-30 23:53:40 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-11-30 23:53:40 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-11-30 23:53:40 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-30 23:53:40 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-30 23:53:40 - qbittorrentapi.auth - DEBUG - Login successful
+2025-11-30 23:53:40 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-11-30 23:53:40 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-11-30 23:53:40 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-11-30 23:53:40 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2025-11-30 23:53:44 - src.config - INFO - Loaded 10 cached categories
+2025-11-30 23:53:44 - src.config - INFO - Loaded 5 cached feeds
+2025-11-30 23:53:44 - src.gui.dialogs - DEBUG - Loaded 5 cached feed(s) into listbox
+2025-11-30 23:53:44 - src.config - INFO - Loaded 10 cached categories
+2025-11-30 23:53:44 - src.config - INFO - Loaded 10 cached categories
+2025-11-30 23:53:44 - src.config - INFO - Loaded 5 cached feeds
+2025-11-30 23:53:45 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2025-11-30 23:53:45 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2025-11-30 23:53:45 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2025-11-30 23:53:45 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2025-11-30 23:53:45 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-30 23:53:45 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2025-11-30 23:53:45 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2025-11-30 23:53:45 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2025-11-30 23:53:45 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2025-11-30 23:53:45 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2025-11-30 23:53:45 - qbittorrentapi.auth - DEBUG - Login successful
+2025-11-30 23:53:45 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2025-11-30 23:53:45 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2025-11-30 23:53:45 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2025-11-30 23:53:45 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
