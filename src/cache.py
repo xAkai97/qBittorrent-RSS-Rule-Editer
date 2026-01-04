@@ -280,3 +280,156 @@ def clear_recent_files() -> bool:
     except Exception as e:
         logger.error(f"Failed to clear recent files: {e}")
         return False
+
+
+# ==================== Template Management ====================
+
+def load_templates() -> Dict[str, Dict[str, Any]]:
+    """
+    Loads saved rule templates from cache.
+    
+    Returns:
+        Dict mapping template names to template configurations
+    """
+    data = _load_cache_data()
+    templates = data.get(CacheKeys.TEMPLATES, {})
+    logger.info(f"Loaded {len(templates)} templates")
+    return templates
+
+
+def save_templates(templates: Dict[str, Dict[str, Any]]) -> bool:
+    """
+    Saves rule templates to cache.
+    
+    Args:
+        templates: Dict mapping template names to configurations
+    
+    Returns:
+        bool: True if successful
+    """
+    try:
+        logger.info(f"Saving {len(templates)} templates")
+        return _update_cache_key(CacheKeys.TEMPLATES, templates)
+    except Exception as e:
+        logger.error(f"Failed to save templates: {e}")
+        return False
+
+
+def add_template(name: str, template: Dict[str, Any]) -> bool:
+    """
+    Adds or updates a template.
+    
+    Args:
+        name: Template name
+        template: Template configuration dict
+    
+    Returns:
+        bool: True if successful
+    """
+    try:
+        templates = load_templates()
+        templates[name] = template
+        return save_templates(templates)
+    except Exception as e:
+        logger.error(f"Failed to add template '{name}': {e}")
+        return False
+
+
+def delete_template(name: str) -> bool:
+    """
+    Deletes a template.
+    
+    Args:
+        name: Template name to delete
+    
+    Returns:
+        bool: True if successful
+    """
+    try:
+        templates = load_templates()
+        if name in templates:
+            del templates[name]
+            return save_templates(templates)
+        return False
+    except Exception as e:
+        logger.error(f"Failed to delete template '{name}': {e}")
+        return False
+
+
+def get_default_templates() -> Dict[str, Dict[str, Any]]:
+    """
+    Returns a set of built-in default templates.
+    
+    Returns:
+        Dict of default templates
+    """
+    return {
+        '1080p Seasonal': {
+            'description': 'High quality seasonal anime (1080p)',
+            'must_contain': '1080p',
+            'must_not_contain': '',
+            'category': 'anime',
+            'save_path': '',
+            'enabled': True,
+            'episode_filter': '',
+            'use_regex': False,
+        },
+        '720p Seasonal': {
+            'description': 'Standard quality seasonal anime (720p)',
+            'must_contain': '720p',
+            'must_not_contain': '1080p',
+            'category': 'anime',
+            'save_path': '',
+            'enabled': True,
+            'episode_filter': '',
+            'use_regex': False,
+        },
+        'Movie': {
+            'description': 'Anime movies',
+            'must_contain': 'Movie',
+            'must_not_contain': '',
+            'category': 'anime-movies',
+            'save_path': '',
+            'enabled': True,
+            'episode_filter': '',
+            'use_regex': False,
+        },
+        'OVA/Special': {
+            'description': 'OVAs and special episodes',
+            'must_contain': '',
+            'must_not_contain': '',
+            'category': 'anime-ova',
+            'save_path': '',
+            'enabled': True,
+            'episode_filter': '',
+            'use_regex': False,
+        },
+        'Batch Download': {
+            'description': 'Complete series batch downloads',
+            'must_contain': 'Batch',
+            'must_not_contain': '',
+            'category': 'anime-batch',
+            'save_path': '',
+            'enabled': True,
+            'episode_filter': '',
+            'use_regex': False,
+        },
+    }
+
+
+def initialize_default_templates() -> bool:
+    """
+    Initializes cache with default templates if none exist.
+    
+    Returns:
+        bool: True if templates were initialized
+    """
+    try:
+        templates = load_templates()
+        if not templates:
+            logger.info("Initializing default templates")
+            return save_templates(get_default_templates())
+        return False
+    except Exception as e:
+        logger.error(f"Failed to initialize default templates: {e}")
+        return False

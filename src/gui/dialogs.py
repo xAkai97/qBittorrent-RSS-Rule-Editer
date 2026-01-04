@@ -38,10 +38,11 @@ def open_settings_window(root: tk.Tk, status_var: tk.StringVar) -> None:
     settings_win.title("⚙️ Settings - Configuration")
     
     # Try to fit full settings on screen
+    from src.constants import UIConfig
     screen_height = root.winfo_screenheight()
     optimal_height = min(900, screen_height - 100)  # Leave 100px for taskbar
-    settings_win.geometry(f"800x{optimal_height}")
-    settings_win.minsize(800, 500)
+    settings_win.geometry(f"{UIConfig.SETTINGS_WINDOW_WIDTH}x{optimal_height}")
+    settings_win.minsize(UIConfig.SETTINGS_WINDOW_WIDTH, UIConfig.SETTINGS_WINDOW_MIN_HEIGHT)
     settings_win.transient(root)
     settings_win.grab_set()
     settings_win.configure(bg='#f5f5f5')
@@ -687,6 +688,51 @@ def open_settings_window(root: tk.Tk, status_var: tk.StringVar) -> None:
         ttk.Radiobutton(time_frame, text='12-hour format (AM/PM)', 
                        variable=time_format_var, value=False,
                        command=lambda: config.set_pref('time_24', False)).pack(anchor='w', pady=2)
+    except Exception:
+        pass
+
+    # Filesystem Type Settings
+    try:
+        fs_frame = ttk.LabelFrame(main_container, text='💾 Target Filesystem Type', padding=10)
+        fs_frame.pack(fill='x', pady=(0, 10), padx=10)
+        
+        ttk.Label(fs_frame, text='Select the target filesystem for folder validation:', 
+                  font=('Segoe UI', 9)).pack(anchor='w', pady=(0, 8))
+        
+        try:
+            pref_fs_type = config.get_pref('filesystem_type', 'linux')
+        except Exception:
+            pref_fs_type = 'linux'
+        fs_type_var = tk.StringVar(value=pref_fs_type)
+        
+        ttk.Radiobutton(fs_frame, text='🐧 Linux/Unix/Unraid (default) - Only blocks forward slashes (/)', 
+                       variable=fs_type_var, value='linux',
+                       command=lambda: config.set_pref('filesystem_type', 'linux')).pack(anchor='w', pady=2)
+        ttk.Radiobutton(fs_frame, text='🪟 Windows - Strict validation (colons, quotes, etc. not allowed)', 
+                       variable=fs_type_var, value='windows',
+                       command=lambda: config.set_pref('filesystem_type', 'windows')).pack(anchor='w', pady=2)
+        
+        ttk.Label(fs_frame, text='💡 This affects validation when syncing rules from qBittorrent', 
+                  font=('Segoe UI', 8), foreground='#666').pack(anchor='w', pady=(8, 2))
+        ttk.Label(fs_frame, text='⚠️ Note: Linux folders with colons (:) will appear without colons', 
+                  font=('Segoe UI', 8), foreground='#d32f2f').pack(anchor='w', pady=(0, 0))
+        ttk.Label(fs_frame, text='    when accessed from Windows via SMB shares', 
+                  font=('Segoe UI', 8), foreground='#d32f2f').pack(anchor='w', pady=(0, 0))
+        
+        # Auto-sanitize option
+        ttk.Separator(fs_frame, orient='horizontal').pack(fill='x', pady=(10, 10))
+        
+        try:
+            pref_auto_sanitize = config.get_pref('auto_sanitize_paths', True)
+        except Exception:
+            pref_auto_sanitize = True
+        auto_sanitize_var = tk.BooleanVar(value=bool(pref_auto_sanitize))
+        
+        ttk.Checkbutton(fs_frame, text='✨ Auto-sanitize invalid folder names when syncing', 
+                       variable=auto_sanitize_var,
+                       command=lambda: config.set_pref('auto_sanitize_paths', auto_sanitize_var.get())).pack(anchor='w', pady=2)
+        ttk.Label(fs_frame, text='💡 Automatically fixes invalid characters in folder paths (e.g., "Title: Name" → "Title Name")', 
+                  font=('Segoe UI', 8), foreground='#666').pack(anchor='w', pady=(2, 0))
     except Exception:
         pass
 
@@ -1661,3 +1707,760 @@ def open_full_rule_editor(root: tk.Tk, title_text: str, entry: Dict[str, Any], i
 
     ttk.Button(footer, text='✓ Apply', command=_apply_full, style='Accent.TButton', width=12).pack(side='right', padx=5)
     ttk.Button(footer, text='✕ Cancel', command=dlg.destroy, width=12).pack(side='right')
+
+
+def open_bulk_edit_dialog(root: tk.Tk, selected_items: List[tuple], 
+                          apply_callback: callable, status_var: tk.StringVar) -> None:
+    """
+    Opens a bulk edit dialog for editing multiple selected rules at once.
+    
+    Args:
+        root: Parent Tkinter window
+        selected_items: List of (title, entry) tuples for selected items
+        apply_callback: Callback function to apply changes
+        status_var: Status bar variable for feedback
+    """
+    if not selected_items:
+        messagebox.showwarning('Bulk Edit', 'No items selected.')
+        return
+    
+    dlg = tk.Toplevel(root)
+    dlg.title(f"📝 Bulk Edit - {len(selected_items)} items selected")
+    dlg.geometry("600x400")
+    dlg.minsize(500, 350)
+    dlg.transient(root)
+    dlg.grab_set()
+    dlg.configure(bg='#f5f5f5')
+    
+    center_window(dlg)
+    
+    # Main frame
+    main_frame = ttk.Frame(dlg, padding=20)
+    main_frame.pack(fill='both', expand=True)
+    
+    # Info label
+    ttk.Label(main_frame, text=f"Editing {len(selected_items)} selected rules", 
+              font=('Segoe UI', 10, 'bold')).pack(anchor='w', pady=(0, 15))
+    
+    ttk.Label(main_frame, text="Check the fields you want to update for all selected items:",
+              font=('Segoe UI', 9)).pack(anchor='w', pady=(0, 10))
+    
+    # Fields frame
+    fields_frame = ttk.Frame(main_frame)
+    fields_frame.pack(fill='both', expand=True, pady=10)
+    
+    # Category field
+    category_enabled = tk.BooleanVar(value=False)
+    category_var = tk.StringVar(value='')
+    
+    category_frame = ttk.Frame(fields_frame)
+    category_frame.pack(fill='x', pady=8)
+    
+    ttk.Checkbutton(category_frame, text="Category:", variable=category_enabled,
+                   width=12).pack(side='left')
+    category_combo = ttk.Combobox(category_frame, textvariable=category_var, 
+                                 font=('Segoe UI', 9), state='normal')
+    category_combo.pack(side='left', fill='x', expand=True, padx=(5, 0))
+    
+    # Populate category dropdown from cached categories
+    try:
+        cached_cats = getattr(config, 'CACHED_CATEGORIES', {}) or {}
+        if isinstance(cached_cats, dict):
+            category_combo['values'] = sorted(cached_cats.keys())
+    except Exception:
+        pass
+    
+    # Save Path field
+    savepath_enabled = tk.BooleanVar(value=False)
+    savepath_var = tk.StringVar(value='')
+    
+    savepath_frame = ttk.Frame(fields_frame)
+    savepath_frame.pack(fill='x', pady=8)
+    
+    ttk.Checkbutton(savepath_frame, text="Save Path:", variable=savepath_enabled,
+                   width=12).pack(side='left')
+    savepath_entry = ttk.Entry(savepath_frame, textvariable=savepath_var,
+                              font=('Segoe UI', 9))
+    savepath_entry.pack(side='left', fill='x', expand=True, padx=(5, 0))
+    
+    # Auto-fill save path from category
+    def _on_category_change(*args):
+        if not category_enabled.get():
+            return
+        try:
+            selected_cat = category_var.get().strip()
+            if selected_cat:
+                cached_cats = getattr(config, 'CACHED_CATEGORIES', {}) or {}
+                if isinstance(cached_cats, dict) and selected_cat in cached_cats:
+                    cat_info = cached_cats[selected_cat]
+                    if isinstance(cat_info, dict) and 'savePath' in cat_info:
+                        savepath_var.set(cat_info['savePath'])
+                        savepath_enabled.set(True)  # Auto-enable save path field
+        except Exception:
+            pass
+    
+    category_var.trace_add('write', _on_category_change)
+    
+    # Enabled field
+    enabled_enabled = tk.BooleanVar(value=False)
+    enabled_var = tk.BooleanVar(value=True)
+    
+    enabled_frame = ttk.Frame(fields_frame)
+    enabled_frame.pack(fill='x', pady=8)
+    
+    ttk.Checkbutton(enabled_frame, text="Enabled:", variable=enabled_enabled,
+                   width=12).pack(side='left')
+    ttk.Checkbutton(enabled_frame, text="Enable rules", variable=enabled_var).pack(side='left', padx=(5, 0))
+    
+    # Separator
+    ttk.Separator(fields_frame, orient='horizontal').pack(fill='x', pady=15)
+    
+    # Summary frame
+    summary_frame = ttk.Frame(fields_frame)
+    summary_frame.pack(fill='x', pady=5)
+    
+    summary_label = ttk.Label(summary_frame, text="", 
+                             font=('Segoe UI', 9), foreground='#666')
+    summary_label.pack(anchor='w')
+    
+    def _update_summary(*args):
+        changes = []
+        if category_enabled.get():
+            changes.append(f"Category → '{category_var.get()}'")
+        if savepath_enabled.get():
+            changes.append(f"Save Path → '{savepath_var.get()}'")
+        if enabled_enabled.get():
+            changes.append(f"Enabled → {'Yes' if enabled_var.get() else 'No'}")
+        
+        if changes:
+            summary_label.config(text="Will update: " + ", ".join(changes))
+        else:
+            summary_label.config(text="No changes selected")
+    
+    category_enabled.trace_add('write', _update_summary)
+    savepath_enabled.trace_add('write', _update_summary)
+    enabled_enabled.trace_add('write', _update_summary)
+    category_var.trace_add('write', _update_summary)
+    savepath_var.trace_add('write', _update_summary)
+    enabled_var.trace_add('write', _update_summary)
+    
+    _update_summary()
+    
+    # Footer with buttons
+    footer = ttk.Frame(dlg, padding=(20, 10))
+    footer.pack(fill='x', side='bottom')
+    
+    def _apply_bulk_changes():
+        """Apply bulk changes to all selected items."""
+        try:
+            # Check if any fields are enabled
+            if not (category_enabled.get() or savepath_enabled.get() or enabled_enabled.get()):
+                messagebox.showwarning('Bulk Edit', 'No fields selected to update.')
+                return
+            
+            # Confirm with user
+            changes_text = []
+            if category_enabled.get():
+                changes_text.append(f"• Category: '{category_var.get()}'")
+            if savepath_enabled.get():
+                changes_text.append(f"• Save Path: '{savepath_var.get()}'")
+            if enabled_enabled.get():
+                changes_text.append(f"• Enabled: {'Yes' if enabled_var.get() else 'No'}")
+            
+            confirm_msg = f"Update {len(selected_items)} selected rules with:\n\n" + "\n".join(changes_text)
+            
+            if not messagebox.askyesno('Confirm Bulk Edit', confirm_msg):
+                return
+            
+            # Prepare changes dict
+            changes = {}
+            if category_enabled.get():
+                changes['category'] = category_var.get().strip()
+            if savepath_enabled.get():
+                changes['save_path'] = savepath_var.get().strip()
+            if enabled_enabled.get():
+                changes['enabled'] = enabled_var.get()
+            
+            # Apply changes via callback
+            success_count = apply_callback(selected_items, changes)
+            
+            dlg.destroy()
+            
+            if success_count > 0:
+                status_var.set(f'Bulk edit applied to {success_count} rules')
+                messagebox.showinfo('Bulk Edit', f'Successfully updated {success_count} rules.')
+            else:
+                messagebox.showwarning('Bulk Edit', 'No rules were updated.')
+                
+        except Exception as e:
+            logger.error(f"Bulk edit error: {e}", exc_info=True)
+            messagebox.showerror('Bulk Edit Error', f'Failed to apply bulk changes: {e}')
+    
+    ttk.Button(footer, text='✓ Apply to All', command=_apply_bulk_changes, 
+              style='Accent.TButton', width=15).pack(side='right', padx=5)
+    ttk.Button(footer, text='✕ Cancel', command=dlg.destroy, width=12).pack(side='right')
+
+
+def open_template_dialog(root: tk.Tk, apply_callback=None, current_rule_data: Dict[str, Any] = None) -> None:
+    """
+    Opens the template management dialog.
+    
+    Allows users to view, apply, create, edit, and delete rule templates.
+    
+    Args:
+        root: Parent Tkinter window
+        apply_callback: Function to call when applying a template, signature: callback(template_data) -> bool
+        current_rule_data: Optional dict with current rule data for creating new templates
+    """
+    from src.cache import load_templates, save_templates, add_template, delete_template, initialize_default_templates
+    
+    # Initialize default templates if none exist
+    initialize_default_templates()
+    
+    dlg = tk.Toplevel(root)
+    dlg.title("📋 Rule Templates")
+    dlg.geometry("900x650")
+    dlg.minsize(700, 500)
+    dlg.transient(root)
+    dlg.grab_set()
+    dlg.configure(bg='#f5f5f5')
+    center_window(dlg, root)
+    
+    # Main container
+    main_frame = ttk.Frame(dlg, padding=20)
+    main_frame.pack(fill='both', expand=True)
+    
+    # Title
+    title_label = ttk.Label(main_frame, text="Rule Templates", 
+                           font=('Segoe UI', 16, 'bold'))
+    title_label.pack(pady=(0, 15))
+    
+    # Content area (list + preview)
+    content_frame = ttk.Frame(main_frame)
+    content_frame.pack(fill='both', expand=True, pady=(0, 15))
+    
+    # Left side - Template list
+    list_frame = ttk.LabelFrame(content_frame, text="Templates", padding=10)
+    list_frame.pack(side='left', fill='both', expand=True, padx=(0, 10))
+    
+    # Listbox with scrollbar
+    list_scroll = ttk.Scrollbar(list_frame, orient='vertical')
+    template_listbox = tk.Listbox(list_frame, yscrollcommand=list_scroll.set,
+                                  font=('Segoe UI', 10), height=20)
+    list_scroll.config(command=template_listbox.yview)
+    list_scroll.pack(side='right', fill='y')
+    template_listbox.pack(side='left', fill='both', expand=True)
+    
+    # Right side - Preview pane
+    preview_frame = ttk.LabelFrame(content_frame, text="Preview", padding=10)
+    preview_frame.pack(side='right', fill='both', expand=True)
+    
+    # Preview text widget with scrollbar
+    preview_scroll = ttk.Scrollbar(preview_frame, orient='vertical')
+    preview_text = tk.Text(preview_frame, yscrollcommand=preview_scroll.set,
+                          font=('Consolas', 9), wrap='word', height=20, width=40)
+    preview_scroll.config(command=preview_text.yview)
+    preview_scroll.pack(side='right', fill='y')
+    preview_text.pack(side='left', fill='both', expand=True)
+    preview_text.config(state='disabled')  # Read-only
+    
+    # Template data storage
+    templates = {}
+    
+    def refresh_template_list():
+        """Refresh the template list."""
+        nonlocal templates
+        templates = load_templates()
+        
+        template_listbox.delete(0, tk.END)
+        for name in sorted(templates.keys()):
+            template_listbox.insert(tk.END, name)
+        
+        if template_listbox.size() > 0:
+            template_listbox.selection_set(0)
+            update_preview()
+    
+    def update_preview(event=None):
+        """Update the preview pane with selected template."""
+        selection = template_listbox.curselection()
+        if not selection:
+            preview_text.config(state='normal')
+            preview_text.delete('1.0', tk.END)
+            preview_text.config(state='disabled')
+            return
+        
+        template_name = template_listbox.get(selection[0])
+        template_data = templates.get(template_name, {})
+        
+        # Format preview
+        preview_content = f"Template: {template_name}\n"
+        preview_content += "=" * 50 + "\n\n"
+        
+        if 'description' in template_data:
+            preview_content += f"Description:\n  {template_data['description']}\n\n"
+        
+        preview_content += "Settings:\n"
+        for key, value in template_data.items():
+            if key == 'description':
+                continue
+            preview_content += f"  {key}: {value}\n"
+        
+        preview_text.config(state='normal')
+        preview_text.delete('1.0', tk.END)
+        preview_text.insert('1.0', preview_content)
+        preview_text.config(state='disabled')
+    
+    template_listbox.bind('<<ListboxSelect>>', update_preview)
+    
+    def apply_template():
+        """Apply the selected template."""
+        selection = template_listbox.curselection()
+        if not selection:
+            messagebox.showwarning('No Selection', 'Please select a template to apply.')
+            return
+        
+        template_name = template_listbox.get(selection[0])
+        template_data = templates.get(template_name, {})
+        
+        if apply_callback:
+            try:
+                # Remove description from data passed to callback
+                data_to_apply = {k: v for k, v in template_data.items() if k != 'description'}
+                success = apply_callback(data_to_apply)
+                if success:
+                    messagebox.showinfo('Template Applied', f'Template "{template_name}" applied successfully.')
+                    dlg.destroy()
+                else:
+                    messagebox.showerror('Apply Failed', 'Failed to apply template.')
+            except Exception as e:
+                logger.error(f"Error applying template: {e}", exc_info=True)
+                messagebox.showerror('Error', f'Failed to apply template: {e}')
+        else:
+            messagebox.showinfo('Template Data', f'Template "{template_name}" selected.\n\nData:\n{template_data}')
+    
+    def create_new_template():
+        """Create a new template."""
+        create_win = tk.Toplevel(dlg)
+        create_win.title("Create New Template")
+        create_win.geometry("500x600")
+        create_win.transient(dlg)
+        create_win.grab_set()
+        center_window(create_win, dlg)
+        
+        form_frame = ttk.Frame(create_win, padding=20)
+        form_frame.pack(fill='both', expand=True)
+        
+        ttk.Label(form_frame, text="Create New Template", 
+                 font=('Segoe UI', 14, 'bold')).pack(pady=(0, 20))
+        
+        # Template name
+        ttk.Label(form_frame, text="Template Name:").pack(anchor='w', pady=(5, 2))
+        name_entry = ttk.Entry(form_frame, width=50)
+        name_entry.pack(fill='x', pady=(0, 10))
+        
+        # Description
+        ttk.Label(form_frame, text="Description:").pack(anchor='w', pady=(5, 2))
+        desc_entry = ttk.Entry(form_frame, width=50)
+        desc_entry.pack(fill='x', pady=(0, 10))
+        
+        # Category
+        ttk.Label(form_frame, text="Category:").pack(anchor='w', pady=(5, 2))
+        category_entry = ttk.Entry(form_frame, width=50)
+        category_entry.pack(fill='x', pady=(0, 10))
+        
+        # Save Path
+        ttk.Label(form_frame, text="Save Path:").pack(anchor='w', pady=(5, 2))
+        savepath_entry = ttk.Entry(form_frame, width=50)
+        savepath_entry.pack(fill='x', pady=(0, 10))
+        
+        # Must Contain
+        ttk.Label(form_frame, text="Must Contain:").pack(anchor='w', pady=(5, 2))
+        must_contain_entry = ttk.Entry(form_frame, width=50)
+        must_contain_entry.pack(fill='x', pady=(0, 10))
+        
+        # Must Not Contain
+        ttk.Label(form_frame, text="Must Not Contain:").pack(anchor='w', pady=(5, 2))
+        must_not_contain_entry = ttk.Entry(form_frame, width=50)
+        must_not_contain_entry.pack(fill='x', pady=(0, 10))
+        
+        # Episode Filter
+        ttk.Label(form_frame, text="Episode Filter:").pack(anchor='w', pady=(5, 2))
+        episode_filter_entry = ttk.Entry(form_frame, width=50)
+        episode_filter_entry.pack(fill='x', pady=(0, 10))
+        
+        # Enabled checkbox
+        enabled_var = tk.BooleanVar(value=True)
+        ttk.Checkbutton(form_frame, text="Enabled by default", 
+                       variable=enabled_var).pack(anchor='w', pady=(5, 10))
+        
+        # Use Regex checkbox
+        use_regex_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(form_frame, text="Use Regular Expression", 
+                       variable=use_regex_var).pack(anchor='w', pady=(0, 10))
+        
+        # Pre-fill with current rule data if provided
+        if current_rule_data:
+            category_entry.insert(0, current_rule_data.get('category', ''))
+            savepath_entry.insert(0, current_rule_data.get('save_path', ''))
+            must_contain_entry.insert(0, current_rule_data.get('must_contain', ''))
+            must_not_contain_entry.insert(0, current_rule_data.get('must_not_contain', ''))
+            episode_filter_entry.insert(0, current_rule_data.get('episode_filter', ''))
+            enabled_var.set(current_rule_data.get('enabled', True))
+            use_regex_var.set(current_rule_data.get('use_regex', False))
+        
+        def save_new_template():
+            """Save the new template."""
+            name = name_entry.get().strip()
+            if not name:
+                messagebox.showwarning('Invalid Name', 'Please enter a template name.')
+                return
+            
+            if name in templates:
+                if not messagebox.askyesno('Overwrite Template', 
+                                          f'Template "{name}" already exists. Overwrite?'):
+                    return
+            
+            template_data = {
+                'description': desc_entry.get().strip(),
+                'category': category_entry.get().strip(),
+                'save_path': savepath_entry.get().strip(),
+                'must_contain': must_contain_entry.get().strip(),
+                'must_not_contain': must_not_contain_entry.get().strip(),
+                'episode_filter': episode_filter_entry.get().strip(),
+                'enabled': enabled_var.get(),
+                'use_regex': use_regex_var.get(),
+            }
+            
+            if add_template(name, template_data):
+                messagebox.showinfo('Success', f'Template "{name}" saved successfully.')
+                create_win.destroy()
+                refresh_template_list()
+            else:
+                messagebox.showerror('Error', 'Failed to save template.')
+        
+        # Buttons
+        btn_frame = ttk.Frame(form_frame)
+        btn_frame.pack(fill='x', pady=(15, 0))
+        
+        ttk.Button(btn_frame, text='✓ Save Template', command=save_new_template,
+                  style='Accent.TButton', width=15).pack(side='right', padx=5)
+        ttk.Button(btn_frame, text='✕ Cancel', command=create_win.destroy,
+                  width=12).pack(side='right')
+    
+    def edit_template():
+        """Edit the selected template."""
+        selection = template_listbox.curselection()
+        if not selection:
+            messagebox.showwarning('No Selection', 'Please select a template to edit.')
+            return
+        
+        template_name = template_listbox.get(selection[0])
+        template_data = templates.get(template_name, {})
+        
+        # Open create dialog pre-filled with template data
+        create_new_template()  # This will be enhanced to handle editing
+    
+    def delete_selected_template():
+        """Delete the selected template."""
+        selection = template_listbox.curselection()
+        if not selection:
+            messagebox.showwarning('No Selection', 'Please select a template to delete.')
+            return
+        
+        template_name = template_listbox.get(selection[0])
+        
+        if not messagebox.askyesno('Confirm Delete', 
+                                   f'Delete template "{template_name}"?'):
+            return
+        
+        if delete_template(template_name):
+            messagebox.showinfo('Deleted', f'Template "{template_name}" deleted.')
+            refresh_template_list()
+        else:
+            messagebox.showerror('Error', 'Failed to delete template.')
+    
+    # Button panel
+    button_frame = ttk.Frame(main_frame)
+    button_frame.pack(fill='x', pady=(0, 0))
+    
+    ttk.Button(button_frame, text='✓ Apply Template', command=apply_template,
+              style='Accent.TButton', width=15).pack(side='left', padx=5)
+    ttk.Button(button_frame, text='+ New Template', command=create_new_template,
+              width=15).pack(side='left', padx=5)
+    ttk.Button(button_frame, text='✎ Edit Template', command=edit_template,
+              width=15).pack(side='left', padx=5)
+    ttk.Button(button_frame, text='🗑 Delete', command=delete_selected_template,
+              width=12).pack(side='left', padx=5)
+    ttk.Button(button_frame, text='✕ Close', command=dlg.destroy,
+              width=12).pack(side='right', padx=5)
+    
+    # Load templates
+    refresh_template_list()
+
+
+def open_sonarr_export_dialog(root: tk.Tk, titles_to_export: List[str]) -> None:
+    """
+    Opens the Sonarr export dialog to bulk-add series.
+    
+    Args:
+        root: Parent Tkinter window
+        titles_to_export: List of anime titles to add to Sonarr
+    """
+    import src.sonarr_api as sonarr
+    from src.config import config
+    from src.gui.helpers import center_window
+    
+    dlg = tk.Toplevel(root)
+    dlg.title("📺 Export to Sonarr")
+    dlg.geometry("1000x700")
+    dlg.minsize(800, 600)
+    dlg.transient(root)
+    dlg.grab_set()
+    dlg.configure(bg='#f5f5f5')
+    center_window(dlg, root)
+    
+    # Main container
+    main_frame = ttk.Frame(dlg, padding=20)
+    main_frame.pack(fill='both', expand=True)
+    
+    # Title
+    title_label = ttk.Label(main_frame, text="Export to Sonarr", 
+                           font=('Segoe UI', 16, 'bold'))
+    title_label.pack(pady=(0, 10))
+    
+    # Status label
+    status_var = tk.StringVar(value=f"Ready to export {len(titles_to_export)} titles")
+    status_label = ttk.Label(main_frame, textvariable=status_var, 
+                            font=('Segoe UI', 9))
+    status_label.pack(pady=(0, 15))
+    
+    # Connection frame
+    conn_frame = ttk.LabelFrame(main_frame, text="Sonarr Connection", padding=10)
+    conn_frame.pack(fill='x', pady=(0, 15))
+    
+    # URL
+    ttk.Label(conn_frame, text="Sonarr URL:").grid(row=0, column=0, sticky='w', padx=(0, 10))
+    url_var = tk.StringVar(value=config.SONARR_URL or "http://localhost:8989")
+    url_entry = ttk.Entry(conn_frame, textvariable=url_var, width=40)
+    url_entry.grid(row=0, column=1, sticky='ew', padx=(0, 10))
+    
+    # API Key
+    ttk.Label(conn_frame, text="API Key:").grid(row=1, column=0, sticky='w', padx=(0, 10), pady=(5, 0))
+    api_key_var = tk.StringVar(value=config.SONARR_API_KEY or "")
+    api_key_entry = ttk.Entry(conn_frame, textvariable=api_key_var, width=40, show='*')
+    api_key_entry.grid(row=1, column=1, sticky='ew', padx=(0, 10), pady=(5, 0))
+    
+    # Test button
+    def test_connection():
+        status_var.set("Testing connection...")
+        dlg.update()
+        try:
+            result = sonarr.test_connection(url_var.get(), api_key_var.get())
+            version = result.get('version', 'Unknown')
+            status_var.set(f"✓ Connected to Sonarr v{version}")
+            messagebox.showinfo('Connection Test', f'Successfully connected to Sonarr v{version}')
+            
+            # Save config
+            config.save_sonarr_config(url_var.get(), api_key_var.get())
+        except Exception as e:
+            status_var.set(f"✗ Connection failed: {e}")
+            messagebox.showerror('Connection Error', f'Failed to connect to Sonarr:\n\n{e}')
+    
+    test_btn = ttk.Button(conn_frame, text='Test Connection', command=test_connection)
+    test_btn.grid(row=0, column=2, rowspan=2, padx=(5, 0))
+    
+    conn_frame.columnconfigure(1, weight=1)
+    
+    # Settings frame
+    settings_frame = ttk.LabelFrame(main_frame, text="Import Settings", padding=10)
+    settings_frame.pack(fill='x', pady=(0, 15))
+    
+    # Quality Profile
+    ttk.Label(settings_frame, text="Quality Profile:").grid(row=0, column=0, sticky='w', padx=(0, 10))
+    quality_var = tk.StringVar()
+    quality_combo = ttk.Combobox(settings_frame, textvariable=quality_var, state='readonly', width=30)
+    quality_combo.grid(row=0, column=1, sticky='w')
+    
+    # Root Folder
+    ttk.Label(settings_frame, text="Root Folder:").grid(row=1, column=0, sticky='w', padx=(0, 10), pady=(5, 0))
+    root_folder_var = tk.StringVar()
+    root_folder_combo = ttk.Combobox(settings_frame, textvariable=root_folder_var, state='readonly', width=50)
+    root_folder_combo.grid(row=1, column=1, sticky='ew', pady=(5, 0))
+    
+    # Monitor Mode
+    ttk.Label(settings_frame, text="Monitor:").grid(row=2, column=0, sticky='w', padx=(0, 10), pady=(5, 0))
+    monitor_var = tk.StringVar(value="all")
+    monitor_combo = ttk.Combobox(settings_frame, textvariable=monitor_var, state='readonly', width=20,
+                                values=['all', 'future', 'missing', 'existing', 'none'])
+    monitor_combo.grid(row=2, column=1, sticky='w', pady=(5, 0))
+    
+    # Search on add
+    search_var = tk.BooleanVar(value=False)
+    ttk.Checkbutton(settings_frame, text="Search for missing episodes on add", 
+                   variable=search_var).grid(row=3, column=0, columnspan=2, sticky='w', pady=(5, 0))
+    
+    settings_frame.columnconfigure(1, weight=1)
+    
+    # Load quality profiles and root folders
+    quality_profiles = []
+    root_folders = []
+    
+    def load_settings():
+        nonlocal quality_profiles, root_folders
+        try:
+            status_var.set("Loading Sonarr settings...")
+            dlg.update()
+            
+            # Get quality profiles
+            quality_profiles = sonarr.get_quality_profiles(url_var.get(), api_key_var.get())
+            profile_names = [p['name'] for p in quality_profiles]
+            quality_combo['values'] = profile_names
+            if profile_names:
+                quality_combo.current(0)
+            
+            # Get root folders
+            root_folders = sonarr.get_root_folders(url_var.get(), api_key_var.get())
+            folder_paths = [f['path'] for f in root_folders]
+            root_folder_combo['values'] = folder_paths
+            if folder_paths:
+                root_folder_combo.current(0)
+            
+            status_var.set(f"Loaded {len(quality_profiles)} profiles, {len(root_folders)} folders")
+        except Exception as e:
+            status_var.set(f"Failed to load settings: {e}")
+            messagebox.showerror('Settings Error', f'Failed to load Sonarr settings:\n\n{e}')
+    
+    load_settings_btn = ttk.Button(settings_frame, text='↻ Load Settings', command=load_settings)
+    load_settings_btn.grid(row=0, column=2, padx=(10, 0))
+    
+    # Series matching frame
+    matching_frame = ttk.LabelFrame(main_frame, text="Series Matching", padding=10)
+    matching_frame.pack(fill='both', expand=True, pady=(0, 15))
+    
+    # Treeview for series matching
+    columns = ('title', 'status', 'match')
+    tree = ttk.Treeview(matching_frame, columns=columns, show='headings', height=15)
+    tree.heading('title', text='Title')
+    tree.heading('status', text='Status')
+    tree.heading('match', text='Sonarr Match')
+    tree.column('title', width=250)
+    tree.column('status', width=100)
+    tree.column('match', width=400)
+    
+    # Scrollbar
+    scrollbar = ttk.Scrollbar(matching_frame, orient='vertical', command=tree.yview)
+    tree.configure(yscrollcommand=scrollbar.set)
+    scrollbar.pack(side='right', fill='y')
+    tree.pack(side='left', fill='both', expand=True)
+    
+    # Store series matches
+    series_matches = {}  # title -> sonarr series data
+    
+    # Populate tree
+    for title in titles_to_export:
+        tree.insert('', 'end', values=(title, 'Pending', ''))
+    
+    # Search for series
+    def search_all_series():
+        status_var.set("Searching for series in Sonarr...")
+        dlg.update()
+        
+        matches_found = 0
+        for item in tree.get_children():
+            title = tree.item(item, 'values')[0]
+            try:
+                results = sonarr.search_series(url_var.get(), api_key_var.get(), title)
+                if results:
+                    # Use first match
+                    match = results[0]
+                    series_matches[title] = match
+                    match_text = f"{match.get('title')} ({match.get('year', 'N/A')})"
+                    tree.item(item, values=(title, '✓ Found', match_text))
+                    tree.item(item, tags=('found',))
+                    matches_found += 1
+                else:
+                    tree.item(item, values=(title, '✗ Not Found', 'No matches'))
+                    tree.item(item, tags=('not_found',))
+            except Exception as e:
+                tree.item(item, values=(title, '✗ Error', str(e)))
+                tree.item(item, tags=('error',))
+            
+            dlg.update()
+        
+        tree.tag_configure('found', foreground='green')
+        tree.tag_configure('not_found', foreground='red')
+        tree.tag_configure('error', foreground='orange')
+        
+        status_var.set(f"Found matches for {matches_found}/{len(titles_to_export)} series")
+    
+    # Button frame
+    button_frame = ttk.Frame(main_frame)
+    button_frame.pack(fill='x')
+    
+    ttk.Button(button_frame, text='🔍 Search for Series', command=search_all_series).pack(side='left', padx=5)
+    
+    def add_to_sonarr():
+        if not series_matches:
+            messagebox.showwarning('No Matches', 'Please search for series first.')
+            return
+        
+        # Get selected quality profile and root folder
+        quality_name = quality_var.get()
+        quality_id = next((p['id'] for p in quality_profiles if p['name'] == quality_name), None)
+        
+        root_folder = root_folder_var.get()
+        
+        if not quality_id or not root_folder:
+            messagebox.showwarning('Settings Required', 'Please select quality profile and root folder.')
+            return
+        
+        # Confirm
+        if not messagebox.askyesno('Confirm Add', 
+                                   f'Add {len(series_matches)} series to Sonarr?\n\n' +
+                                   f'Quality: {quality_name}\n' +
+                                   f'Folder: {root_folder}\n' +
+                                   f'Monitor: {monitor_var.get()}'):
+            return
+        
+        # Add series
+        status_var.set("Adding series to Sonarr...")
+        dlg.update()
+        
+        results = sonarr.bulk_add_series(
+            url_var.get(), api_key_var.get(),
+            list(series_matches.values()),
+            quality_id, root_folder,
+            monitor_var.get(), search_var.get()
+        )
+        
+        # Update tree with results
+        for item in tree.get_children():
+            title = tree.item(item, 'values')[0]
+            if title in results['success']:
+                tree.item(item, values=(title, '✓ Added', tree.item(item, 'values')[2]))
+                tree.item(item, tags=('added',))
+            elif any(title in f for f in results['failed']):
+                error = next(f for f in results['failed'] if title in f)
+                tree.item(item, values=(title, '✗ Failed', error))
+                tree.item(item, tags=('failed',))
+        
+        tree.tag_configure('added', foreground='blue')
+        tree.tag_configure('failed', foreground='red')
+        
+        status_var.set(f"Added {len(results['success'])} series, {len(results['failed'])} failed")
+        
+        # Save settings
+        config.save_sonarr_config(
+            url_var.get(), api_key_var.get(),
+            quality_id, root_folder,
+            monitor_var.get(), search_var.get()
+        )
+        
+        messagebox.showinfo('Sonarr Export Complete', 
+                           f"Successfully added {len(results['success'])} series to Sonarr.\n\n" +
+                           (f"Failed: {len(results['failed'])}" if results['failed'] else ""))
+    
+    ttk.Button(button_frame, text='✓ Add to Sonarr', command=add_to_sonarr,
+              style='Accent.TButton').pack(side='left', padx=5)
+    ttk.Button(button_frame, text='✕ Close', command=dlg.destroy).pack(side='right', padx=5)
+

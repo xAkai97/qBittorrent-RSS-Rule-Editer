@@ -35,6 +35,7 @@ def test_complete_module_integration():
     print("  - utils")
     print("  - constants")
     print("  - gui.widgets")
+    return True
 
 
 def test_config_to_cache_integration():
@@ -57,6 +58,7 @@ def test_config_to_cache_integration():
         loaded = load_recent_files()
         assert loaded == test_files, "Recent files mismatch"
         print(f"✓ Loaded {len(loaded)} recent files")
+        return True
         
     except Exception as e:
         print(f"✗ Config-Cache integration failed: {e}")
@@ -90,6 +92,7 @@ def test_utils_to_rss_rules_integration():
         season, year = get_current_anime_season()
         path = build_save_path("Test Show", season, year)
         print(f"✓ Built seasonal path: {path}")
+        return True
         
     except Exception as e:
         print(f"✗ Utils-RSS Rules integration failed: {e}")
@@ -132,6 +135,7 @@ def test_rss_rules_to_qbt_api_integration():
             password='test'
         )
         print("✓ QBittorrent client can be initialized with rules")
+        return True
         
     except Exception as e:
         print(f"✗ RSS Rules-QBT API integration failed: {e}")
@@ -168,6 +172,7 @@ def test_subsplease_to_rss_rules_integration():
         }
         rules = build_rules_from_titles(rules_data)
         print(f"✓ Built {len(rules)} rules from titles")
+        return True
         
     except Exception as e:
         print(f"✗ SubsPlease-RSS Rules integration failed: {e}")
@@ -247,6 +252,7 @@ def test_complete_workflow():
                 os.unlink(temp_path)
         
         print("✓ Complete workflow successful!")
+        return True
         
     except Exception as e:
         print(f"✗ Complete workflow failed: {e}")
@@ -289,6 +295,7 @@ def test_error_handling():
         )
         assert not success, "Invalid connection succeeded"
         print(f"✓ Invalid connection caught: {msg[:50]}...")
+        return True
         
     except Exception as e:
         print(f"✗ Error handling test failed: {e}")
@@ -326,6 +333,7 @@ def test_all_exports():
             if hasattr(module, '__all__'):
                 exports = module.__all__
                 print(f"✓ {name}.__all__ has {len(exports)} exports")
+        return True
         
     except Exception as e:
         print(f"✗ Module exports test failed: {e}")
@@ -347,6 +355,7 @@ def test_version_consistency():
         assert isinstance(src_version, str), "Version is not a string"
         assert len(src_version) > 0, "Version is empty"
         print(f"✓ Version format valid")
+        return True
         
     except Exception as e:
         print(f"✗ Version consistency test failed: {e}")
@@ -375,6 +384,8 @@ def test_documentation_exists():
                 print(f"✓ {doc} exists")
             else:
                 print(f"⚠ {doc} missing")
+        
+        return True
         
     except Exception as e:
         print(f"✗ Documentation check failed: {e}")

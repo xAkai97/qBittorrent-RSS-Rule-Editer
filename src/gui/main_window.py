@@ -115,19 +115,20 @@ def setup_window_and_styles(root: tk.Tk) -> Tuple[ttk.Style, tk.StringVar, tk.St
     root.title("qBittorrent RSS Rules Editor")
     
     # Position window away from taskbar
+    from src.constants import UIConfig
     try:
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
-        window_width = 1400
-        window_height = 900
+        window_width = UIConfig.DEFAULT_WINDOW_WIDTH
+        window_height = UIConfig.DEFAULT_WINDOW_HEIGHT
         # Position at top-center with some margin from top
         x = (screen_width - window_width) // 2
-        y = 50  # 50px from top to avoid covering with taskbar
+        y = UIConfig.WINDOW_TOP_MARGIN
         root.geometry(f"{window_width}x{window_height}+{x}+{y}")
     except Exception:
-        root.geometry("1400x800")
+        root.geometry(f"{UIConfig.DEFAULT_WINDOW_WIDTH}x{UIConfig.DEFAULT_WINDOW_HEIGHT}")
     
-    root.minsize(1400, 700)
+    root.minsize(UIConfig.MIN_WINDOW_WIDTH, UIConfig.MIN_WINDOW_HEIGHT)
 
     style = ttk.Style()
     style.theme_use('clam')
@@ -356,6 +357,12 @@ def setup_menu_bar(
     recent_menu = tk.Menu(file_menu, tearoff=0)
     file_menu.add_cascade(label='Recent Files', menu=recent_menu)
     file_menu.add_separator()
+    file_menu.add_command(
+        label='Export to Sonarr...', 
+        accelerator='Ctrl+Shift+S',
+        command=lambda: None  # Will be set up later in setup_library_panel
+    )
+    file_menu.add_separator()
     file_menu.add_command(label='Exit', command=root.quit)
     menubar.add_cascade(label='📁 File', menu=file_menu)
     
@@ -367,6 +374,18 @@ def setup_menu_bar(
     # Note: Toggle command will be set up after treeview is created
     # It is a placeholder here and will be configured in setup_library_panel
     edit_menu.add_command(label='🔄 Toggle Enable/Disable', accelerator='Space')
+    edit_menu.add_separator()
+    edit_menu.add_command(
+        label='↶ Undo', 
+        accelerator='Ctrl+Z', 
+        command=lambda: None  # Will be configured after setup
+    )
+    edit_menu.add_separator()
+    edit_menu.add_command(
+        label='📝 Bulk Edit Selected...', 
+        accelerator='Ctrl+B', 
+        command=lambda: None  # Will be configured after setup
+    )
     edit_menu.add_separator()
     edit_menu.add_command(
         label='Clear All Titles', 
@@ -395,6 +414,25 @@ def setup_menu_bar(
         command=lambda: view_trash_dialog(root)
     )
     menubar.add_cascade(label='✏️ Edit', menu=edit_menu)
+
+    # Templates menu
+    templates_menu = tk.Menu(menubar, tearoff=0)
+    templates_menu.add_command(
+        label='📋 Apply Template...', 
+        accelerator='Ctrl+Shift+T',
+        command=lambda: _open_template_dialog()
+    )
+    templates_menu.add_command(
+        label='💾 Save as Template...', 
+        accelerator='Ctrl+T',
+        command=lambda: _save_as_template()
+    )
+    templates_menu.add_separator()
+    templates_menu.add_command(
+        label='📚 Manage Templates...', 
+        command=lambda: _manage_templates()
+    )
+    menubar.add_cascade(label='📋 Templates', menu=templates_menu)
 
     def refresh_recent_menu():
         """Refreshes the Recent Files menu with current file history."""
@@ -480,36 +518,9 @@ def setup_menu_bar(
                 messagebox.showinfo('Validation', 'No titles to validate.')
                 return
             
-            # Validation helper
-            def _is_valid_folder_name(name):
-                """Validates if a string is a valid folder name."""
-                try:
-                    if not name or not isinstance(name, str) or not str(name).strip():
-                        return False, 'Empty name'
-                    
-                    s = str(name).strip()
-                    
-                    # Check for invalid characters
-                    found_invalid = [c for c in s if c in FileSystem.INVALID_CHARS]
-                    if found_invalid:
-                        return False, f'Contains invalid characters: {"".join(sorted(set(found_invalid)))}'
-                    
-                    # Check for trailing space or dot
-                    if s.endswith(' ') or s.endswith('.'):
-                        return False, 'Ends with a space or dot (invalid on Windows)'
-                    
-                    # Check for Windows reserved names
-                    base = s.split('.')[0].upper()
-                    if base in FileSystem.RESERVED_NAMES:
-                        return False, f'Reserved name: {base}'
-                    
-                    # Check length
-                    if len(s) > FileSystem.MAX_PATH_LENGTH:
-                        return False, f'Name too long (>{FileSystem.MAX_PATH_LENGTH} chars)'
-                    
-                    return True, None
-                except Exception:
-                    return False, 'Validation error'
+            # Use centralized validation function
+            from src.utils import validate_folder_name_by_filesystem
+            _is_valid_folder_name = validate_folder_name_by_filesystem
             
             # Validate all items
             problems = []
@@ -539,19 +550,24 @@ def setup_menu_bar(
                 except Exception:
                     pass
                 
-                # Validate folder name
+                # Validate folder names in save path
                 try:
-                    raw = e.get('mustContain') or get_display_title(e) or ''
-                    if not raw:
-                        display = get_display_title(e, title_text)
-                        if display and ' - ' in display:
-                            parts = display.split(' - ', 1)
-                            if len(parts) == 2:
-                                raw = parts[1]
-                    if raw:
-                        valid, reason = _is_valid_folder_name(raw)
-                        if not valid:
-                            problems.append(f'❌ Invalid folder-name for "{title_text}": {reason}')
+                    # Get the save path
+                    save_path = e.get('savePath') or e.get('save_path') or ''
+                    if not save_path:
+                        tp = e.get('torrentParams') or e.get('torrent_params') or {}
+                        save_path = tp.get('save_path') or tp.get('savePath') or ''
+                    
+                    if save_path:
+                        # Validate each folder component in the path
+                        path_str = str(save_path).replace('\\', '/')
+                        folders = [f for f in path_str.split('/') if f.strip()]
+                        
+                        for folder in folders:
+                            valid, reason = _is_valid_folder_name(folder)
+                            if not valid:
+                                problems.append(f'❌ Invalid folder in path for "{title_text}": "{folder}" - {reason}')
+                                break
                 except Exception:
                     pass
             
@@ -639,7 +655,7 @@ def setup_menu_bar(
         except Exception:
             pass
 
-    return menubar, recent_menu, edit_menu
+    return menubar, recent_menu, edit_menu, file_menu
 
 
 def setup_keyboard_shortcuts(root: tk.Tk, season_var: tk.StringVar, year_var: tk.StringVar, 
@@ -689,6 +705,24 @@ def setup_keyboard_shortcuts(root: tk.Tk, season_var: tk.StringVar, year_var: tk
         root.bind_all('<Control-Shift-c>', lambda e: clear_all_titles(root, status_var))
         
         root.bind_all('<F5>', lambda e: refresh_treeview_display())
+        
+        # Ctrl+B - Bulk Edit (note: will be set up properly after treeview is created)
+        # Placeholder binding, will be updated in setup_library_panel
+        root.bind_all('<Control-b>', lambda e: None)
+        root.bind_all('<Control-B>', lambda e: None)
+        
+        # Ctrl+Z - Undo (will be set up properly after treeview is created)
+        # Placeholder binding, will be updated in setup_library_panel
+        root.bind_all('<Control-z>', lambda e: None)
+        root.bind_all('<Control-Z>', lambda e: None)
+        
+        # Ctrl+T - Save as Template (will be set up properly after treeview is created)
+        root.bind_all('<Control-t>', lambda e: None)
+        root.bind_all('<Control-T>', lambda e: None)
+        
+        # Ctrl+Shift+T - Apply Template (will be set up properly after treeview is created)
+        root.bind_all('<Control-Shift-t>', lambda e: None)
+        root.bind_all('<Control-Shift-T>', lambda e: None)
         
         # Ctrl+F - Focus search
         from src.gui.app_state import get_app_state
@@ -832,6 +866,14 @@ def setup_gui() -> tk.Tk:
     # Setup exception handler
     exit_handler()
     
+    # Initialize default templates if none exist
+    try:
+        from src.cache import initialize_default_templates
+        initialize_default_templates()
+        logger.info("Default templates initialized")
+    except Exception as e:
+        logger.error(f"Failed to initialize default templates: {e}")
+    
     # Initialize window and styles (returns style, season_var, year_var)
     style, season_var, year_var = setup_window_and_styles(root)
     
@@ -844,7 +886,7 @@ def setup_gui() -> tk.Tk:
     app_state.status_var = status_var
     
     # Setup menu bar (now that season_var and year_var are available)
-    menubar, recent_menu, edit_menu = setup_menu_bar(root, status_var, season_var, year_var)
+    menubar, recent_menu, edit_menu, file_menu = setup_menu_bar(root, status_var, season_var, year_var)
     
     # Setup status bar and auto-connect
     setup_status_and_autoconnect(root, status_var, config_set)
@@ -967,8 +1009,9 @@ def setup_gui() -> tk.Tk:
             # Refresh treeview to ensure display is synchronized
             update_treeview_with_titles(config.ALL_TITLES)
             
-            messagebox.showinfo('Delete', f'Moved {removed} title(s) to Trash (undo available).')
-            status_var.set(f'Deleted {removed} title(s) - view trash to restore')
+            undo_count = len(app_state.trash_items)
+            messagebox.showinfo('Delete', f'Moved {removed} title(s) to Trash.\n\nPress Ctrl+Z to undo ({undo_count} operation(s) available).')
+            status_var.set(f'Deleted {removed} title(s) - press Ctrl+Z to undo')
         except Exception as e:
             messagebox.showerror(
                 'Delete Error', 
@@ -1265,8 +1308,7 @@ def setup_gui() -> tk.Tk:
             except Exception as e:
                 logger.error(f"Error in Space key handler: {e}")
         
-        treeview.bind('<space>', _on_space_key)
-        treeview.bind('<Space>', _on_space_key)
+        treeview.bind('<KeyPress-space>', _on_space_key)
     except Exception as e:
         logger.error(f"Failed to setup context menu: {e}")
     
@@ -1274,8 +1316,364 @@ def setup_gui() -> tk.Tk:
     if edit_menu:
         try:
             edit_menu.entryconfig(0, command=_ctx_toggle_enabled)
+            # Undo is at index 2 (after separator)
+            edit_menu.entryconfig(2, command=lambda: _undo_last_action())
+            # Bulk edit is at index 4 (after another separator)
+            edit_menu.entryconfig(4, command=lambda: _open_bulk_edit())
         except Exception as e:
             logger.error(f"Failed to update edit menu: {e}")
+    
+    # ==================== Bulk Edit Handler ====================
+    def _open_bulk_edit():
+        """Opens bulk edit dialog for multiple selected items."""
+        try:
+            from src.gui.dialogs import open_bulk_edit_dialog
+            
+            sel = treeview.curselection()
+            if not sel or len(sel) < 2:
+                messagebox.showinfo(
+                    'Bulk Edit', 
+                    'Please select 2 or more items to use bulk edit.\n\n'
+                    'Tip: Hold Ctrl and click to select multiple items.'
+                )
+                return
+            
+            # Collect selected items
+            selected_items = []
+            for idx in sel:
+                try:
+                    idx_int = int(idx)
+                    title_text, entry = app_state.listbox_items[idx_int]
+                    selected_items.append((title_text, entry))
+                except Exception as e:
+                    logger.error(f"Failed to get item {idx}: {e}")
+                    continue
+            
+            if not selected_items:
+                messagebox.showwarning('Bulk Edit', 'No valid items selected.')
+                return
+            
+            # Callback to apply changes
+            def _apply_bulk_changes(items, changes):
+                """Apply bulk changes to selected items."""
+                try:
+                    # Save undo state
+                    _save_undo_state()
+                    
+                    success_count = 0
+                    for title_text, entry in items:
+                        try:
+                            # Find the item in listbox_items
+                            item_idx = None
+                            for i, (t, e) in enumerate(app_state.listbox_items):
+                                if t == title_text and e is entry:
+                                    item_idx = i
+                                    break
+                            
+                            if item_idx is None:
+                                continue
+                            
+                            # Apply changes
+                            if 'category' in changes:
+                                entry['assignedCategory'] = changes['category']
+                                if 'torrentParams' not in entry:
+                                    entry['torrentParams'] = {}
+                                entry['torrentParams']['category'] = changes['category']
+                            
+                            if 'save_path' in changes:
+                                entry['savePath'] = changes['save_path']
+                                if 'torrentParams' not in entry:
+                                    entry['torrentParams'] = {}
+                                entry['torrentParams']['save_path'] = changes['save_path']
+                            
+                            if 'enabled' in changes:
+                                entry['enabled'] = changes['enabled']
+                            
+                            # Update in ALL_TITLES
+                            if hasattr(config, 'ALL_TITLES') and isinstance(config.ALL_TITLES, dict):
+                                for season_key, titles_list in config.ALL_TITLES.items():
+                                    if isinstance(titles_list, list):
+                                        for item in titles_list:
+                                            if isinstance(item, dict) and item.get('title') == title_text:
+                                                if 'category' in changes:
+                                                    item['assignedCategory'] = changes['category']
+                                                    if 'torrentParams' not in item:
+                                                        item['torrentParams'] = {}
+                                                    item['torrentParams']['category'] = changes['category']
+                                                if 'save_path' in changes:
+                                                    item['savePath'] = changes['save_path']
+                                                    if 'torrentParams' not in item:
+                                                        item['torrentParams'] = {}
+                                                    item['torrentParams']['save_path'] = changes['save_path']
+                                                if 'enabled' in changes:
+                                                    item['enabled'] = changes['enabled']
+                            
+                            success_count += 1
+                        except Exception as e:
+                            logger.error(f"Failed to update item {title_text}: {e}")
+                            continue
+                    
+                    # Refresh treeview display
+                    if success_count > 0:
+                        refresh_treeview_display()
+                        
+                        # Re-select the items
+                        treeview.selection_clear()
+                        for idx in sel:
+                            try:
+                                treeview.selection_add(int(idx))
+                            except Exception:
+                                pass
+                    
+                    return success_count
+                except Exception as e:
+                    logger.error(f"Bulk edit apply error: {e}", exc_info=True)
+                    messagebox.showerror('Bulk Edit Error', f'Failed to apply changes: {e}')
+                    return 0
+            
+            open_bulk_edit_dialog(root, selected_items, _apply_bulk_changes, status_var)
+        except Exception as e:
+            logger.error(f"Bulk edit error: {e}", exc_info=True)
+            messagebox.showerror(
+                'Bulk Edit Error', 
+                f'Failed to open bulk editor: {e}\n\n'
+                'Action: Try selecting items again.'
+            )
+    
+    # Update keyboard shortcuts now that bulk edit function is defined
+    try:
+        root.bind_all('<Control-b>', lambda e: _open_bulk_edit())
+        root.bind_all('<Control-B>', lambda e: _open_bulk_edit())
+    except Exception as e:
+        logger.error(f"Failed to bind bulk edit shortcut: {e}")
+    
+    # ==================== Unified Undo Handler ====================
+    def _undo_last_action():
+        """Unified undo handler for both delete and edit operations."""
+        try:
+            # Check if we have trash items (deleted items take priority)
+            if app_state.trash_items:
+                # Restore the most recent trash item
+                try:
+                    item = app_state.trash_items.pop()
+                    if item.get('src') == 'titles':
+                        title_text = item.get('title')
+                        entry = item.get('entry')
+                        original_idx = item.get('index', None)
+                        
+                        # Add back to listbox_items at original position if possible
+                        if original_idx is not None and 0 <= original_idx <= len(app_state.listbox_items):
+                            app_state.listbox_items.insert(original_idx, (title_text, entry))
+                        else:
+                            app_state.listbox_items.append((title_text, entry))
+                        
+                        # Add back to config.ALL_TITLES
+                        if hasattr(config, 'ALL_TITLES') and isinstance(config.ALL_TITLES, dict):
+                            if 'existing' not in config.ALL_TITLES:
+                                config.ALL_TITLES['existing'] = []
+                            config.ALL_TITLES['existing'].append(entry)
+                        
+                        # Refresh display
+                        refresh_treeview_display()
+                        
+                        # Select the restored item
+                        if original_idx is not None:
+                            try:
+                                treeview.selection_set(original_idx)
+                                treeview.see(original_idx)
+                            except Exception:
+                                pass
+                        
+                        status_var.set(f'Restored: {title_text}')
+                        
+                        # Show info about remaining undo operations
+                        remaining = len(app_state.trash_items)
+                        if remaining > 0:
+                            messagebox.showinfo('Undo', f'Restored "{title_text}"\n\n{remaining} more undo operation(s) available.')
+                        else:
+                            messagebox.showinfo('Undo', f'Restored "{title_text}"')
+                        return
+                except Exception as e:
+                    logger.error(f"Failed to restore trash item: {e}")
+                    messagebox.showerror('Undo Error', f'Failed to undo delete: {e}')
+                    return
+            
+            # If no trash items, show message
+            messagebox.showinfo('Undo', 'No operations to undo.\n\nTip: Undo works for delete operations.')
+        except Exception as e:
+            logger.error(f"Undo error: {e}", exc_info=True)
+            messagebox.showerror('Undo Error', f'Failed to undo: {e}')
+    
+    # Update Ctrl+Z keyboard shortcuts
+    try:
+        root.bind_all('<Control-z>', lambda e: _undo_last_action())
+        root.bind_all('<Control-Z>', lambda e: _undo_last_action())
+    except Exception as e:
+        logger.error(f"Failed to bind undo shortcut: {e}")
+    
+    # ==================== Template Functions ====================
+    def _apply_template_to_rule(template_data: Dict[str, Any]) -> bool:
+        """
+        Apply a template to the selected rule(s).
+        
+        Args:
+            template_data: Template configuration to apply
+            
+        Returns:
+            bool: True if successful
+        """
+        try:
+            selected = treeview.selection()
+            if not selected:
+                messagebox.showwarning('No Selection', 'Please select a rule to apply the template to.')
+                return False
+            
+            # Apply template to each selected item
+            for item in selected:
+                values = treeview.item(item, 'values')
+                if not values:
+                    continue
+                
+                title_text = values[0]
+                
+                # Find the entry in listbox_items
+                for idx, (t, entry) in enumerate(app_state.listbox_items):
+                    if t == title_text:
+                        # Update entry with template data
+                        for key, value in template_data.items():
+                            if key in entry:
+                                entry[key] = value
+                        
+                        # Update treeview
+                        enabled_text = '✓ Yes' if entry.get('enabled', True) else '✗ No'
+                        treeview.item(item, values=(
+                            title_text,
+                            entry.get('category', ''),
+                            entry.get('save_path', ''),
+                            entry.get('must_contain', ''),
+                            enabled_text
+                        ))
+                        break
+            
+            status_var.set(f'Template applied to {len(selected)} rule(s)')
+            return True
+        except Exception as e:
+            logger.error(f"Error applying template: {e}", exc_info=True)
+            messagebox.showerror('Template Error', f'Failed to apply template: {e}')
+            return False
+    
+    def _open_template_dialog():
+        """Open the template dialog to apply a template."""
+        try:
+            from src.gui.dialogs import open_template_dialog
+            open_template_dialog(root, apply_callback=_apply_template_to_rule)
+        except Exception as e:
+            logger.error(f"Error opening template dialog: {e}", exc_info=True)
+            messagebox.showerror('Template Error', f'Failed to open template dialog: {e}')
+    
+    def _save_as_template():
+        """Save the selected rule as a template."""
+        try:
+            selected = treeview.selection()
+            if not selected:
+                messagebox.showwarning('No Selection', 'Please select a rule to save as a template.')
+                return
+            
+            if len(selected) > 1:
+                messagebox.showwarning('Multiple Selection', 'Please select only one rule to save as a template.')
+                return
+            
+            # Get the selected item data
+            item = selected[0]
+            values = treeview.item(item, 'values')
+            if not values:
+                return
+            
+            title_text = values[0]
+            
+            # Find the entry in listbox_items
+            current_rule = None
+            for t, entry in app_state.listbox_items:
+                if t == title_text:
+                    current_rule = entry.copy()
+                    break
+            
+            if not current_rule:
+                messagebox.showerror('Error', 'Could not find rule data.')
+                return
+            
+            # Open template dialog with current rule data
+            from src.gui.dialogs import open_template_dialog
+            open_template_dialog(root, current_rule_data=current_rule)
+        except Exception as e:
+            logger.error(f"Error saving template: {e}", exc_info=True)
+            messagebox.showerror('Template Error', f'Failed to save template: {e}')
+    
+    def _manage_templates():
+        """Open template management dialog."""
+        try:
+            from src.gui.dialogs import open_template_dialog
+            open_template_dialog(root, apply_callback=_apply_template_to_rule)
+        except Exception as e:
+            logger.error(f"Error managing templates: {e}", exc_info=True)
+            messagebox.showerror('Template Error', f'Failed to open template manager: {e}')
+    
+    # Update template keyboard shortcuts
+    try:
+        root.bind_all('<Control-t>', lambda e: _save_as_template())
+        root.bind_all('<Control-T>', lambda e: _save_as_template())
+        root.bind_all('<Control-Shift-t>', lambda e: _open_template_dialog())
+        root.bind_all('<Control-Shift-T>', lambda e: _open_template_dialog())
+    except Exception as e:
+        logger.error(f"Failed to bind template shortcuts: {e}")
+    
+    # ==================== Sonarr Export Function ====================
+    def _export_to_sonarr():
+        """Export selected or all titles to Sonarr."""
+        try:
+            # Get all titles from listbox_items
+            all_titles = [title for title, entry in app_state.listbox_items]
+            
+            if not all_titles:
+                messagebox.showwarning('No Titles', 'No titles to export. Please add some anime first.')
+                return
+            
+            # Ask if exporting selected or all
+            selected = treeview.selection()
+            if selected:
+                export_selected = messagebox.askyesno(
+                    'Export to Sonarr',
+                    f'Export {len(selected)} selected titles to Sonarr?\n\n'
+                    'Click No to export all titles instead.'
+                )
+                if export_selected:
+                    titles_to_export = [treeview.item(item, 'values')[0] for item in selected]
+                else:
+                    titles_to_export = all_titles
+            else:
+                titles_to_export = all_titles
+            
+            # Open Sonarr export dialog
+            from src.gui.dialogs import open_sonarr_export_dialog
+            open_sonarr_export_dialog(root, titles_to_export)
+            
+        except Exception as e:
+            logger.error(f"Sonarr export error: {e}", exc_info=True)
+            messagebox.showerror('Sonarr Export Error', f'Failed to export to Sonarr: {e}')
+    
+    # Update file menu with Sonarr command
+    try:
+        # Find the Export to Sonarr menu item and update it
+        file_menu.entryconfig('Export to Sonarr...', command=_export_to_sonarr)
+    except Exception as e:
+        logger.error(f"Failed to configure Sonarr menu item: {e}")
+    
+    # Update keyboard shortcut
+    try:
+        root.bind_all('<Control-Shift-s>', lambda e: _export_to_sonarr())
+        root.bind_all('<Control-Shift-S>', lambda e: _export_to_sonarr())
+    except Exception as e:
+        logger.error(f"Failed to bind Sonarr shortcut: {e}")
     
     # ==================== Generate/Sync Button Bar ====================
     # Will be packed after status_frame is created (see below around line 970)
@@ -1315,7 +1713,7 @@ def setup_gui() -> tk.Tk:
                 choice_dlg.destroy()
                 try:
                     from src.gui.file_operations import export_all_titles
-                    export_all_titles(root, status_var)
+                    export_all_titles()
                 except Exception as e:
                     logger.error(f"Error in export: {e}")
                     messagebox.showerror('Error', f'Export failed: {e}')
@@ -1383,12 +1781,18 @@ def setup_gui() -> tk.Tk:
     # ==================== Final Initialization ====================
     # Load initial data if available
     try:
+        logger.debug(f"Startup: config.ALL_TITLES type: {type(getattr(config, 'ALL_TITLES', None))}")
+        logger.debug(f"Startup: config.ALL_TITLES content: {getattr(config, 'ALL_TITLES', None)}")
+        
         if config.ALL_TITLES:
-            update_treeview_with_titles(config.ALL_TITLES)
+            # Pass treeview explicitly to ensure it's used
+            update_treeview_with_titles(config.ALL_TITLES, treeview_widget=treeview)
             total_count = sum(len(v) for v in config.ALL_TITLES.values() if isinstance(v, list))
             status_var.set(f'Loaded {total_count} titles from config')
+        else:
+            logger.warning("Startup: config.ALL_TITLES is empty or None")
     except Exception as e:
-        logger.warning(f"Failed to load initial titles: {e}")
+        logger.error(f"Failed to load initial titles: {e}", exc_info=True)
     
     logger.info("GUI Session 4E: Fully modular GUI initialized successfully")
     
@@ -1485,6 +1889,8 @@ def setup_season_controls(root: tk.Tk, main_frame: ttk.Frame, season_var: tk.Str
                 
                 def finish():
                     try:
+                        from src.gui.app_state import get_app_state
+                        
                         if not rules:
                             status_var_ref.set('No existing rules available to add.')
                         else:
@@ -1594,9 +2000,28 @@ def setup_season_controls(root: tk.Tk, main_frame: ttk.Frame, season_var: tk.Str
                                     current['existing'] = cur_list
                                     config.ALL_TITLES = current
                                     try:
-                                        update_treeview_with_titles(config.ALL_TITLES)
+                                        logger.debug(f"Sync: ALL_TITLES keys before update: {list(config.ALL_TITLES.keys())}")
+                                        logger.debug(f"Sync: 'existing' key has {len(current.get('existing', []))} items")
+                                        
+                                        # Get treeview from app_state
+                                        app_state = get_app_state()
+                                        treeview_widget = app_state.treeview if app_state else None
+                                        
+                                        # Pass the actual treeview widget reference to ensure it updates the correct widget
+                                        update_treeview_with_titles(config.ALL_TITLES, treeview_widget=treeview_widget)
+                                        root_ref.update_idletasks()  # Force UI refresh
+                                        
+                                        # Verify treeview was updated
+                                        app_state = get_app_state()
+                                        if app_state.treeview:
+                                            treeview_count = len(app_state.treeview.get_children())
+                                            logger.info(f"Sync: Treeview now has {treeview_count} visible items")
+                                            if treeview_count == 0:
+                                                logger.warning(f"Sync: Treeview is empty! app_state.items has {len(app_state.items)} items")
+                                        
                                         status_var_ref.set(f'Added {len(new_entries)} new existing rule(s) to Titles.')
-                                    except Exception:
+                                    except Exception as e:
+                                        logger.error(f"Failed to refresh treeview after sync: {e}", exc_info=True)
                                         status_var_ref.set('Added existing rules but failed to refresh Titles UI.')
                                 else:
                                     status_var_ref.set('No new existing rules to add (duplicates skipped).')
@@ -2043,16 +2468,26 @@ def setup_library_panel(
         except Exception:
             pass
     
+    # Store original insert method before monkey-patching
+    _original_insert = treeview.insert
+    
     def _insert_item(parent_or_position, index_or_text, text=None, **kw):
         """Insert like Listbox.insert() or Treeview.insert()."""
         try:
             if text is None and not kw:
+                # Listbox-style insert: treeview.insert('end', value)
                 if parent_or_position == 'end':
-                    treeview.insert('', 'end', text='', values=(index_or_text, '', ''))
+                    return _original_insert('', 'end', text='', values=(index_or_text, '', ''))
             else:
-                return ttk.Treeview.insert(treeview, parent_or_position, index_or_text, text=text, **kw)
-        except Exception:
-            pass
+                # Treeview-style insert: treeview.insert(parent, index, **kw)
+                # Only pass text if it's not None to avoid it being interpreted as iid
+                if text is not None:
+                    return _original_insert(parent_or_position, index_or_text, text=text, **kw)
+                else:
+                    return _original_insert(parent_or_position, index_or_text, **kw)
+        except Exception as e:
+            logger.error(f"Error in _insert_item wrapper: {e}", exc_info=True)
+            return None
     
     def _nearest(y):
         """Get item nearest to y coordinate."""

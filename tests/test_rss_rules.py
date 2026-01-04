@@ -33,6 +33,7 @@ def test_rss_rules_imports():
             sanitize_rules
         )
         print("✓ All RSS rules components imported")
+        return True
         
     except ImportError as e:
         print(f"✗ Import failed: {e}")
@@ -67,6 +68,7 @@ def test_rss_rule_creation():
             save_path="/downloads/anime/Another Show"
         )
         print(f"✓ Rule created via helper: {rule2.title}")
+        return True
         
     except Exception as e:
         print(f"✗ Rule creation failed: {e}")
@@ -103,6 +105,7 @@ def test_rule_to_dict():
         print("✓ Rule converted to dict successfully")
         print(f"  Keys: {len(rule_dict)} top-level fields")
         print(f"  torrentParams keys: {len(rule_dict['torrentParams'])}")
+        return True
         
     except Exception as e:
         print(f"✗ Rule to dict failed: {e}")
@@ -143,6 +146,7 @@ def test_rule_from_dict():
         print("✓ Rule created from dictionary")
         print(f"  Title: {rule.title}")
         print(f"  Category: {rule.category}")
+        return True
         
     except Exception as e:
         print(f"✗ Rule from dict failed: {e}")
@@ -169,6 +173,7 @@ def test_save_path_building():
         # Verify forward slashes
         assert '\\' not in path2, "Path contains backslashes"
         print("✓ Paths use forward slashes")
+        return True
         
     except Exception as e:
         print(f"✗ Save path building failed: {e}")
@@ -211,6 +216,7 @@ def test_rules_from_titles():
         print(f"✓ Built {len(rules)} rules from titles")
         for name in rules.keys():
             print(f"  - {name}")
+        return True
         
     except Exception as e:
         print(f"✗ Build rules from titles failed: {e}")
@@ -253,6 +259,7 @@ def test_export_import_json():
             assert success, f"Import failed: {imported}"
             assert len(imported) == 2, f"Expected 2 rules, got {len(imported)}"
             print(f"✓ Imported {len(imported)} rules")
+            return True
             
         finally:
             # Clean up temp file
@@ -301,6 +308,7 @@ def test_rule_validation():
         errors = validate_rules(rules_dict)
         assert len(errors) == 1, f"Expected 1 error, got {len(errors)}"
         print(f"✓ Batch validation found {len(errors)} error(s)")
+        return True
         
     except Exception as e:
         print(f"✗ Validation failed: {e}")
@@ -340,6 +348,7 @@ def test_rule_sanitization():
         save_path = sanitized['Test Show']['savePath']
         assert '\\' not in save_path, "Backslashes not converted"
         print(f"✓ Sanitized savePath: '{save_path}'")
+        return True
         
     except Exception as e:
         print(f"✗ Sanitization failed: {e}")

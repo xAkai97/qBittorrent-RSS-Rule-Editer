@@ -29,6 +29,7 @@ def test_qbittorrent_imports():
             Conflict409Error
         )
         print("✓ All qBittorrent API components imported")
+        return True
         
     except ImportError as e:
         print(f"✗ Import failed: {e}")
@@ -58,6 +59,7 @@ def test_client_creation():
         print(f"✓ Client created: {client.base_url}")
         print(f"✓ Verify param: {client.verify_param}")
         print(f"✓ Timeout: {client.timeout}s")
+        return True
         
     except Exception as e:
         print(f"✗ Client creation failed: {e}")
@@ -93,6 +95,8 @@ def test_api_functions():
             params = list(sig.parameters.keys())
             print(f"✓ {name}({', '.join(params[:5])}...)")
         
+        return True
+        
     except Exception as e:
         print(f"✗ API function test failed: {e}")
         assert False, str(e)
@@ -118,6 +122,8 @@ def test_exception_handling():
         print("✓ Conflict409Error created")
         print("✓ QBittorrentError created")
         print("✓ QBittorrentAuthenticationError created")
+        
+        return True
         
     except Exception as e:
         print(f"✗ Exception test failed: {e}")
@@ -153,6 +159,8 @@ def test_module_structure():
             if hasattr(qbittorrent_api, const):
                 value = getattr(qbittorrent_api, const)
                 print(f"✓ {const} = {value}")
+        
+        return True
         
     except Exception as e:
         print(f"✗ Module structure test failed: {e}")

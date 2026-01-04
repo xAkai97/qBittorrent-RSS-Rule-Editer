@@ -103,16 +103,17 @@ def fetch_subsplease_schedule(force_refresh: bool = False) -> Tuple[bool, Union[
     
     try:
         # Use SubsPlease API instead of scraping HTML
-        url = "https://subsplease.org/api/?f=schedule&tz=UTC"
+        from .constants import NetworkConfig
+        url = NetworkConfig.SUBSPLEASE_API_URL
         logger.info(f"Fetching SubsPlease schedule from API: {url}")
         
         # Add proper headers to identify the application
         headers = {
-            'User-Agent': 'qBittorrent-RSS-Rule-Editor/1.0 (https://github.com/xAkai97/qBittorrent-RSS-Rule-Editer)',
+            'User-Agent': NetworkConfig.USER_AGENT,
             'Accept': 'application/json'
         }
         
-        response = requests.get(url, timeout=10, headers=headers)
+        response = requests.get(url, timeout=NetworkConfig.DEFAULT_TIMEOUT, headers=headers)
         response.raise_for_status()
         
         # Parse JSON response

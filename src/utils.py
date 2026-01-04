@@ -489,3 +489,73 @@ def validate_folder_name(name: str) -> Tuple[bool, str]:
         return False, f'Exceeds maximum length ({FileSystem.MAX_PATH_LENGTH} characters)'
     
     return True, ''
+
+
+def validate_folder_name_by_filesystem(
+    folder_name: str, 
+    filesystem_type: Optional[str] = None
+) -> Tuple[bool, Optional[str]]:
+    """
+    Validate folder name based on target filesystem type.
+    
+    This is the centralized validation function that respects user preferences
+    for filesystem type (Linux/Unraid vs Windows). Use this instead of local
+    validation implementations.
+    
+    Args:
+        folder_name: Folder name to validate
+        filesystem_type: 'linux' or 'windows'. If None, reads from preferences.
+    
+    Returns:
+        Tuple[bool, Optional[str]]: (is_valid, error_message or None)
+        
+    Examples:
+        >>> validate_folder_name_by_filesystem("Title: Name", "linux")
+        (True, None)
+        >>> validate_folder_name_by_filesystem("Title: Name", "windows")
+        (False, "Invalid characters")
+    """
+    try:
+        if not folder_name or not isinstance(folder_name, str):
+            return True, None  # Skip validation on empty
+        
+        s = str(folder_name)
+        if not s.strip():
+            return True, None
+        
+        # Get filesystem type from preference if not provided
+        if filesystem_type is None:
+            from .config import config
+            filesystem_type = config.get_pref('filesystem_type', 'linux')
+        
+        filesystem_type = filesystem_type.lower()
+        
+        if filesystem_type == 'windows':
+            # Windows-specific validation
+            # Check for trailing space or dot
+            if s.endswith(' ') or s.endswith('.'):
+                return False, 'Ends with space or dot'
+            
+            # Check for invalid characters
+            found_invalid = [c for c in s if c in FileSystem.INVALID_CHARS]
+            if found_invalid:
+                return False, 'Invalid characters'
+            
+            # Check for reserved names
+            base = s.split('.')[0].upper()
+            if base in FileSystem.RESERVED_NAMES:
+                return False, 'Reserved name'
+        else:
+            # Linux/Unraid validation
+            # Only forward slash is invalid on Linux
+            if '/' in s:
+                return False, 'Contains forward slash'
+        
+        # Check length (applies to both)
+        if len(s) > FileSystem.MAX_PATH_LENGTH:
+            return False, 'Name too long'
+        
+        return True, None
+    except Exception:
+        return True, None  # Fail gracefully on unexpected errors
+

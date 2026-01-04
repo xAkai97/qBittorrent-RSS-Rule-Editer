@@ -29,7 +29,7 @@ class AppConfig:
         self.DEFAULT_CATEGORY: str = ""
         self.DEFAULT_AFFECTED_FEEDS: List[str] = []
         
-        # Connection configuration
+        # Connection configuration - qBittorrent
         self.QBT_PROTOCOL: Optional[str] = None
         self.QBT_HOST: Optional[str] = None
         self.QBT_PORT: Optional[int] = None
@@ -38,6 +38,14 @@ class AppConfig:
         self.QBT_VERIFY_SSL: bool = True
         self.CONNECTION_MODE: str = 'online'
         self.QBT_CA_CERT: Optional[str] = None
+        
+        # Connection configuration - Sonarr
+        self.SONARR_URL: Optional[str] = None
+        self.SONARR_API_KEY: Optional[str] = None
+        self.SONARR_QUALITY_PROFILE: Optional[int] = None
+        self.SONARR_ROOT_FOLDER: Optional[str] = None
+        self.SONARR_MONITOR_MODE: str = 'all'  # all, future, missing, existing, none
+        self.SONARR_SEARCH_ON_ADD: bool = False
         
         # Application state
         self.RECENT_FILES: List[str] = []
@@ -133,9 +141,10 @@ class AppConfig:
         if filepath in self.RECENT_FILES:
             self.RECENT_FILES.remove(filepath)
         
-        # Add to front and keep only last 10
+        # Add to front and keep only last N
         self.RECENT_FILES.insert(0, filepath)
-        self.RECENT_FILES = self.RECENT_FILES[:10]
+        from .constants import CacheLimits
+        self.RECENT_FILES = self.RECENT_FILES[:CacheLimits.MAX_RECENT_FILES]
         
         # Save to cache
         cache = self._load_cache_data()
@@ -185,6 +194,21 @@ class AppConfig:
                 self.QBT_VERIFY_SSL = False
                 self.CONNECTION_MODE = 'online'
                 logger.warning("No QBITTORRENT_API section found in config.ini, using defaults")
+            
+            # Load Sonarr configuration
+            sonarr_loaded = 'SONARR' in cfg
+            if sonarr_loaded:
+                sonarr = cfg['SONARR']
+                self.SONARR_URL = sonarr.get('url', '')
+                self.SONARR_API_KEY = sonarr.get('api_key', '')
+                quality_profile = sonarr.get('quality_profile', '')
+                self.SONARR_QUALITY_PROFILE = int(quality_profile) if quality_profile else None
+                self.SONARR_ROOT_FOLDER = sonarr.get('root_folder', '')
+                self.SONARR_MONITOR_MODE = sonarr.get('monitor_mode', 'all')
+                self.SONARR_SEARCH_ON_ADD = sonarr.get('search_on_add', 'False').lower() == 'true'
+                logger.info(f"Loaded Sonarr config: {self.SONARR_URL}")
+            else:
+                logger.info("No SONARR section found in config.ini")
 
             return bool(self.QBT_HOST and self.QBT_PORT)
         except Exception as e:
@@ -249,6 +273,55 @@ class AppConfig:
         self.DEFAULT_AFFECTED_FEEDS = default_affected_feeds or []
         logger.info(f"Saved qBittorrent config: {protocol}://{host}:{port} (mode: {mode})")
         return True
+    
+    def save_sonarr_config(self, url: str, api_key: str, quality_profile: Optional[int] = None,
+                          root_folder: Optional[str] = None, monitor_mode: str = 'all',
+                          search_on_add: bool = False) -> bool:
+        """
+        Saves Sonarr connection configuration to config.ini file.
+        
+        Args:
+            url: Sonarr URL (e.g., http://localhost:8989)
+            api_key: Sonarr API key
+            quality_profile: Quality profile ID
+            root_folder: Root folder path
+            monitor_mode: Monitor mode (all, future, missing, existing, none)
+            search_on_add: Whether to search for missing episodes on add
+            
+        Returns:
+            bool: True if saved successfully
+        """
+        try:
+            cfg = ConfigParser()
+            cfg.read(self.CONFIG_FILE)
+            
+            if 'SONARR' not in cfg:
+                cfg.add_section('SONARR')
+            
+            cfg['SONARR'] = {
+                'url': url,
+                'api_key': api_key,
+                'quality_profile': str(quality_profile) if quality_profile else '',
+                'root_folder': root_folder or '',
+                'monitor_mode': monitor_mode,
+                'search_on_add': str(search_on_add)
+            }
+            
+            with open(self.CONFIG_FILE, 'w') as f:
+                cfg.write(f)
+            
+            self.SONARR_URL = url
+            self.SONARR_API_KEY = api_key
+            self.SONARR_QUALITY_PROFILE = quality_profile
+            self.SONARR_ROOT_FOLDER = root_folder
+            self.SONARR_MONITOR_MODE = monitor_mode
+            self.SONARR_SEARCH_ON_ADD = search_on_add
+            
+            logger.info(f"Saved Sonarr config: {url}")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to save Sonarr config: {e}")
+            return False
     
     def save_cached_categories(self, categories: Dict[str, Any]) -> bool:
         """Save cached categories to file."""

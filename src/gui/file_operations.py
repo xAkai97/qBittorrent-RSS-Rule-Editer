@@ -360,21 +360,30 @@ def populate_missing_rule_fields(
         logger.error(f"Error in populate_missing_rule_fields: {e}")
 
 
-def update_treeview_with_titles(all_titles: Dict[str, List]) -> None:
+def update_treeview_with_titles(all_titles: Dict[str, List], treeview_widget=None) -> None:
     """
     Update the main treeview widget with anime titles.
     
-    Optimized version using batch operations.
+    Optimized version using batch operations with validation indicators.
     
     Args:
         all_titles: Dictionary of titles organized by media type
+        treeview_widget: Optional treeview widget reference. If None, retrieves from app_state
     """
-    app_state = get_app_state()
-    treeview = app_state.treeview
+    if treeview_widget is None:
+        app_state = get_app_state()
+        treeview = app_state.treeview
+    else:
+        treeview = treeview_widget
+        app_state = get_app_state()
     
     if not treeview:
         logger.warning("No treeview widget available")
         return
+    
+    # Use centralized validation function
+    from src.utils import validate_folder_name_by_filesystem
+    _is_valid_folder_name = validate_folder_name_by_filesystem
     
     try:
         # Batch delete - more efficient than loop
@@ -384,9 +393,20 @@ def update_treeview_with_titles(all_titles: Dict[str, List]) -> None:
         
         app_state.items.clear()
         
+        # Configure tags for validation indicators if not already configured
+        try:
+            treeview.tag_configure('error', foreground='#d32f2f', background='#ffebee')
+            treeview.tag_configure('warning', foreground='#f57f17', background='#fff3e0')
+        except Exception:
+            pass
+        
+        # Auto-sanitize preference
+        auto_sanitize = config.get_pref('auto_sanitize_paths', True)
+        
         # Prepare data for batch insert
         index = 0
         items_to_add = []
+        sanitized_count = 0
         
         items_iter = all_titles.items() if isinstance(all_titles, dict) else [('anime', all_titles)]
         for media_type, items in items_iter:
@@ -415,25 +435,92 @@ def update_treeview_with_titles(all_titles: Dict[str, List]) -> None:
                         save_path = ''
                         enabled_mark = '✓'
                     
+                    # Check for validation issues and auto-sanitize if enabled
+                    validation_tag = None
+                    display_title = title_text
+                    needs_sanitization = False
+                    
+                    # Validate folder names in save path if path exists
+                    if save_path:
+                        path_str = str(save_path).replace('\\', '/')
+                        folders = [f for f in path_str.split('/') if f.strip()]
+                        sanitized_folders = []
+                        
+                        for folder in folders:
+                            valid, reason = _is_valid_folder_name(folder)
+                            if not valid:
+                                needs_sanitization = True
+                                if auto_sanitize:
+                                    # Auto-sanitize the folder name
+                                    sanitized_folder = sanitize_folder_name(folder)
+                                    sanitized_folders.append(sanitized_folder)
+                                else:
+                                    # Keep original but mark as error
+                                    sanitized_folders.append(folder)
+                                    display_title = f"❌ {title_text}"
+                                    validation_tag = 'error'
+                            else:
+                                sanitized_folders.append(folder)
+                        
+                        # Update save path if auto-sanitize is enabled and changes were made
+                        if auto_sanitize and needs_sanitization:
+                            new_save_path = '/'.join(sanitized_folders)
+                            if isinstance(entry, dict):
+                                # Update save path in entry
+                                if 'savePath' in entry:
+                                    entry['savePath'] = new_save_path
+                                elif 'save_path' in entry:
+                                    entry['save_path'] = new_save_path
+                                else:
+                                    tp = entry.get('torrentParams') or entry.get('torrent_params') or {}
+                                    if 'save_path' in tp:
+                                        tp['save_path'] = new_save_path
+                                    elif 'savePath' in tp:
+                                        tp['savePath'] = new_save_path
+                                save_path = new_save_path
+                                sanitized_count += 1
+                    
+                    # If no error, check for other potential issues
+                    if validation_tag is None and not title_text:
+                        display_title = f"⚠️ {title_text or 'Empty title'}"
+                        validation_tag = 'warning'
+                    
                     index += 1
-                    items_to_add.append((title_text, entry, (enabled_mark, str(index), title_text, category, save_path)))
+                    items_to_add.append((title_text, entry, (enabled_mark, str(index), display_title, category, save_path), validation_tag))
                     
                 except Exception as e:
                     logger.error(f"Error processing title: {e}")
                     continue
         
+        # Log sanitization results
+        if sanitized_count > 0:
+            logger.info(f"Auto-sanitized {sanitized_count} folder paths")
+        
         # Batch insert all items
-        for title_text, entry, values in items_to_add:
+        inserted_count = 0
+        inserted_ids = []
+        for title_text, entry, values, tag in items_to_add:
             try:
-                treeview.insert('', 'end', values=values)
+                if tag:
+                    item_id = treeview.insert('', 'end', values=values, tags=(tag,))
+                else:
+                    item_id = treeview.insert('', 'end', values=values)
+                inserted_ids.append(item_id)
                 app_state.add_item(title_text, entry)
+                inserted_count += 1
             except Exception as e:
                 logger.error(f"Error inserting '{title_text}': {e}")
         
-        logger.info(f"Updated treeview with {len(items_to_add)} items")
+        # Force widget update
+        treeview.update()
+        treeview.update_idletasks()
+        
+        # Verify items were actually inserted
+        actual_children = treeview.get_children()
+        logger.info(f"Updated treeview: inserted {inserted_count}/{len(items_to_add)} items")
         
     except Exception as e:
-        logger.error(f"Error updating treeview: {e}")
+        logger.error(f"Error updating treeview: {e}", exc_info=True)
 
 
 def _import_titles_core(
@@ -1003,34 +1090,53 @@ def dispatch_generation(
 
         # Validation helper
         def _is_valid_folder_name(name):
-            """Validates if a string is a valid folder name."""
+            """Validates if a string is a valid folder name.
+            
+            Checks are based on the target filesystem type selected in preferences:
+            - 'windows': Strict Windows filesystem validation
+            - 'linux': Linux/Unix/Unraid validation (only forbids forward slash)
+            """
             try:
-                if not name or not isinstance(name, str) or not str(name).strip():
+                if not name or not isinstance(name, str):
                     return False, 'Empty name'
                 
-                s = str(name).strip()
+                s = str(name)
                 
-                # Check for invalid characters
-                found_invalid = [c for c in s if c in FileSystem.INVALID_CHARS]
-                if found_invalid:
-                    return False, f'Contains invalid characters: {"".join(sorted(set(found_invalid)))}'
+                # Check for empty after stripping
+                if not s.strip():
+                    return False, 'Empty name'
                 
-                # Check for trailing space or dot
-                if s.endswith(' ') or s.endswith('.'):
-                    return False, 'Ends with a space or dot (invalid on Windows)'
+                # Get filesystem type preference (default to 'linux' for Unraid)
+                fs_type = config.get_pref('filesystem_type', 'linux').lower()
                 
-                # Check for Windows reserved names
-                base = s.split('.')[0].upper()
-                if base in FileSystem.RESERVED_NAMES:
-                    return False, f'Reserved name: {base}'
+                if fs_type == 'windows':
+                    # Windows validation: strict checks
+                    if s.endswith(' ') or s.endswith('.'):
+                        return False, 'Ends with a space or dot (invalid on Windows)'
+                    
+                    found_invalid = [c for c in s if c in FileSystem.INVALID_CHARS]
+                    if found_invalid:
+                        return False, f'Contains invalid characters: {"".join(sorted(set(found_invalid)))}'
+                    
+                    base = s.split('.')[0].upper()
+                    if base in FileSystem.RESERVED_NAMES:
+                        return False, f'Reserved name: {base}'
+                else:
+                    # Linux/Unix/Unraid validation: only forward slash is truly invalid
+                    if '/' in s:
+                        return False, 'Contains forward slash (invalid in folder names)'
                 
-                # Check length
+                # Check length (applies to all systems)
                 if len(s) > FileSystem.MAX_PATH_LENGTH:
                     return False, f'Name too long (>{FileSystem.MAX_PATH_LENGTH} chars)'
                 
                 return True, None
             except Exception:
                 return False, 'Validation error'
+
+        # Use centralized validation function (comment kept for compatibility)
+        from src.utils import validate_folder_name_by_filesystem
+        _is_valid_folder_name = validate_folder_name_by_filesystem
 
         # Validate all items
         problems = []
@@ -1061,19 +1167,24 @@ def dispatch_generation(
             except Exception:
                 pass
 
-            # Validate folder name
+            # Validate folder names in save path
             try:
-                raw = e.get('mustContain') or (e.get('node') or {}).get('title') or e.get('title') or ''
-                if not raw:
-                    display = (e.get('node') or {}).get('title') or e.get('title') or title_text
-                    if display and ' - ' in display:
-                        parts = display.split(' - ', 1)
-                        if len(parts) == 2:
-                            raw = parts[1]
-                if raw:
-                    valid, reason = _is_valid_folder_name(raw)
-                    if not valid:
-                        problems.append(f'Invalid folder-name for "{title_text}": {reason}')
+                # Get the save path
+                save_path = e.get('savePath') or e.get('save_path') or ''
+                if not save_path:
+                    tp = e.get('torrentParams') or e.get('torrent_params') or {}
+                    save_path = tp.get('save_path') or tp.get('savePath') or ''
+                
+                if save_path:
+                    # Validate each folder component in the path
+                    path_str = str(save_path).replace('\\', '/')
+                    folders = [f for f in path_str.split('/') if f.strip()]
+                    
+                    for folder in folders:
+                        valid, reason = _is_valid_folder_name(folder)
+                        if not valid:
+                            problems.append(f'Invalid folder in path for "{title_text}": "{folder}" - {reason}')
+                            break
             except Exception:
                 pass
 

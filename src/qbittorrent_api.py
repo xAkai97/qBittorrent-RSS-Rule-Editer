@@ -68,7 +68,7 @@ class QBittorrentClient:
     
     def __init__(self, protocol: str, host: str, port: str, 
                  username: str, password: str, verify_ssl: bool = True,
-                 ca_cert: Optional[str] = None, timeout: int = 10):
+                 ca_cert: Optional[str] = None, timeout: Optional[int] = None):
         """
         Initialize qBittorrent client.
         
@@ -80,8 +80,9 @@ class QBittorrentClient:
             password: WebUI password
             verify_ssl: Whether to verify SSL certificates
             ca_cert: Optional path to CA certificate file
-            timeout: Request timeout in seconds
+            timeout: Request timeout in seconds (defaults to NetworkConfig.DEFAULT_TIMEOUT)
         """
+        from src.constants import NetworkConfig
         self.protocol = protocol.strip()
         self.host = host.strip()
         self.port = port.strip()
@@ -89,7 +90,7 @@ class QBittorrentClient:
         self.password = password.strip()
         self.verify_ssl = verify_ssl
         self.ca_cert = ca_cert
-        self.timeout = timeout
+        self.timeout = timeout if timeout is not None else NetworkConfig.DEFAULT_TIMEOUT
         
         self.base_url = f"{self.protocol}://{self.host}:{self.port}"
         

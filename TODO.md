@@ -3,7 +3,7 @@
 ## Project Status
 ✅ **Core Functionality Complete** - All main features working  
 ✅ **Modularization Complete** - Clean architecture with 100% extraction  
-✅ **Test Coverage** - 109 tests passing (48 core + 21 edge cases + 15 GUI tests + 25 API error tests)
+✅ **Test Coverage** - 129 tests passing (48 core + 21 edge cases + 15 GUI tests + 25 API error tests + 20 validation tests)
 
 ---
 
@@ -24,6 +24,12 @@
 - [x] qBittorrent API error tests - 25 comprehensive tests for connection errors, authentication, API responses, network issues, rule operations, SSL configuration, parameter validation, and error propagation (2025-12-30)
 - [x] Test warnings fixed - Removed all pytest return warnings (45 tests fixed) (2025-12-30)
 - [x] Documentation improvements - Created ARCHITECTURE.md, DEVELOPER_GUIDE.md, and API_DOCUMENTATION.md (2025-12-31)
+- [x] **Bulk Edit** - Edit multiple selected rules at once (category, save path, enabled status) with Ctrl+B shortcut and dialog with selective field updates (2025-12-31)
+- [x] **Undo/Redo** - Ctrl+Z keyboard shortcut for undoing delete operations with original position restoration and undo count feedback (2025-12-31)
+- [x] **Filesystem Validation** - User-selectable validation rules for Windows vs Linux/Unraid filesystem types with preference persistence (2025-12-31)
+- [x] **Auto-Sanitization** - Automatic folder name sanitization when syncing from qBittorrent, removes invalid characters based on target filesystem (2025-12-31)
+- [x] **Validation Indicators** - Visual error/warning indicators in treeview for titles with validation issues (red for errors, orange for warnings) (2025-12-31)
+- [x] **Validation Tests** - Comprehensive test suite (20 tests) covering filesystem validation, sanitization, preferences, integration, and edge cases (2025-12-31)
 
 ---
 
@@ -50,9 +56,9 @@
 ## Feature Ideas
 
 ### High Priority
-- [ ] **Bulk Edit** - Edit multiple selected rules at once (category, save path, enabled)
+- [x] **Bulk Edit** - Edit multiple selected rules at once (category, save path, enabled)
 - [x] **Search/Filter** - Filter rules by name, category, or enabled status
-- [ ] **Undo/Redo** - Basic undo for delete operations
+- [x] **Undo/Redo** - Basic undo for delete operations with Ctrl+Z
 
 ### Medium Priority
 - [ ] **Rule Templates** - Save and apply common rule configurations

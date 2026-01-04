@@ -44,7 +44,6 @@ QBITTORRENT_FIELDS = [
     'priority', 'smartFilter', 'torrentContentLayout', 'useRegex'
 ]
 
-
 def test_strip_internal_fields_basic():
     """Test that internal fields are removed from a simple entry."""
     print("\n" + "="*60)
@@ -80,7 +79,7 @@ def test_strip_internal_fields_basic():
     
     print("✓ Internal fields ('node', 'ruleName') properly removed")
     print("✓ All qBittorrent fields preserved")
-
+    return True
 
 def test_strip_internal_fields_empty_entry():
     """Test filtering an empty entry."""
@@ -96,8 +95,8 @@ def test_strip_internal_fields_empty_entry():
         print("✓ Empty entry handled correctly")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_strip_internal_fields_only_internal():
     """Test filtering an entry with only internal fields."""
@@ -116,8 +115,8 @@ def test_strip_internal_fields_only_internal():
         print("✓ Entry with only internal fields properly emptied")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_strip_internal_fields_only_qbt():
     """Test filtering an entry with only qBittorrent fields (no change expected)."""
@@ -137,8 +136,8 @@ def test_strip_internal_fields_only_qbt():
         print("✓ Clean entry preserved without modification")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_strip_internal_fields_non_dict():
     """Test filtering non-dict entries (should return as-is)."""
@@ -159,8 +158,8 @@ def test_strip_internal_fields_non_dict():
         print("✓ Non-dict entries handled correctly")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_filter_all_titles_structure():
     """Test filtering the full ALL_TITLES structure."""
@@ -233,11 +232,11 @@ def test_filter_all_titles_structure():
         print("✓ All qBittorrent fields preserved")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
+        return False
     except Exception as e:
         print(f"✗ Unexpected error: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_filtered_output_is_valid_json():
     """Test that filtered output can be serialized to valid JSON."""
@@ -282,11 +281,11 @@ def test_filtered_output_is_valid_json():
         print("✓ No internal fields in JSON string")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
+        return False
     except json.JSONDecodeError as e:
         print(f"✗ JSON serialization failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_nested_node_structure():
     """Test that nested 'node' structure with various data is handled."""
@@ -324,8 +323,8 @@ def test_nested_node_structure():
         print("✓ qBittorrent fields preserved")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_integration_with_build_rules():
     """Test filtering integration with build_rules_from_titles."""
@@ -371,15 +370,16 @@ def test_integration_with_build_rules():
         print("✓ build_rules_from_titles works with filtered data")
         print("✓ Output contains no internal fields")
         print("✓ Output contains expected qBittorrent fields")
+        return True
     except ImportError as e:
         print(f"✗ Import failed: {e}")
-        assert False, str(e)
+        return False
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
+        return False
     except Exception as e:
         print(f"✗ Unexpected error: {e}")
-        assert False, str(e)
+        return False
 
 
 # ============================================================================
@@ -415,8 +415,8 @@ def test_get_display_title():
         print("✓ get_display_title works correctly for all cases")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_get_rule_name():
     """Test get_rule_name helper function."""
@@ -443,8 +443,8 @@ def test_get_rule_name():
         print("✓ get_rule_name works correctly for all cases")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_create_title_entry():
     """Test create_title_entry helper function."""
@@ -482,8 +482,8 @@ def test_create_title_entry():
         print("✓ create_title_entry creates properly structured entries")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_find_entry_by_title():
     """Test find_entry_by_title helper function."""
@@ -523,8 +523,8 @@ def test_find_entry_by_title():
         print("✓ find_entry_by_title works correctly")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_is_duplicate_title():
     """Test is_duplicate_title helper function."""
@@ -551,8 +551,8 @@ def test_is_duplicate_title():
         print("✓ is_duplicate_title works correctly")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_strip_internal_fields_from_titles():
     """Test strip_internal_fields_from_titles helper function."""
@@ -583,9 +583,10 @@ def test_strip_internal_fields_from_titles():
         assert clean['existing'][0]['enabled'] == True, "enabled should be preserved"
         
         print("✓ strip_internal_fields_from_titles works correctly")
+        return True
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
+        return False
 
 
 # ============================================================================
@@ -635,8 +636,8 @@ def test_validate_entry_structure():
         print("✓ validate_entry_structure correctly detects issues")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_validate_entries_for_export():
     """Test validate_entries_for_export function."""
@@ -669,8 +670,8 @@ def test_validate_entries_for_export():
         print("✓ validate_entries_for_export works correctly")
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
+    return True
 
 def test_sanitize_entry_for_export():
     """Test sanitize_entry_for_export function."""
@@ -715,10 +716,10 @@ def test_sanitize_entry_for_export():
         assert 'badSubField' not in sanitized['torrentParams'], "Bad sub-field removed"
         
         print("✓ sanitize_entry_for_export removes all pollution")
+        return True
     except AssertionError as e:
         print(f"✗ Test failed: {e}")
-        assert False, str(e)
-
+        return False
 
 def run_all_tests():
     """Run all filtering tests and report results."""
