@@ -37,6 +37,7 @@ from src.config import config
 from src.gui.app_state import AppState
 from src.gui.dialogs import open_settings_window
 from src.gui.file_operations import (
+    clear_all_titles,
     import_titles_from_clipboard,
     import_titles_from_file,
     import_titles_from_text,
@@ -300,11 +301,8 @@ def refresh_treeview_display() -> None:
     Refresh the treeview display with current data from config.ALL_TITLES.
     Useful to fix display issues or synchronize the view with data.
     """
-    try:
-        update_treeview_with_titles(config.ALL_TITLES)
-        logger.info("Treeview display refreshed")
-    except Exception as e:
-        logger.error(f"Error refreshing treeview: {e}")
+    from src.gui.file_operations import refresh_treeview_display_safe
+    refresh_treeview_display_safe()
 
 
 def setup_menu_bar(
@@ -463,7 +461,8 @@ def setup_menu_bar(
                             path=p
                         )
                         if result:
-                            update_treeview_with_titles(config.ALL_TITLES)
+                            from src.gui.file_operations import refresh_treeview_display_safe
+                            refresh_treeview_display_safe()
                     except Exception as e:
                         messagebox.showerror(
                             'Open Recent', 
@@ -1006,8 +1005,9 @@ def setup_gui() -> tk.Tk:
                 
                 removed += 1
             
-            # Refresh treeview to ensure display is synchronized
-            update_treeview_with_titles(config.ALL_TITLES)
+            # Refresh treeview
+            from src.gui.file_operations import refresh_treeview_display_safe
+            refresh_treeview_display_safe()
             
             undo_count = len(app_state.trash_items)
             messagebox.showinfo('Delete', f'Moved {removed} title(s) to Trash.\n\nPress Ctrl+Z to undo ({undo_count} operation(s) available).')
@@ -2000,28 +2000,11 @@ def setup_season_controls(root: tk.Tk, main_frame: ttk.Frame, season_var: tk.Str
                                     current['existing'] = cur_list
                                     config.ALL_TITLES = current
                                     try:
-                                        logger.debug(f"Sync: ALL_TITLES keys before update: {list(config.ALL_TITLES.keys())}")
-                                        logger.debug(f"Sync: 'existing' key has {len(current.get('existing', []))} items")
-                                        
-                                        # Get treeview from app_state
-                                        app_state = get_app_state()
-                                        treeview_widget = app_state.treeview if app_state else None
-                                        
-                                        # Pass the actual treeview widget reference to ensure it updates the correct widget
-                                        update_treeview_with_titles(config.ALL_TITLES, treeview_widget=treeview_widget)
-                                        root_ref.update_idletasks()  # Force UI refresh
-                                        
-                                        # Verify treeview was updated
-                                        app_state = get_app_state()
-                                        if app_state.treeview:
-                                            treeview_count = len(app_state.treeview.get_children())
-                                            logger.info(f"Sync: Treeview now has {treeview_count} visible items")
-                                            if treeview_count == 0:
-                                                logger.warning(f"Sync: Treeview is empty! app_state.items has {len(app_state.items)} items")
-                                        
+                                        from src.gui.file_operations import refresh_treeview_display_safe
+                                        refresh_treeview_display_safe()
                                         status_var_ref.set(f'Added {len(new_entries)} new existing rule(s) to Titles.')
                                     except Exception as e:
-                                        logger.error(f"Failed to refresh treeview after sync: {e}", exc_info=True)
+                                        logger.error(f"Failed to refresh treeview after sync: {e}")
                                         status_var_ref.set('Added existing rules but failed to refresh Titles UI.')
                                 else:
                                     status_var_ref.set('No new existing rules to add (duplicates skipped).')

@@ -13,6 +13,14 @@ from pathlib import Path
 from tkinter import ttk
 from unittest.mock import MagicMock, Mock, call, mock_open, patch
 
+# Check if Tk is available
+try:
+    root = tk.Tk()
+    tk_available = True
+    root.destroy()
+except tk.TclError:
+    tk_available = False
+
 from src.gui.app_state import AppState
 from src.gui.dialogs import (
     open_full_rule_editor,
@@ -35,6 +43,7 @@ from src.gui.main_window import (
 )
 
 
+@unittest.skipIf(not tk_available, "Tk display not available")
 class TestTooltip(unittest.TestCase):
     """Test tooltip creation and behavior."""
     
@@ -47,7 +56,7 @@ class TestTooltip(unittest.TestCase):
         """Destroy root window after tests."""
         try:
             self.root.destroy()
-        except:
+        except Exception:
             pass
     
     def test_create_tooltip(self):

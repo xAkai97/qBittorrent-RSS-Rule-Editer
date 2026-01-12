@@ -217,7 +217,9 @@ def collect_invalid_folder_titles(all_titles: Dict[str, List]) -> List[Tuple[str
                     if not raw:
                         continue
                     
-                    is_valid, reason = validate_folder_name(raw)
+                    # Validate the SANITIZED version, not the original
+                    sanitized_raw = sanitize_folder_name(raw)
+                    is_valid, reason = validate_folder_name(sanitized_raw)
                     if not is_valid:
                         invalid.append((display or raw, raw, reason))
                         
@@ -360,67 +362,74 @@ def populate_missing_rule_fields(
         logger.error(f"Error in populate_missing_rule_fields: {e}")
 
 
-def update_treeview_with_titles(all_titles: Dict[str, List], treeview_widget=None) -> None:
+def update_treeview_with_titles(all_titles: Dict[str, List], treeview_widget=None) -> bool:
     """
     Update the main treeview widget with anime titles.
     
-    Optimized version using batch operations with validation indicators.
+    Comprehensive update with proper error handling, validation, and display refresh.
     
     Args:
         all_titles: Dictionary of titles organized by media type
         treeview_widget: Optional treeview widget reference. If None, retrieves from app_state
+        
+    Returns:
+        True if update succeeded, False otherwise
     """
+    from src.utils import validate_folder_name_by_filesystem
+    
+    # Get treeview widget
     if treeview_widget is None:
         app_state = get_app_state()
-        treeview = app_state.treeview
+        treeview = app_state.treeview if app_state else None
     else:
         treeview = treeview_widget
         app_state = get_app_state()
     
     if not treeview:
         logger.warning("No treeview widget available")
-        return
+        return False
     
-    # Use centralized validation function
-    from src.utils import validate_folder_name_by_filesystem
-    _is_valid_folder_name = validate_folder_name_by_filesystem
+    if not all_titles:
+        all_titles = {}
     
     try:
-        # Batch delete - more efficient than loop
-        children = treeview.get_children()
-        if children:
-            treeview.delete(*children)
+        # Step 1: Clear existing display
+        for child in treeview.get_children():
+            try:
+                treeview.delete(child)
+            except Exception as e:
+                logger.debug(f"Error deleting child {child}: {e}")
         
-        app_state.items.clear()
+        # Step 2: Clear app_state items cache
+        if app_state:
+            app_state.items.clear()
         
-        # Configure tags for validation indicators if not already configured
+        # Step 3: Configure display tags
         try:
             treeview.tag_configure('error', foreground='#d32f2f', background='#ffebee')
             treeview.tag_configure('warning', foreground='#f57f17', background='#fff3e0')
         except Exception:
             pass
         
-        # Auto-sanitize preference
+        # Step 4: Prepare items for insertion
         auto_sanitize = config.get_pref('auto_sanitize_paths', True)
-        
-        # Prepare data for batch insert
-        index = 0
         items_to_add = []
-        sanitized_count = 0
+        index = 0
         
-        items_iter = all_titles.items() if isinstance(all_titles, dict) else [('anime', all_titles)]
-        for media_type, items in items_iter:
+        # Iterate through all titles
+        for media_type, items in all_titles.items():
             if not isinstance(items, list):
                 continue
+                
             for entry in items:
                 try:
+                    # Extract title information
                     if isinstance(entry, dict):
                         node = entry.get('node') or {}
                         title_text = node.get('title') or entry.get('title') or entry.get('name') or str(entry)
                         category = entry.get('assignedCategory') or entry.get('category') or ''
-                        
-                        # Get save path efficiently
                         save_path = entry.get('savePath') or entry.get('save_path') or ''
+                        
                         if not save_path:
                             tp = entry.get('torrentParams') or entry.get('torrent_params') or {}
                             save_path = tp.get('save_path') or tp.get('savePath') or ''
@@ -428,99 +437,86 @@ def update_treeview_with_titles(all_titles: Dict[str, List], treeview_widget=Non
                         if save_path:
                             save_path = str(save_path).replace('\\', '/')
                         
-                        enabled_mark = '✓' if entry.get('enabled', True) else ''
+                        enabled = entry.get('enabled', True)
+                        enabled_mark = '✓' if enabled else ''
                     else:
                         title_text = str(entry)
                         category = ''
                         save_path = ''
                         enabled_mark = '✓'
                     
-                    # Check for validation issues and auto-sanitize if enabled
-                    validation_tag = None
+                    # Validate and prepare display
                     display_title = title_text
-                    needs_sanitization = False
+                    validation_tag = None
                     
-                    # Validate folder names in save path if path exists
-                    if save_path:
-                        path_str = str(save_path).replace('\\', '/')
-                        folders = [f for f in path_str.split('/') if f.strip()]
-                        sanitized_folders = []
-                        
-                        for folder in folders:
-                            valid, reason = _is_valid_folder_name(folder)
-                            if not valid:
-                                needs_sanitization = True
-                                if auto_sanitize:
-                                    # Auto-sanitize the folder name
-                                    sanitized_folder = sanitize_folder_name(folder)
-                                    sanitized_folders.append(sanitized_folder)
-                                else:
-                                    # Keep original but mark as error
-                                    sanitized_folders.append(folder)
-                                    display_title = f"❌ {title_text}"
-                                    validation_tag = 'error'
-                            else:
-                                sanitized_folders.append(folder)
-                        
-                        # Update save path if auto-sanitize is enabled and changes were made
-                        if auto_sanitize and needs_sanitization:
-                            new_save_path = '/'.join(sanitized_folders)
-                            if isinstance(entry, dict):
-                                # Update save path in entry
-                                if 'savePath' in entry:
-                                    entry['savePath'] = new_save_path
-                                elif 'save_path' in entry:
-                                    entry['save_path'] = new_save_path
-                                else:
-                                    tp = entry.get('torrentParams') or entry.get('torrent_params') or {}
-                                    if 'save_path' in tp:
-                                        tp['save_path'] = new_save_path
-                                    elif 'savePath' in tp:
-                                        tp['savePath'] = new_save_path
-                                save_path = new_save_path
-                                sanitized_count += 1
-                    
-                    # If no error, check for other potential issues
-                    if validation_tag is None and not title_text:
-                        display_title = f"⚠️ {title_text or 'Empty title'}"
+                    if not title_text or not title_text.strip():
+                        display_title = "⚠️ [Empty Title]"
                         validation_tag = 'warning'
                     
+                    # Validate folder names if save path exists
+                    if save_path and not validation_tag:
+                        folders = [f.strip() for f in save_path.split('/') if f.strip()]
+                        for folder in folders:
+                            valid, _ = validate_folder_name_by_filesystem(folder)
+                            if not valid:
+                                if not auto_sanitize:
+                                    display_title = f"❌ {title_text}"
+                                    validation_tag = 'error'
+                                break
+                    
                     index += 1
-                    items_to_add.append((title_text, entry, (enabled_mark, str(index), display_title, category, save_path), validation_tag))
+                    values = (enabled_mark, str(index), display_title, category, save_path)
+                    items_to_add.append((title_text, entry, values, validation_tag))
                     
                 except Exception as e:
-                    logger.error(f"Error processing title: {e}")
+                    logger.error(f"Error processing entry: {e}")
                     continue
         
-        # Log sanitization results
-        if sanitized_count > 0:
-            logger.info(f"Auto-sanitized {sanitized_count} folder paths")
-        
-        # Batch insert all items
-        inserted_count = 0
-        inserted_ids = []
+        # Step 5: Insert all items into treeview
         for title_text, entry, values, tag in items_to_add:
             try:
                 if tag:
-                    item_id = treeview.insert('', 'end', values=values, tags=(tag,))
+                    treeview.insert('', 'end', values=values, tags=(tag,))
                 else:
-                    item_id = treeview.insert('', 'end', values=values)
-                inserted_ids.append(item_id)
-                app_state.add_item(title_text, entry)
-                inserted_count += 1
+                    treeview.insert('', 'end', values=values)
+                
+                # Add to app_state cache
+                if app_state:
+                    app_state.add_item(title_text, entry)
+                    
             except Exception as e:
-                logger.error(f"Error inserting '{title_text}': {e}")
+                logger.error(f"Error inserting item '{title_text}': {e}")
         
-        # Force widget update
-        treeview.update()
+        # Step 6: Force display refresh
         treeview.update_idletasks()
+        treeview.update()
         
-        # Verify items were actually inserted
-        actual_children = treeview.get_children()
-        logger.info(f"Updated treeview: inserted {inserted_count}/{len(items_to_add)} items")
+        # Verify insertion
+        final_count = len(treeview.get_children())
+        logger.debug(f"Treeview updated: {final_count} items displayed")
+        
+        return True
         
     except Exception as e:
-        logger.error(f"Error updating treeview: {e}", exc_info=True)
+        logger.error(f"Error in update_treeview_with_titles: {e}", exc_info=True)
+        return False
+
+
+def refresh_treeview_display_safe() -> None:
+    """
+    Safely refresh the treeview with current config data.
+    """
+    try:
+        all_titles = getattr(config, 'ALL_TITLES', None) or {}
+        app_state = get_app_state()
+        
+        if app_state and app_state.treeview:
+            if update_treeview_with_titles(all_titles, treeview_widget=app_state.treeview):
+                logger.debug("Treeview refresh completed successfully")
+            else:
+                logger.warning("Treeview refresh failed")
+    except Exception as e:
+        logger.error(f"Error in refresh_treeview_display_safe: {e}")
 
 
 def _import_titles_core(
@@ -566,6 +562,8 @@ def _import_titles_core(
         current = getattr(config, 'ALL_TITLES', {}) or {}
         if not isinstance(current, dict):
             current = {}
+        
+        logger.debug(f"Import check: current ALL_TITLES has {sum(len(v) if isinstance(v, list) else 0 for v in current.values())} items")
         
         # Get existing title names, mustContain, and ruleNames to avoid duplicates
         existing_titles = set()
@@ -765,18 +763,8 @@ def import_titles_from_file(
         if not success:
             return False
         
-        # Update UI
-        total_titles = sum(len(v) for v in config.ALL_TITLES.values() if isinstance(v, list))
-        logger.info(f"About to update treeview with {total_titles} total titles")
-        
-        update_treeview_with_titles(config.ALL_TITLES)
-        
-        # Debug: Check actual treeview count after update
-        app_state = get_app_state()
-        if app_state.treeview:
-            treeview_count = len(app_state.treeview.get_children())
-            logger.info(f"Treeview now has {treeview_count} visible items")
-        
+        # Update display
+        refresh_treeview_display_safe()
         status_var.set(status_msg)
         
         # Add to recent files
@@ -878,8 +866,8 @@ def import_titles_from_clipboard(
     if not success:
         return False
     
-    # Update UI
-    update_treeview_with_titles(config.ALL_TITLES)
+    # Update display
+    refresh_treeview_display_safe()
     status_var.set(status_msg)
     
     return True
@@ -983,7 +971,8 @@ def clear_all_titles(root: tk.Tk, status_var: tk.StringVar) -> bool:
             try:
                 children = app_state.treeview.get_children()
                 if children:
-                    app_state.treeview.delete(*children)
+                    for child in children:
+                        app_state.treeview.delete(child)
             except Exception:
                 pass
         return False
@@ -994,25 +983,46 @@ def clear_all_titles(root: tk.Tk, status_var: tk.StringVar) -> bool:
     ):
         return False
     
+    # Clear the data structure
     try:
+        logger.info(f"Clearing ALL_TITLES. Current count: {sum(len(v) if isinstance(v, list) else 0 for v in (getattr(config, 'ALL_TITLES', {}) or {}).values())}")
         config.ALL_TITLES = {}
-    except Exception:
-        pass
+        # Verify clear was successful
+        verify_count = sum(len(v) if isinstance(v, list) else 0 for v in (getattr(config, 'ALL_TITLES', {}) or {}).values())
+        logger.info(f"ALL_TITLES cleared. Verification count: {verify_count}")
+        if verify_count > 0:
+            logger.error(f"WARNING: ALL_TITLES still contains items after clear! Count: {verify_count}")
+    except Exception as e:
+        logger.error(f"Error clearing ALL_TITLES: {e}")
+        return False
     
-    if app_state.treeview:
+    # Clear app state items  
+    try:
+        if app_state:
+            app_state.clear_items()
+            logger.info(f"Cleared app_state items cache")
+    except Exception as e:
+        logger.error(f"Error clearing app_state items: {e}")
+    
+    # Clear the treeview display
+    if app_state and app_state.treeview:
         try:
-            children = app_state.treeview.get_children()
-            if children:
-                app_state.treeview.delete(*children)
-        except Exception:
-            pass
-    
-    app_state.clear_items()
-    
-    # Refresh treeview to ensure display is synchronized
-    update_treeview_with_titles(config.ALL_TITLES)
+            # Delete all items
+            for child in app_state.treeview.get_children():
+                app_state.treeview.delete(child)
+            
+            # Force display refresh (no geometry manager changes - treeview uses grid)
+            app_state.treeview.update_idletasks()
+            app_state.treeview.update()
+            root.update_idletasks()
+            root.update()
+            
+            logger.info("Treeview display cleared successfully")
+        except Exception as e:
+            logger.error(f"Error clearing treeview: {e}")
     
     status_var.set('Cleared all loaded titles.')
+    logger.info("Clear operation completed successfully")
     return True
 
 

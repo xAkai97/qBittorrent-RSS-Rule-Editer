@@ -1,628 +1,696 @@
-2025-12-31 14:52:22 - src.gui.dialogs - INFO - Log file cleared by user
-2025-12-31 14:52:37 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-12-31 14:52:37 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
-2025-12-31 14:52:37 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
-2025-12-31 14:52:37 - src.config - INFO - No SONARR section found in config.ini
-2025-12-31 14:52:37 - src.gui.main_window - INFO - Using TkinterDnD for drag-and-drop support
-2025-12-31 14:52:37 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:52:37 - src.cache - INFO - Loaded 5 templates
-2025-12-31 14:52:37 - src.gui.main_window - INFO - Default templates initialized
-2025-12-31 14:52:37 - src.config - INFO - Loaded 0 recent files
-2025-12-31 14:52:38 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
-2025-12-31 14:52:38 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
-2025-12-31 14:52:38 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
-2025-12-31 14:52:38 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 14:52:38 - src.gui.main_window - INFO - Drag-and-drop enabled for JSON file import
-2025-12-31 14:52:38 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES type: <class 'dict'>
-2025-12-31 14:52:38 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES content: {}
-2025-12-31 14:52:38 - src.gui.main_window - WARNING - Startup: config.ALL_TITLES is empty or None
-2025-12-31 14:52:38 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
-2025-12-31 14:52:38 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
-2025-12-31 14:52:38 - qbittorrentapi.request - DEBUG - Re-initializing context...
-2025-12-31 14:52:38 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
-2025-12-31 14:52:38 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
-2025-12-31 14:52:38 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:52:38 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
-2025-12-31 14:52:38 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
-2025-12-31 14:52:38 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
-2025-12-31 14:52:38 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:52:38 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
-2025-12-31 14:52:38 - qbittorrentapi.auth - DEBUG - Login successful
-2025-12-31 14:52:38 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
-2025-12-31 14:52:38 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 14:52:38 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 14:52:38 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
-2025-12-31 14:52:43 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
-2025-12-31 14:52:43 - qbittorrentapi.request - DEBUG - Re-initializing context...
-2025-12-31 14:52:43 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
-2025-12-31 14:52:43 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
-2025-12-31 14:52:43 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:52:43 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
-2025-12-31 14:52:43 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
-2025-12-31 14:52:43 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
-2025-12-31 14:52:43 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:52:43 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
-2025-12-31 14:52:43 - qbittorrentapi.auth - DEBUG - Login successful
-2025-12-31 14:52:43 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
-2025-12-31 14:52:43 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2490
-2025-12-31 14:52:43 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 14:52:43 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Alma-chan wa Kazoku ni Naritai
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Bukiyou na Senpai
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chanto Suenai Kyuuketsuki-chan
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Digimon Beatbreak
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Gnosia
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Heika Watashi wo Wasurete Kudasai
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Isekai Quartet 3
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kakuriyo no Yadomeshi Ni
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kikaijikake no Marie
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kimi to Koete Koi ni Naru
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kingdom 6th Season
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - One Punch Man 3
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Potion, Wagami wo Tasukeru
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ranma ½ 2nd Season
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sanda
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shuumatsu Touring
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Spy x Family Season 3
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tensei Akujo no Kuro Rekishi
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Towa no Yuugure
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Watashi wo Tabetai, Hitodenashi
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Yasei no Last Boss ga Arawareta!
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: ALL_TITLES keys before update: ['existing']
-2025-12-31 14:52:43 - src.gui.main_window - DEBUG - Sync: 'existing' key has 38 items
-2025-12-31 14:52:43 - src.gui.file_operations - DEBUG - update_treeview_with_titles: treeview_widget param ID: 2509940077776
-2025-12-31 14:52:43 - src.gui.file_operations - DEBUG - update_treeview_with_titles: using treeview ID: 2509940077776
-2025-12-31 14:52:43 - src.gui.file_operations - DEBUG - update_treeview_with_titles: app_state.treeview ID: 2509940077776
-2025-12-31 14:52:43 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
-2025-12-31 14:52:43 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
-2025-12-31 14:52:43 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
-2025-12-31 14:52:43 - src.gui.file_operations - DEBUG - Treeview widget ID: 2509940077776, has 0 children before insert
-2025-12-31 14:52:43 - src.gui.file_operations - DEBUG - First insert attempt - values: ('✓', '1', 'Boku no Hero Academia', 'Disk1 - Anime', 'disk1/Anime/100+ Series/Boku no Hero Academia')
-2025-12-31 14:52:43 - src.gui.file_operations - DEBUG - Values count: 5, Expected columns: 5
-2025-12-31 14:52:43 - src.gui.file_operations - DEBUG - Inserted 38 items with IDs: ['I001', 'I002', 'I003']... (showing first 3)
-2025-12-31 14:52:43 - src.gui.file_operations - INFO - Updated treeview: inserted 38/38 items - actual visible: 38
-2025-12-31 14:52:43 - src.gui.file_operations - DEBUG - First inserted ID 'I001' still exists: True
-2025-12-31 14:52:43 - src.gui.main_window - INFO - Sync: Treeview now has 38 visible items
-2025-12-31 14:53:01 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 14:53:01 - src.subsplease_api - INFO - Loaded 53 cached SubsPlease titles
-2025-12-31 14:53:07 - src.gui.main_window - DEBUG - Updated listbox_items[10], entry id: 2510031310464, mustContain: GNOSIA
-2025-12-31 14:53:07 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[existing][10] id: 2510031310464, mustContain: GNOSIA
-2025-12-31 14:53:07 - src.gui.main_window - DEBUG - Match condition: title=False, identity=True, new_title=True
-2025-12-31 14:53:07 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[existing][10] with entry id: 2510031310464, mustContain: GNOSIA
-2025-12-31 14:53:07 - src.gui.file_operations - DEBUG - update_treeview_with_titles: treeview_widget param ID: None
-2025-12-31 14:53:07 - src.gui.file_operations - DEBUG - update_treeview_with_titles: using treeview ID: 2509940077776
-2025-12-31 14:53:07 - src.gui.file_operations - DEBUG - update_treeview_with_titles: app_state.treeview ID: 2509940077776
-2025-12-31 14:53:07 - src.gui.file_operations - DEBUG - Treeview columns: ('enabled', 'index', 'title', 'category', 'savepath')
-2025-12-31 14:53:07 - src.gui.file_operations - DEBUG - Treeview displaycolumns: ('enabled', 'index', 'title', 'category', 'savepath')
-2025-12-31 14:53:07 - src.gui.file_operations - DEBUG - Treeview show: (<index object: 'headings'>,)
-2025-12-31 14:53:07 - src.gui.file_operations - ERROR - Error updating treeview: setup_library_panel.<locals>._delete_items() takes from 1 to 2 positional arguments but 38 were given
-Traceback (most recent call last):
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\file_operations.py", line 400, in update_treeview_with_titles
-    treeview.delete(*children)
-    ~~~~~~~~~~~~~~~^^^^^^^^^^^
-TypeError: setup_library_panel.<locals>._delete_items() takes from 1 to 2 positional arguments but 38 were given
-2025-12-31 14:53:09 - src.gui.main_window - DEBUG - Updated listbox_items[10], entry id: 2510031310464, mustContain: GNOSIA
-2025-12-31 14:53:09 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[existing][10] id: 2510031310464, mustContain: GNOSIA
-2025-12-31 14:53:09 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
-2025-12-31 14:53:09 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[existing][10] with entry id: 2510031310464, mustContain: GNOSIA
-2025-12-31 14:53:10 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
-2025-12-31 14:53:10 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
-2025-12-31 14:53:10 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
-2025-12-31 14:53:10 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:53:10 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:53:10 - src.subsplease_api - INFO - Saved 17 SubsPlease titles to cache
-2025-12-31 14:53:10 - src.subsplease_api - INFO - Successfully fetched 17 titles from SubsPlease API
-2025-12-31 14:53:10 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:53:14 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
-2025-12-31 14:53:14 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
-2025-12-31 14:53:15 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
-2025-12-31 14:53:15 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:53:15 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:53:15 - src.subsplease_api - INFO - Saved 17 SubsPlease titles to cache
-2025-12-31 14:53:15 - src.subsplease_api - INFO - Successfully fetched 17 titles from SubsPlease API
-2025-12-31 14:53:15 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:53:27 - src.gui.main_window - DEBUG - Updated listbox_items[10], entry id: 2510031310464, mustContain: GNOSIA
-2025-12-31 14:53:27 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[existing][10] id: 2510031310464, mustContain: GNOSIA
-2025-12-31 14:53:27 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
-2025-12-31 14:53:27 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[existing][10] with entry id: 2510031310464, mustContain: GNOSIA
-2025-12-31 14:53:45 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 14:53:45 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:55:49 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-12-31 14:55:49 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
-2025-12-31 14:55:49 - __main__ - ERROR - Unexpected error: unexpected indent (file_operations.py, line 395)
-Traceback (most recent call last):
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\main.py", line 36, in main
-    from src.gui import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\__init__.py", line 15, in <module>
-    from .gui import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\__init__.py", line 29, in <module>
-    from .main_window import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\main_window.py", line 38, in <module>
-    from src.gui.dialogs import open_settings_window
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\dialogs.py", line 20, in <module>
-    from src.gui.file_operations import import_titles_from_file, update_treeview_with_titles
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\file_operations.py", line 395
-    index = 0
-IndentationError: unexpected indent
-2025-12-31 14:55:54 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-12-31 14:55:54 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
-2025-12-31 14:55:54 - __main__ - ERROR - Unexpected error: unexpected indent (file_operations.py, line 395)
-Traceback (most recent call last):
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\main.py", line 36, in main
-    from src.gui import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\__init__.py", line 15, in <module>
-    from .gui import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\__init__.py", line 29, in <module>
-    from .main_window import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\main_window.py", line 38, in <module>
-    from src.gui.dialogs import open_settings_window
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\dialogs.py", line 20, in <module>
-    from src.gui.file_operations import import_titles_from_file, update_treeview_with_titles
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\file_operations.py", line 395
-    index = 0
-IndentationError: unexpected indent
-2025-12-31 14:56:15 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-12-31 14:56:15 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
-2025-12-31 14:56:16 - __main__ - ERROR - Unexpected error: unindent does not match any outer indentation level (file_operations.py, line 433)
-Traceback (most recent call last):
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\main.py", line 36, in main
-    from src.gui import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\__init__.py", line 15, in <module>
-    from .gui import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\__init__.py", line 29, in <module>
-    from .main_window import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\main_window.py", line 38, in <module>
-    from src.gui.dialogs import open_settings_window
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\dialogs.py", line 20, in <module>
-    from src.gui.file_operations import import_titles_from_file, update_treeview_with_titles
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\file_operations.py", line 433
-    inserted_count = 0
-                      ^
-IndentationError: unindent does not match any outer indentation level
-2025-12-31 14:57:11 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-12-31 14:57:11 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
-2025-12-31 14:57:11 - __main__ - ERROR - Unexpected error: invalid syntax (file_operations.py, line 452)
-Traceback (most recent call last):
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\main.py", line 36, in main
-    from src.gui import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\__init__.py", line 15, in <module>
-    from .gui import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\__init__.py", line 29, in <module>
-    from .main_window import setup_gui, exit_handler
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\main_window.py", line 38, in <module>
-    from src.gui.dialogs import open_settings_window
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\dialogs.py", line 20, in <module>
-    from src.gui.file_operations import import_titles_from_file, update_treeview_with_titles
-  File "C:\Users\Akai\Documents\GitHub\qBittorrent-RSS-Rule-Editer\src\gui\file_operations.py", line 452
-    except Exception as e:
-    ^^^^^^
-SyntaxError: invalid syntax
-2025-12-31 14:57:45 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-12-31 14:57:45 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
-2025-12-31 14:57:45 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
-2025-12-31 14:57:45 - src.config - INFO - No SONARR section found in config.ini
-2025-12-31 14:57:45 - src.gui.main_window - INFO - Using TkinterDnD for drag-and-drop support
-2025-12-31 14:57:45 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:57:45 - src.cache - INFO - Loaded 5 templates
-2025-12-31 14:57:45 - src.gui.main_window - INFO - Default templates initialized
-2025-12-31 14:57:45 - src.config - INFO - Loaded 0 recent files
-2025-12-31 14:57:45 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
-2025-12-31 14:57:45 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
-2025-12-31 14:57:45 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:57:45 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 14:57:45 - src.gui.main_window - INFO - Drag-and-drop enabled for JSON file import
-2025-12-31 14:57:45 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES type: <class 'dict'>
-2025-12-31 14:57:45 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES content: {}
-2025-12-31 14:57:45 - src.gui.main_window - WARNING - Startup: config.ALL_TITLES is empty or None
-2025-12-31 14:57:45 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
-2025-12-31 14:57:45 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
-2025-12-31 14:57:45 - qbittorrentapi.request - DEBUG - Re-initializing context...
-2025-12-31 14:57:45 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
-2025-12-31 14:57:45 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
-2025-12-31 14:57:45 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:57:45 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
-2025-12-31 14:57:45 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
-2025-12-31 14:57:45 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
-2025-12-31 14:57:45 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:57:45 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
-2025-12-31 14:57:45 - qbittorrentapi.auth - DEBUG - Login successful
-2025-12-31 14:57:45 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
-2025-12-31 14:57:45 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 14:57:45 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 14:57:45 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
-2025-12-31 14:57:47 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
-2025-12-31 14:57:47 - qbittorrentapi.request - DEBUG - Re-initializing context...
-2025-12-31 14:57:47 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
-2025-12-31 14:57:47 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
-2025-12-31 14:57:47 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:57:47 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
-2025-12-31 14:57:47 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
-2025-12-31 14:57:47 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
-2025-12-31 14:57:47 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:57:47 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
-2025-12-31 14:57:47 - qbittorrentapi.auth - DEBUG - Login successful
-2025-12-31 14:57:47 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
-2025-12-31 14:57:47 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2490
-2025-12-31 14:57:47 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 14:57:47 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Alma-chan wa Kazoku ni Naritai
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Bukiyou na Senpai
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chanto Suenai Kyuuketsuki-chan
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Digimon Beatbreak
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Gnosia
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Heika Watashi wo Wasurete Kudasai
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Isekai Quartet 3
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kakuriyo no Yadomeshi Ni
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kikaijikake no Marie
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kimi to Koete Koi ni Naru
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kingdom 6th Season
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - One Punch Man 3
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Potion, Wagami wo Tasukeru
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ranma ½ 2nd Season
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sanda
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shuumatsu Touring
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Spy x Family Season 3
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tensei Akujo no Kuro Rekishi
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Towa no Yuugure
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Watashi wo Tabetai, Hitodenashi
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Yasei no Last Boss ga Arawareta!
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: ALL_TITLES keys before update: ['existing']
-2025-12-31 14:57:47 - src.gui.main_window - DEBUG - Sync: 'existing' key has 38 items
-2025-12-31 14:57:47 - src.gui.file_operations - INFO - Updated treeview: inserted 38/38 items
-2025-12-31 14:57:47 - src.gui.main_window - INFO - Sync: Treeview now has 38 visible items
-2025-12-31 14:57:56 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 14:57:56 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:57:57 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 14:57:57 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:58:05 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
-2025-12-31 14:58:05 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
-2025-12-31 14:58:06 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
-2025-12-31 14:58:06 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:58:06 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:58:06 - src.subsplease_api - INFO - Saved 17 SubsPlease titles to cache
-2025-12-31 14:58:06 - src.subsplease_api - INFO - Successfully fetched 17 titles from SubsPlease API
-2025-12-31 14:58:06 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:58:06 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
-2025-12-31 14:58:06 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
-2025-12-31 14:58:06 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
-2025-12-31 14:58:06 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:58:06 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:58:06 - src.subsplease_api - INFO - Saved 17 SubsPlease titles to cache
-2025-12-31 14:58:06 - src.subsplease_api - INFO - Successfully fetched 17 titles from SubsPlease API
-2025-12-31 14:58:06 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:58:08 - src.gui.main_window - DEBUG - Updated listbox_items[7], entry id: 1780889809856, mustContain: Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha
-2025-12-31 14:58:08 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[existing][7] id: 1780889809856, mustContain: Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha
-2025-12-31 14:58:08 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
-2025-12-31 14:58:08 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[existing][7] with entry id: 1780889809856, mustContain: Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha
-2025-12-31 14:58:09 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
-2025-12-31 14:58:09 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
-2025-12-31 14:58:09 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
-2025-12-31 14:58:09 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:58:09 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:58:09 - src.subsplease_api - INFO - Saved 17 SubsPlease titles to cache
-2025-12-31 14:58:09 - src.subsplease_api - INFO - Successfully fetched 17 titles from SubsPlease API
-2025-12-31 14:58:09 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:58:10 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
-2025-12-31 14:58:10 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
-2025-12-31 14:58:10 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
-2025-12-31 14:58:10 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:58:10 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:58:10 - src.subsplease_api - INFO - Saved 17 SubsPlease titles to cache
-2025-12-31 14:58:10 - src.subsplease_api - INFO - Successfully fetched 17 titles from SubsPlease API
-2025-12-31 14:58:10 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:58:51 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-12-31 14:58:51 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
-2025-12-31 14:58:51 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
-2025-12-31 14:58:51 - src.config - INFO - No SONARR section found in config.ini
-2025-12-31 14:58:51 - src.gui.main_window - INFO - Using TkinterDnD for drag-and-drop support
-2025-12-31 14:58:51 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 14:58:51 - src.cache - INFO - Loaded 5 templates
-2025-12-31 14:58:51 - src.gui.main_window - INFO - Default templates initialized
-2025-12-31 14:58:51 - src.config - INFO - Loaded 0 recent files
-2025-12-31 14:58:52 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
-2025-12-31 14:58:52 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
-2025-12-31 14:58:52 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:58:52 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 14:58:52 - src.gui.main_window - INFO - Drag-and-drop enabled for JSON file import
-2025-12-31 14:58:52 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES type: <class 'dict'>
-2025-12-31 14:58:52 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES content: {}
-2025-12-31 14:58:52 - src.gui.main_window - WARNING - Startup: config.ALL_TITLES is empty or None
-2025-12-31 14:58:52 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
-2025-12-31 14:58:52 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
-2025-12-31 14:58:52 - qbittorrentapi.request - DEBUG - Re-initializing context...
-2025-12-31 14:58:52 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
-2025-12-31 14:58:52 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
-2025-12-31 14:58:52 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:58:52 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
-2025-12-31 14:58:52 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
-2025-12-31 14:58:52 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
-2025-12-31 14:58:52 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:58:52 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
-2025-12-31 14:58:52 - qbittorrentapi.auth - DEBUG - Login successful
-2025-12-31 14:58:52 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
-2025-12-31 14:58:52 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 14:58:52 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 14:58:52 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
-2025-12-31 14:58:53 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
-2025-12-31 14:58:53 - qbittorrentapi.request - DEBUG - Re-initializing context...
-2025-12-31 14:58:53 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
-2025-12-31 14:58:53 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
-2025-12-31 14:58:53 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:58:53 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
-2025-12-31 14:58:53 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
-2025-12-31 14:58:53 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
-2025-12-31 14:58:53 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 14:58:53 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
-2025-12-31 14:58:53 - qbittorrentapi.auth - DEBUG - Login successful
-2025-12-31 14:58:53 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
-2025-12-31 14:58:53 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2490
-2025-12-31 14:58:53 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 14:58:53 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Alma-chan wa Kazoku ni Naritai
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Bukiyou na Senpai
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chanto Suenai Kyuuketsuki-chan
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Digimon Beatbreak
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Gnosia
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Heika Watashi wo Wasurete Kudasai
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Isekai Quartet 3
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kakuriyo no Yadomeshi Ni
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kikaijikake no Marie
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kimi to Koete Koi ni Naru
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kingdom 6th Season
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - One Punch Man 3
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Potion, Wagami wo Tasukeru
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ranma ½ 2nd Season
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sanda
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shuumatsu Touring
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Spy x Family Season 3
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tensei Akujo no Kuro Rekishi
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Towa no Yuugure
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Watashi wo Tabetai, Hitodenashi
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Yasei no Last Boss ga Arawareta!
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: ALL_TITLES keys before update: ['existing']
-2025-12-31 14:58:53 - src.gui.main_window - DEBUG - Sync: 'existing' key has 38 items
-2025-12-31 14:58:53 - src.gui.file_operations - INFO - Updated treeview: inserted 38/38 items
-2025-12-31 14:58:53 - src.gui.main_window - INFO - Sync: Treeview now has 38 visible items
-2025-12-31 14:58:54 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 14:58:54 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:59:08 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 14:59:08 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 14:59:08 - src.config - INFO - Loaded 5 cached feeds
-2025-12-31 14:59:08 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 14:59:19 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 14:59:19 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 15:00:16 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-12-31 15:00:16 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
-2025-12-31 15:00:16 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
-2025-12-31 15:00:16 - src.config - INFO - No SONARR section found in config.ini
-2025-12-31 15:00:16 - src.gui.main_window - INFO - Using TkinterDnD for drag-and-drop support
-2025-12-31 15:00:16 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 15:00:16 - src.cache - INFO - Loaded 5 templates
-2025-12-31 15:00:16 - src.gui.main_window - INFO - Default templates initialized
-2025-12-31 15:00:16 - src.config - INFO - Loaded 0 recent files
-2025-12-31 15:00:16 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
-2025-12-31 15:00:16 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
-2025-12-31 15:00:16 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 15:00:16 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 15:00:16 - src.gui.main_window - INFO - Drag-and-drop enabled for JSON file import
-2025-12-31 15:00:16 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES type: <class 'dict'>
-2025-12-31 15:00:16 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES content: {}
-2025-12-31 15:00:16 - src.gui.main_window - WARNING - Startup: config.ALL_TITLES is empty or None
-2025-12-31 15:00:16 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
-2025-12-31 15:00:17 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
-2025-12-31 15:00:17 - qbittorrentapi.request - DEBUG - Re-initializing context...
-2025-12-31 15:00:17 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
-2025-12-31 15:00:17 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
-2025-12-31 15:00:17 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
-2025-12-31 15:00:17 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
-2025-12-31 15:00:17 - qbittorrentapi.auth - DEBUG - Login successful
-2025-12-31 15:00:17 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
-2025-12-31 15:00:17 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
-2025-12-31 15:00:17 - qbittorrentapi.request - DEBUG - Re-initializing context...
-2025-12-31 15:00:17 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
-2025-12-31 15:00:17 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
-2025-12-31 15:00:17 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
-2025-12-31 15:00:17 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
-2025-12-31 15:00:17 - qbittorrentapi.auth - DEBUG - Login successful
-2025-12-31 15:00:17 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2490
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 15:00:17 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Alma-chan wa Kazoku ni Naritai
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Bukiyou na Senpai
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chanto Suenai Kyuuketsuki-chan
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Digimon Beatbreak
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Gnosia
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Heika Watashi wo Wasurete Kudasai
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Isekai Quartet 3
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kakuriyo no Yadomeshi Ni
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kikaijikake no Marie
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kimi to Koete Koi ni Naru
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kingdom 6th Season
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - One Punch Man 3
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Potion, Wagami wo Tasukeru
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ranma ½ 2nd Season
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sanda
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shuumatsu Touring
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Spy x Family Season 3
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tensei Akujo no Kuro Rekishi
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Towa no Yuugure
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Watashi wo Tabetai, Hitodenashi
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Yasei no Last Boss ga Arawareta!
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: ALL_TITLES keys before update: ['existing']
-2025-12-31 15:00:17 - src.gui.main_window - DEBUG - Sync: 'existing' key has 38 items
-2025-12-31 15:00:18 - src.gui.file_operations - INFO - Updated treeview: inserted 38/38 items
-2025-12-31 15:00:18 - src.gui.main_window - INFO - Sync: Treeview now has 38 visible items
-2025-12-31 15:00:24 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 15:00:24 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 15:03:01 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
-2025-12-31 15:03:01 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
-2025-12-31 15:03:01 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
-2025-12-31 15:03:01 - src.config - INFO - No SONARR section found in config.ini
-2025-12-31 15:03:01 - src.gui.main_window - INFO - Using TkinterDnD for drag-and-drop support
-2025-12-31 15:03:01 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
-2025-12-31 15:03:01 - src.cache - INFO - Loaded 5 templates
-2025-12-31 15:03:01 - src.gui.main_window - INFO - Default templates initialized
-2025-12-31 15:03:01 - src.config - INFO - Loaded 0 recent files
-2025-12-31 15:03:01 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
-2025-12-31 15:03:01 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
-2025-12-31 15:03:01 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
-2025-12-31 15:03:01 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 15:03:01 - src.gui.main_window - INFO - Drag-and-drop enabled for JSON file import
-2025-12-31 15:03:01 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES type: <class 'dict'>
-2025-12-31 15:03:01 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES content: {}
-2025-12-31 15:03:01 - src.gui.main_window - WARNING - Startup: config.ALL_TITLES is empty or None
-2025-12-31 15:03:01 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
-2025-12-31 15:03:02 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
-2025-12-31 15:03:02 - qbittorrentapi.request - DEBUG - Re-initializing context...
-2025-12-31 15:03:02 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
-2025-12-31 15:03:02 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
-2025-12-31 15:03:02 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 15:03:02 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
-2025-12-31 15:03:02 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
-2025-12-31 15:03:02 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
-2025-12-31 15:03:02 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 15:03:02 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
-2025-12-31 15:03:02 - qbittorrentapi.auth - DEBUG - Login successful
-2025-12-31 15:03:02 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
-2025-12-31 15:03:02 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 15:03:02 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 15:03:02 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
-2025-12-31 15:03:03 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
-2025-12-31 15:03:03 - qbittorrentapi.request - DEBUG - Re-initializing context...
-2025-12-31 15:03:03 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
-2025-12-31 15:03:03 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
-2025-12-31 15:03:03 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 15:03:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
-2025-12-31 15:03:03 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
-2025-12-31 15:03:03 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
-2025-12-31 15:03:03 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
-2025-12-31 15:03:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
-2025-12-31 15:03:03 - qbittorrentapi.auth - DEBUG - Login successful
-2025-12-31 15:03:03 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
-2025-12-31 15:03:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2490
-2025-12-31 15:03:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
-2025-12-31 15:03:03 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Alma-chan wa Kazoku ni Naritai
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Bukiyou na Senpai
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chanto Suenai Kyuuketsuki-chan
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Digimon Beatbreak
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Gnosia
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Heika Watashi wo Wasurete Kudasai
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Isekai Quartet 3
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kakuriyo no Yadomeshi Ni
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kikaijikake no Marie
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kimi to Koete Koi ni Naru
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kingdom 6th Season
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - One Punch Man 3
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Potion, Wagami wo Tasukeru
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ranma ½ 2nd Season
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sanda
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shuumatsu Touring
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Spy x Family Season 3
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tensei Akujo no Kuro Rekishi
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Towa no Yuugure
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Watashi wo Tabetai, Hitodenashi
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Yasei no Last Boss ga Arawareta!
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: ALL_TITLES keys before update: ['existing']
-2025-12-31 15:03:03 - src.gui.main_window - DEBUG - Sync: 'existing' key has 38 items
-2025-12-31 15:03:03 - src.gui.file_operations - INFO - Updated treeview: inserted 38/38 items
-2025-12-31 15:03:03 - src.gui.main_window - INFO - Sync: Treeview now has 38 visible items
-2025-12-31 15:03:38 - src.config - INFO - Loaded 10 cached categories
-2025-12-31 15:03:38 - src.subsplease_api - INFO - Loaded 17 cached SubsPlease titles
+2026-01-11 20:10:37 - src.gui.dialogs - INFO - Log file cleared by user
+2026-01-11 20:15:33 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2026-01-11 20:15:33 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2026-01-11 20:15:33 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2026-01-11 20:15:33 - src.config - INFO - No SONARR section found in config.ini
+2026-01-11 20:15:33 - src.gui.main_window - INFO - Using TkinterDnD for drag-and-drop support
+2026-01-11 20:15:33 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:15:33 - src.cache - INFO - Loaded 5 templates
+2026-01-11 20:15:33 - src.gui.main_window - INFO - Default templates initialized
+2026-01-11 20:15:33 - src.config - INFO - Loaded 2 recent files
+2026-01-11 20:15:33 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:15:33 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:15:33 - src.cache - INFO - Saved 0 recent files to cache
+2026-01-11 20:15:33 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
+2026-01-11 20:15:33 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
+2026-01-11 20:15:33 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:15:33 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:15:33 - src.gui.main_window - INFO - Drag-and-drop enabled for JSON file import
+2026-01-11 20:15:33 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES type: <class 'dict'>
+2026-01-11 20:15:33 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES content: {}
+2026-01-11 20:15:33 - src.gui.main_window - WARNING - Startup: config.ALL_TITLES is empty or None
+2026-01-11 20:15:33 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2026-01-11 20:15:34 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2026-01-11 20:15:34 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2026-01-11 20:15:34 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2026-01-11 20:15:34 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2026-01-11 20:15:34 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2026-01-11 20:15:34 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2026-01-11 20:15:34 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2026-01-11 20:15:34 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2026-01-11 20:15:34 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2026-01-11 20:15:34 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2026-01-11 20:15:34 - qbittorrentapi.auth - DEBUG - Login successful
+2026-01-11 20:15:34 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2026-01-11 20:15:34 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2026-01-11 20:15:34 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2026-01-11 20:15:34 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2026-01-11 20:15:40 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2026-01-11 20:15:40 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2026-01-11 20:15:40 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2026-01-11 20:15:40 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2026-01-11 20:15:40 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2026-01-11 20:15:40 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2026-01-11 20:15:40 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2026-01-11 20:15:40 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2026-01-11 20:15:40 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2026-01-11 20:15:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2026-01-11 20:15:41 - qbittorrentapi.auth - DEBUG - Login successful
+2026-01-11 20:15:41 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2026-01-11 20:15:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2466
+2026-01-11 20:15:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2026-01-11 20:15:41 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Alma-chan wa Kazoku ni Naritai
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Bukiyou na Senpai
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chanto Suenai Kyuuketsuki-chan
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Digimon Beatbreak
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Gnosia
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Isekai Quartet 3
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kakuriyo no Yadomeshi Ni
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kikaijikake no Marie
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kimi to Koete Koi ni Naru
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kingdom 6th Season
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - One Punch Man 3
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Potion, Wagami wo Tasukeru
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ranma ½ 2nd Season
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sanda
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shuumatsu Touring
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Spy x Family Season 3
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tensei Akujo no Kuro Rekishi
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Towa no Yuugure
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Watashi wo Tabetai, Hitodenashi
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Yasei no Last Boss ga Arawareta!
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
+2026-01-11 20:15:41 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
+2026-01-11 20:15:41 - src.gui.file_operations - DEBUG - Treeview updated: 37 items displayed
+2026-01-11 20:15:41 - src.gui.file_operations - DEBUG - Treeview refresh completed successfully
+2026-01-11 20:15:45 - src.gui.file_operations - INFO - Clearing ALL_TITLES. Current count: 37
+2026-01-11 20:15:45 - src.gui.file_operations - INFO - ALL_TITLES cleared. Verification count: 0
+2026-01-11 20:15:45 - src.gui.file_operations - INFO - Cleared app_state items cache
+2026-01-11 20:15:45 - src.gui.file_operations - ERROR - Error clearing treeview: cannot use geometry manager pack inside .!frame.!labelframe.!panedwindow.!frame which already has slaves managed by grid
+2026-01-11 20:15:45 - src.gui.file_operations - INFO - Clear operation completed successfully
+2026-01-11 20:15:46 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2026-01-11 20:15:46 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2026-01-11 20:15:46 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2026-01-11 20:15:46 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2026-01-11 20:15:46 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2026-01-11 20:15:46 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2026-01-11 20:15:46 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2026-01-11 20:15:46 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2026-01-11 20:15:46 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2026-01-11 20:15:46 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2026-01-11 20:15:46 - qbittorrentapi.auth - DEBUG - Login successful
+2026-01-11 20:15:46 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2026-01-11 20:15:46 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/rss/rules HTTP/1.1" 200 2466
+2026-01-11 20:15:46 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2026-01-11 20:15:46 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Boku no Hero Academia
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Detective Conan
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Akujiki Reijou to Kyouketsu Koushaku
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Alma-chan wa Kazoku ni Naritai
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Bukiyou na Senpai
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chanto Suenai Kyuuketsuki-chan
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Chitose-kun wa Ramune Bin no Naka
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Digimon Beatbreak
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Gnosia
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Isekai Quartet 3
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kakuriyo no Yadomeshi Ni
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kikaijikake no Marie
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kimi to Koete Koi ni Naru
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Kingdom 6th Season
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mikata ga Yowasugite Hojo Mahou ni Tesshiteita Kyuutei Mahoushi, Tsuihou sarete Saikyou wo Mezashimasu
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Nageki no Bourei wa Intai shitai Part 2
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - One Punch Man 3
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Potion, Wagami wo Tasukeru
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Ranma ½ 2nd Season
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Saigo ni Hitotsu dake Onegai shitemo Yoroshii deshou ka
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sanda
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift "Mugen Gacha" de Level no Nakama-tachi wo Te ni Irete Moto Party Member to Sekai ni Fukushuu & "Zamaa!" Shimasu!
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Shuumatsu Touring
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Sozai Saishuka no Isekai Ryokouki
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Spy x Family Season 3
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tensei Akujo no Kuro Rekishi
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tomodachi no Imouto ga Ore ni dake Uzai
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Tondemo Skill de Isekai Hourou Meshi 2
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Towa no Yuugure
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Watashi wo Tabetai, Hitodenashi
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Fall 2025 - Yasei no Last Boss ga Arawareta!
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: One Piece
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Futari Solo Camp
+2026-01-11 20:15:46 - src.gui.main_window - DEBUG - Sync: Adding new entry: Summer - Gachiakuta
+2026-01-11 20:15:46 - src.gui.file_operations - DEBUG - Treeview updated: 74 items displayed
+2026-01-11 20:15:46 - src.gui.file_operations - DEBUG - Treeview refresh completed successfully
+2026-01-11 20:19:23 - __main__ - INFO - Starting qBittorrent RSS Rule Editor (Modular Version)
+2026-01-11 20:19:23 - __main__ - INFO - GUI Modularization: COMPLETE - 100% modular architecture
+2026-01-11 20:19:24 - src.config - INFO - Loaded qBittorrent config: https://192.168.1.21:8080 (mode: online)
+2026-01-11 20:19:24 - src.config - INFO - No SONARR section found in config.ini
+2026-01-11 20:19:24 - src.gui.main_window - INFO - Using TkinterDnD for drag-and-drop support
+2026-01-11 20:19:24 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:19:24 - src.cache - INFO - Loaded 5 templates
+2026-01-11 20:19:24 - src.gui.main_window - INFO - Default templates initialized
+2026-01-11 20:19:24 - src.config - INFO - Loaded 0 recent files
+2026-01-11 20:19:24 - src.gui.main_window - DEBUG - Saved column order from config: ['enabled', 'index', 'title', 'category', 'savepath']
+2026-01-11 20:19:24 - src.gui.main_window - DEBUG - Final column display order: ['enabled', 'index', 'title', 'category', 'savepath']
+2026-01-11 20:19:24 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:19:24 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:19:24 - src.gui.main_window - INFO - Drag-and-drop enabled for JSON file import
+2026-01-11 20:19:24 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES type: <class 'dict'>
+2026-01-11 20:19:24 - src.gui.main_window - DEBUG - Startup: config.ALL_TITLES content: {}
+2026-01-11 20:19:24 - src.gui.main_window - WARNING - Startup: config.ALL_TITLES is empty or None
+2026-01-11 20:19:24 - src.gui.main_window - INFO - GUI Session 4E: Fully modular GUI initialized successfully
+2026-01-11 20:19:24 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2026-01-11 20:19:24 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2026-01-11 20:19:24 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2026-01-11 20:19:24 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2026-01-11 20:19:24 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2026-01-11 20:19:24 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2026-01-11 20:19:24 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2026-01-11 20:19:24 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2026-01-11 20:19:24 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2026-01-11 20:19:24 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2026-01-11 20:19:24 - qbittorrentapi.auth - DEBUG - Login successful
+2026-01-11 20:19:24 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2026-01-11 20:19:24 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "GET /api/v2/app/version HTTP/1.1" 200 6
+2026-01-11 20:19:24 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/app/version HTTP/1.1" 200 6
+2026-01-11 20:19:24 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/logout HTTP/1.1" 200 0
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Import check: current ALL_TITLES has 0 items
+2026-01-11 20:19:50 - src.gui.file_operations - INFO - Import merge complete: 38 new, 0 duplicates, total in ALL_TITLES: 38
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Populating fields for 38 new items only
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - populate_missing_rule_fields called with 38 total titles
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Sousou no Frieren 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Sousou no Frieren 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Sousou no Frieren 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Jujutsu Kaisen: Shimetsu Kaiyuu - Zenpen
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Jujutsu Kaisen: Shimetsu Kaiyuu - Zenpen
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Jujutsu Kaisen: Shimetsu Kaiyuu - Zenpen
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Jigokuraku 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Jigokuraku 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Jigokuraku 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to [Oshi no Ko] 3rd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to [Oshi no Ko] 3rd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to [Oshi no Ko] 3rd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Yuusha-kei ni Shosu: Choubatsu Yuusha -tai Keimu Kiroku
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Yuusha-kei ni Shosu: Choubatsu Yuusha -tai Keimu Kiroku
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Yuusha-kei ni Shosu: Choubatsu Yuusha -tai Keimu Kiroku
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Enen no Shouboutai: San no Shou Part 2
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Enen no Shouboutai: San no Shou Part 2
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Enen no Shouboutai: San no Shou Part 2
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Mato Seihei no Slave 2
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Mato Seihei no Slave 2
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Mato Seihei no Slave 2
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Vigilante: Boku no Hero Academia Illegals 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Vigilante: Boku no Hero Academia Illegals 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Vigilante: Boku no Hero Academia Illegals 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Yuusha Party wo Oidasareta Kiyoubinbou
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Yuusha Party wo Oidasareta Kiyoubinbou
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Yuusha Party wo Oidasareta Kiyoubinbou
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Shibou Yuugi de Meshi wo Kuu.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Shibou Yuugi de Meshi wo Kuu.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Shibou Yuugi de Meshi wo Kuu.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Yuusha Party ni Kawaii Ko ga Ita node, Kokuhaku shitemita.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Yuusha Party ni Kawaii Ko ga Ita node, Kokuhaku shitemita.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Yuusha Party ni Kawaii Ko ga Ita node, Kokuhaku shitemita.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Mayonaka Heart Tune
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Mayonaka Heart Tune
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Mayonaka Heart Tune
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Kizoku Tensei: Megumareta Umare kara Saikyou no Chikara wo Eru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Kizoku Tensei: Megumareta Umare kara Saikyou no Chikara wo Eru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Kizoku Tensei: Megumareta Umare kara Saikyou no Chikara wo Eru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Majutsushi Kunon wa Mieteiru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Majutsushi Kunon wa Mieteiru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Majutsushi Kunon wa Mieteiru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Eris no Seihai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Eris no Seihai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Eris no Seihai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Darwin Jihen
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Darwin Jihen
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Darwin Jihen
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Toumei Otoko to Ningen Onna: Sonouchi Fuufu ni Naru Futari
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Toumei Otoko to Ningen Onna: Sonouchi Fuufu ni Naru Futari
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Toumei Otoko to Ningen Onna: Sonouchi Fuufu ni Naru Futari
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Okiraku Ryoushu no Tanoshii Ryouchi Bouei: Seisankei Majutsu de Na mo Naki Mura wo Saikyou no Jousai Toshi ni
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Okiraku Ryoushu no Tanoshii Ryouchi Bouei: Seisankei Majutsu de Na mo Naki Mura wo Saikyou no Jousai Toshi ni
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Okiraku Ryoushu no Tanoshii Ryouchi Bouei: Seisankei Majutsu de Na mo Naki Mura wo Saikyou no Jousai Toshi ni
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Hell Mode: Yarikomizuki no Gamer wa Hai Settei no Isekai de Musou suru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Hell Mode: Yarikomizuki no Gamer wa Hai Settei no Isekai de Musou suru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Hell Mode: Yarikomizuki no Gamer wa Hai Settei no Isekai de Musou suru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Medalist 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Medalist 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Medalist 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to "Omae Gotoki ga Maou ni Kateru to Omouna" to Yuusha Party wo Tsuihou sareta node, Outo de Kimama ni Kurashitai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to "Omae Gotoki ga Maou ni Kateru to Omouna" to Yuusha Party wo Tsuihou sareta node, Outo de Kimama ni Kurashitai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to "Omae Gotoki ga Maou ni Kateru to Omouna" to Yuusha Party wo Tsuihou sareta node, Outo de Kimama ni Kurashitai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Kirei ni Shitemoraemasu ka.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Kirei ni Shitemoraemasu ka.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Kirei ni Shitemoraemasu ka.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Akuyaku Reijou wa Ringoku no Outaishi ni Dekiai sareru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Akuyaku Reijou wa Ringoku no Outaishi ni Dekiai sareru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Akuyaku Reijou wa Ringoku no Outaishi ni Dekiai sareru
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Dead Account
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Dead Account
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Dead Account
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Osananajimi to wa Love Comedy ni Naranai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Osananajimi to wa Love Comedy ni Naranai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Osananajimi to wa Love Comedy ni Naranai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Hanazakari no Kimitachi e
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Hanazakari no Kimitachi e
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Hanazakari no Kimitachi e
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Champignon no Majo
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Champignon no Majo
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Champignon no Majo
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Kaya-chan wa Kowakunai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Kaya-chan wa Kowakunai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Kaya-chan wa Kowakunai
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Maou no Musume wa Yasashisugiru!!
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Maou no Musume wa Yasashisugiru!!
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Maou no Musume wa Yasashisugiru!!
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Odayaka Kizoku no Kyuuka no Susume.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Odayaka Kizoku no Kyuuka no Susume.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Odayaka Kizoku no Kyuuka no Susume.
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to 29-sai Dokushin Chuuken Boukensha no Nichijou
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to 29-sai Dokushin Chuuken Boukensha no Nichijou
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to 29-sai Dokushin Chuuken Boukensha no Nichijou
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Himesama "Goumon" no Jikan desu 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Himesama "Goumon" no Jikan desu 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Himesama "Goumon" no Jikan desu 2nd Season
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Dark Moon: Tsuki no Saidan
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Dark Moon: Tsuki no Saidan
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Dark Moon: Tsuki no Saidan
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Arne no Jikenbo
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Arne no Jikenbo
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Arne no Jikenbo
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Yuusha no Kuzu
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Yuusha no Kuzu
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Yuusha no Kuzu
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Tensei shitara Dragon no Tamago datta
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Tensei shitara Dragon no Tamago datta
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Tensei shitara Dragon no Tamago datta
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Goumon Baito-kun no Nichijou
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Goumon Baito-kun no Nichijou
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Goumon Baito-kun no Nichijou
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default category 'Disk5 - Web' to Jingai Kyoushitsu no Ningengirai Kyoushi
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default save path 'disk5/Anime/Web' to Jingai Kyoushitsu no Ningengirai Kyoushi
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applied default affected feeds to Jingai Kyoushitsu no Ningengirai Kyoushi
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Applying prefix to 38 new items only
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Sousou no Frieren 2nd Season'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Jujutsu Kaisen_ Shimetsu Kaiyuu - Zenpen'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Jigokuraku 2nd Season'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/[Oshi no Ko] 3rd Season'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Yuusha-kei ni Shosu_ Choubatsu Yuusha -tai Keimu Kiroku'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Enen no Shouboutai_ San no Shou Part 2'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Mato Seihei no Slave 2'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Vigilante_ Boku no Hero Academia Illegals 2nd Season'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Yuusha Party wo Oidasareta Kiyoubinbou'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Shibou Yuugi de Meshi wo Kuu'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Yuusha Party ni Kawaii Ko ga Ita node, Kokuhaku shitemita'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Mayonaka Heart Tune'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Kizoku Tensei_ Megumareta Umare kara Saikyou no Chikara wo Eru'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Majutsushi Kunon wa Mieteiru'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Eris no Seihai'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Darwin Jihen'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Toumei Otoko to Ningen Onna_ Sonouchi Fuufu ni Naru Futari'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Okiraku Ryoushu no Tanoshii Ryouchi Bouei_ Seisankei Majutsu de Na mo Naki Mura wo Saikyou no Jousai Toshi ni'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Hell Mode_ Yarikomizuki no Gamer wa Hai Settei no Isekai de Musou suru'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Medalist 2nd Season'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/_Omae Gotoki ga Maou ni Kateru to Omouna_ to Yuusha Party wo Tsuihou sareta node, Outo de Kimama ni Kurashitai'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Kirei ni Shitemoraemasu ka'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Akuyaku Reijou wa Ringoku no Outaishi ni Dekiai sareru'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Dead Account'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Osananajimi to wa Love Comedy ni Naranai'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Hanazakari no Kimitachi e'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Champignon no Majo'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Kaya-chan wa Kowakunai'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Maou no Musume wa Yasashisugiru!!'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Odayaka Kizoku no Kyuuka no Susume'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/29-sai Dokushin Chuuken Boukensha no Nichijou'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Himesama _Goumon_ no Jikan desu 2nd Season'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Dark Moon_ Tsuki no Saidan'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Arne no Jikenbo'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Yuusha no Kuzu'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Tensei shitara Dragon no Tamago datta'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Goumon Baito-kun no Nichijou'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Updated save path: 'disk5/Anime/Web' -> 'disk5/Anime/Web/Winter 2026/Jingai Kyoushitsu no Ningengirai Kyoushi'
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Treeview updated: 38 items displayed
+2026-01-11 20:19:50 - src.gui.file_operations - DEBUG - Treeview refresh completed successfully
+2026-01-11 20:19:50 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:19:50 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:19:50 - src.cache - INFO - Saved 1 recent files to cache
+2026-01-11 20:19:50 - src.config - INFO - Loaded 1 recent files
+2026-01-11 20:19:54 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:19:54 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:19:56 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:19:56 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:19:57 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:19:57 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:20:02 - src.gui.main_window - DEBUG - Updated listbox_items[0], entry id: 2058245879232, mustContain: Sousou no Frieren
+2026-01-11 20:20:02 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][0] id: 2058245879232, mustContain: Sousou no Frieren
+2026-01-11 20:20:02 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:20:02 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][0] with entry id: 2058245879232, mustContain: Sousou no Frieren
+2026-01-11 20:20:03 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:20:03 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:20:04 - src.gui.main_window - DEBUG - Updated listbox_items[1], entry id: 2058247076800, mustContain: Jujutsu Kaisen
+2026-01-11 20:20:04 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][1] id: 2058247076800, mustContain: Jujutsu Kaisen
+2026-01-11 20:20:04 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:20:04 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][1] with entry id: 2058247076800, mustContain: Jujutsu Kaisen
+2026-01-11 20:20:46 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:20:46 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:20:48 - src.gui.main_window - DEBUG - Updated listbox_items[2], entry id: 2058247289216, mustContain: Jigokuraku
+2026-01-11 20:20:48 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][2] id: 2058247289216, mustContain: Jigokuraku
+2026-01-11 20:20:48 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:20:48 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][2] with entry id: 2058247289216, mustContain: Jigokuraku
+2026-01-11 20:20:49 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:20:49 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:20:51 - src.gui.main_window - DEBUG - Updated listbox_items[3], entry id: 2058248213056, mustContain: Oshi no Ko
+2026-01-11 20:20:51 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][3] id: 2058248213056, mustContain: Oshi no Ko
+2026-01-11 20:20:51 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:20:51 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][3] with entry id: 2058248213056, mustContain: Oshi no Ko
+2026-01-11 20:20:52 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:20:52 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:20:54 - src.gui.main_window - DEBUG - Updated listbox_items[4], entry id: 2058248209984, mustContain: Yuusha-kei ni Shosu
+2026-01-11 20:20:54 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][4] id: 2058248209984, mustContain: Yuusha-kei ni Shosu
+2026-01-11 20:20:54 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:20:54 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][4] with entry id: 2058248209984, mustContain: Yuusha-kei ni Shosu
+2026-01-11 20:20:54 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:20:54 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:20:56 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
+2026-01-11 20:20:56 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
+2026-01-11 20:20:56 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
+2026-01-11 20:20:56 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:20:56 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:20:56 - src.subsplease_api - INFO - Saved 60 SubsPlease titles to cache
+2026-01-11 20:20:56 - src.subsplease_api - INFO - Successfully fetched 60 titles from SubsPlease API
+2026-01-11 20:20:57 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:21:08 - src.gui.main_window - DEBUG - Updated listbox_items[5], entry id: 2058247142592, mustContain: Enen no Shouboutai:
+2026-01-11 20:21:08 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][5] id: 2058247142592, mustContain: Enen no Shouboutai:
+2026-01-11 20:21:08 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:21:08 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][5] with entry id: 2058247142592, mustContain: Enen no Shouboutai:
+2026-01-11 20:21:08 - src.gui.main_window - DEBUG - Updated listbox_items[5], entry id: 2058247142592, mustContain: Enen no Shouboutai
+2026-01-11 20:21:08 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][5] id: 2058247142592, mustContain: Enen no Shouboutai
+2026-01-11 20:21:08 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:21:08 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][5] with entry id: 2058247142592, mustContain: Enen no Shouboutai
+2026-01-11 20:21:13 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:21:13 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:21:15 - src.gui.main_window - DEBUG - Updated listbox_items[6], entry id: 2058196539008, mustContain: Mato Seihei no Slave S2
+2026-01-11 20:21:15 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][6] id: 2058196539008, mustContain: Mato Seihei no Slave S2
+2026-01-11 20:21:15 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:21:15 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][6] with entry id: 2058196539008, mustContain: Mato Seihei no Slave S2
+2026-01-11 20:21:15 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:21:15 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:21:16 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:21:16 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:21:16 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:21:16 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:21:18 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
+2026-01-11 20:21:18 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
+2026-01-11 20:21:18 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
+2026-01-11 20:21:18 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:21:18 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:21:18 - src.subsplease_api - INFO - Saved 60 SubsPlease titles to cache
+2026-01-11 20:21:18 - src.subsplease_api - INFO - Successfully fetched 60 titles from SubsPlease API
+2026-01-11 20:21:18 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:21:22 - src.gui.main_window - DEBUG - Updated listbox_items[7], entry id: 2058248210048, mustContain: Boku no Hero Academia Illegals 2nd Season
+2026-01-11 20:21:22 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][7] id: 2058248210048, mustContain: Boku no Hero Academia Illegals 2nd Season
+2026-01-11 20:21:22 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:21:22 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][7] with entry id: 2058248210048, mustContain: Boku no Hero Academia Illegals 2nd Season
+2026-01-11 20:21:24 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
+2026-01-11 20:21:24 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
+2026-01-11 20:21:24 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
+2026-01-11 20:21:24 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:21:24 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:21:24 - src.subsplease_api - INFO - Saved 60 SubsPlease titles to cache
+2026-01-11 20:21:24 - src.subsplease_api - INFO - Successfully fetched 60 titles from SubsPlease API
+2026-01-11 20:21:24 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:21:25 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
+2026-01-11 20:21:25 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
+2026-01-11 20:21:25 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
+2026-01-11 20:21:25 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:21:25 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:21:25 - src.subsplease_api - INFO - Saved 60 SubsPlease titles to cache
+2026-01-11 20:21:25 - src.subsplease_api - INFO - Successfully fetched 60 titles from SubsPlease API
+2026-01-11 20:21:25 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:07 - src.gui.main_window - DEBUG - Updated listbox_items[7], entry id: 2058248210048, mustContain: Vigilante - Boku no Hero Academia Illegals S2
+2026-01-11 20:22:07 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][7] id: 2058248210048, mustContain: Vigilante - Boku no Hero Academia Illegals S2
+2026-01-11 20:22:07 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:22:07 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][7] with entry id: 2058248210048, mustContain: Vigilante - Boku no Hero Academia Illegals S2
+2026-01-11 20:22:08 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
+2026-01-11 20:22:08 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
+2026-01-11 20:22:08 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
+2026-01-11 20:22:08 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:22:08 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:22:08 - src.subsplease_api - INFO - Saved 60 SubsPlease titles to cache
+2026-01-11 20:22:08 - src.subsplease_api - INFO - Successfully fetched 60 titles from SubsPlease API
+2026-01-11 20:22:08 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:12 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:12 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:13 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:13 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:14 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:14 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:16 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:16 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:18 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
+2026-01-11 20:22:18 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
+2026-01-11 20:22:18 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
+2026-01-11 20:22:18 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:22:18 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:22:18 - src.subsplease_api - INFO - Saved 60 SubsPlease titles to cache
+2026-01-11 20:22:18 - src.subsplease_api - INFO - Successfully fetched 60 titles from SubsPlease API
+2026-01-11 20:22:18 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:19 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
+2026-01-11 20:22:19 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
+2026-01-11 20:22:19 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
+2026-01-11 20:22:19 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:22:19 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:22:19 - src.subsplease_api - INFO - Saved 60 SubsPlease titles to cache
+2026-01-11 20:22:19 - src.subsplease_api - INFO - Successfully fetched 60 titles from SubsPlease API
+2026-01-11 20:22:19 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:20 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:20 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:20 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:20 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:21 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:21 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:21 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:21 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:21 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:21 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:24 - src.gui.main_window - DEBUG - Updated listbox_items[12], entry id: 2058248209344, mustContain: Kizoku Tensei - Megumareta Umare kara Saikyou no Chikara wo Eru
+2026-01-11 20:22:24 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][12] id: 2058248209344, mustContain: Kizoku Tensei - Megumareta Umare kara Saikyou no Chikara wo Eru
+2026-01-11 20:22:24 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:22:24 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][12] with entry id: 2058248209344, mustContain: Kizoku Tensei - Megumareta Umare kara Saikyou no Chikara wo Eru
+2026-01-11 20:22:28 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:28 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:29 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:29 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:29 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:29 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:29 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:29 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:30 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:30 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:30 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:30 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:31 - src.gui.main_window - DEBUG - Updated listbox_items[16], entry id: 2058247142912, mustContain: Toumei Otoko to Ningen Onna
+2026-01-11 20:22:31 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][16] id: 2058247142912, mustContain: Toumei Otoko to Ningen Onna
+2026-01-11 20:22:31 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:22:31 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][16] with entry id: 2058247142912, mustContain: Toumei Otoko to Ningen Onna
+2026-01-11 20:22:32 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:32 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:33 - src.gui.main_window - DEBUG - Updated listbox_items[17], entry id: 2058248211904, mustContain: Okiraku Ryoushu no Tanoshii Ryouchi Bouei
+2026-01-11 20:22:33 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][17] id: 2058248211904, mustContain: Okiraku Ryoushu no Tanoshii Ryouchi Bouei
+2026-01-11 20:22:33 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:22:33 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][17] with entry id: 2058248211904, mustContain: Okiraku Ryoushu no Tanoshii Ryouchi Bouei
+2026-01-11 20:22:33 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:33 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:34 - src.gui.main_window - DEBUG - Updated listbox_items[18], entry id: 2058248212288, mustContain: Hell Mode
+2026-01-11 20:22:34 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][18] id: 2058248212288, mustContain: Hell Mode
+2026-01-11 20:22:34 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:22:34 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][18] with entry id: 2058248212288, mustContain: Hell Mode
+2026-01-11 20:22:35 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:35 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:36 - src.subsplease_api - INFO - Fetching SubsPlease schedule from API: https://subsplease.org/api/?f=schedule&tz=UTC
+2026-01-11 20:22:36 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): subsplease.org:443
+2026-01-11 20:22:36 - urllib3.connectionpool - DEBUG - https://subsplease.org:443 "GET /api/?f=schedule&tz=UTC HTTP/1.1" 200 None
+2026-01-11 20:22:36 - src.cache - DEBUG - Loaded cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:22:36 - src.cache - DEBUG - Saved cache data with keys: ['categories', 'feeds', 'recent_files', 'prefs', 'subsplease_titles', 'rule_templates', 'all_titles']
+2026-01-11 20:22:36 - src.subsplease_api - INFO - Saved 60 SubsPlease titles to cache
+2026-01-11 20:22:36 - src.subsplease_api - INFO - Successfully fetched 60 titles from SubsPlease API
+2026-01-11 20:22:36 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:22:50 - src.gui.main_window - DEBUG - Updated listbox_items[19], entry id: 2058245737792, mustContain: Medalist
+2026-01-11 20:22:50 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][19] id: 2058245737792, mustContain: Medalist
+2026-01-11 20:22:50 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:22:50 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][19] with entry id: 2058245737792, mustContain: Medalist
+2026-01-11 20:22:51 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:22:51 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:09 - src.gui.main_window - DEBUG - Updated listbox_items[20], entry id: 2058248211200, mustContain: Omagoto
+2026-01-11 20:23:09 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][20] id: 2058248211200, mustContain: Omagoto
+2026-01-11 20:23:09 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:23:09 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][20] with entry id: 2058248211200, mustContain: Omagoto
+2026-01-11 20:23:11 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:11 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:14 - src.gui.main_window - DEBUG - Updated listbox_items[21], entry id: 2058245984192, mustContain: Kirei ni Shitemoraemasu ka
+2026-01-11 20:23:14 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][21] id: 2058245984192, mustContain: Kirei ni Shitemoraemasu ka
+2026-01-11 20:23:14 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:23:14 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][21] with entry id: 2058245984192, mustContain: Kirei ni Shitemoraemasu ka
+2026-01-11 20:23:15 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:15 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:16 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:16 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:18 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:18 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:19 - src.gui.main_window - DEBUG - Updated listbox_items[21], entry id: 2058245984192, mustContain: Kirei ni Shitemoraemasu ka.
+2026-01-11 20:23:19 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][21] id: 2058245984192, mustContain: Kirei ni Shitemoraemasu ka.
+2026-01-11 20:23:19 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:23:19 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][21] with entry id: 2058245984192, mustContain: Kirei ni Shitemoraemasu ka.
+2026-01-11 20:23:20 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:20 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:22 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:22 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:22 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:22 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:23 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:23 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:23 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:23 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:24 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:24 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:24 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:24 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:46 - src.gui.main_window - DEBUG - Updated listbox_items[28], entry id: 2058246984832, mustContain: Maou no Musume wa Yasashi Sugiru!!
+2026-01-11 20:23:46 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][28] id: 2058246984832, mustContain: Maou no Musume wa Yasashi Sugiru!!
+2026-01-11 20:23:46 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:23:46 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][28] with entry id: 2058246984832, mustContain: Maou no Musume wa Yasashi Sugiru!!
+2026-01-11 20:23:52 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:52 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:53 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:53 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:54 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:54 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:55 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:55 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:56 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:56 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:56 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:56 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:57 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:57 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:23:58 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:23:58 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:24:00 - src.gui.main_window - DEBUG - Updated listbox_items[32], entry id: 2058246986880, mustContain: Dark Moon - Tsuki no Saidan
+2026-01-11 20:24:00 - src.gui.main_window - DEBUG - BEFORE: ALL_TITLES[anime][32] id: 2058246986880, mustContain: Dark Moon - Tsuki no Saidan
+2026-01-11 20:24:00 - src.gui.main_window - DEBUG - Match condition: title=True, identity=True, new_title=True
+2026-01-11 20:24:00 - src.gui.main_window - DEBUG - AFTER: Updated ALL_TITLES[anime][32] with entry id: 2058246986880, mustContain: Dark Moon - Tsuki no Saidan
+2026-01-11 20:24:04 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:24:04 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:24:05 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:24:05 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:24:06 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:24:06 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:24:06 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:24:06 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:24:06 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:24:06 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:24:07 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:24:07 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:24:07 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:24:07 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:24:08 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:24:08 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:24:08 - src.config - INFO - Loaded 10 cached categories
+2026-01-11 20:24:08 - src.subsplease_api - INFO - Loaded 60 cached SubsPlease titles
+2026-01-11 20:24:30 - src.qbittorrent_api - DEBUG - QBittorrentClient initialized: verify_ssl=False, ca_cert=None, verify_param=False
+2026-01-11 20:24:30 - qbittorrentapi.request - DEBUG - Re-initializing context...
+2026-01-11 20:24:30 - qbittorrentapi.request - DEBUG - Parsed user URL: ParseResult(scheme='https', netloc='192.168.1.21:8080', path='', params='', query='', fragment='')
+2026-01-11 20:24:30 - qbittorrentapi.request - DEBUG - Detecting scheme for URL...
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "HEAD / HTTP/1.1" 200 0
+2026-01-11 20:24:30 - qbittorrentapi.request - DEBUG - Using HTTPS scheme
+2026-01-11 20:24:30 - qbittorrentapi.request - DEBUG - Base URL: https://192.168.1.21:8080/
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): 192.168.1.21:8080
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/auth/login HTTP/1.1" 200 3
+2026-01-11 20:24:30 - qbittorrentapi.auth - DEBUG - Login successful
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Connected to qBittorrent at https://192.168.1.21:8080
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Sousou no Frieren 2nd Season
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Jujutsu Kaisen: Shimetsu Kaiyuu - Zenpen
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Jigokuraku 2nd Season
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - [Oshi no Ko] 3rd Season
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Yuusha-kei ni Shosu: Choubatsu Yuusha -tai Keimu Kiroku
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Enen no Shouboutai: San no Shou Part 2
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Mato Seihei no Slave 2
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Vigilante: Boku no Hero Academia Illegals 2nd Season
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Yuusha Party wo Oidasareta Kiyoubinbou
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Shibou Yuugi de Meshi wo Kuu.
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Yuusha Party ni Kawaii Ko ga Ita node, Kokuhaku shitemita.
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Mayonaka Heart Tune
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Kizoku Tensei: Megumareta Umare kara Saikyou no Chikara wo Eru
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Majutsushi Kunon wa Mieteiru
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Eris no Seihai
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Darwin Jihen
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Toumei Otoko to Ningen Onna: Sonouchi Fuufu ni Naru Futari
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Okiraku Ryoushu no Tanoshii Ryouchi Bouei: Seisankei Majutsu de Na mo Naki Mura wo Saikyou no Jousai Toshi ni
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Hell Mode: Yarikomizuki no Gamer wa Hai Settei no Isekai de Musou suru
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Medalist 2nd Season
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - "Omae Gotoki ga Maou ni Kateru to Omouna" to Yuusha Party wo Tsuihou sareta node, Outo de Kimama ni Kurashitai
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Kirei ni Shitemoraemasu ka.
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Akuyaku Reijou wa Ringoku no Outaishi ni Dekiai sareru
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Dead Account
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Osananajimi to wa Love Comedy ni Naranai
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Hanazakari no Kimitachi e
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Champignon no Majo
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Kaya-chan wa Kowakunai
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Maou no Musume wa Yasashisugiru!!
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Odayaka Kizoku no Kyuuka no Susume.
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - 29-sai Dokushin Chuuken Boukensha no Nichijou
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Himesama "Goumon" no Jikan desu 2nd Season
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Dark Moon: Tsuki no Saidan
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Arne no Jikenbo
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Yuusha no Kuzu
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Tensei shitara Dragon no Tamago datta
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Goumon Baito-kun no Nichijou
+2026-01-11 20:24:30 - urllib3.connectionpool - DEBUG - https://192.168.1.21:8080 "POST /api/v2/rss/setRule HTTP/1.1" 200 0
+2026-01-11 20:24:30 - src.qbittorrent_api - INFO - Set RSS rule: Winter 2026 - Jingai Kyoushitsu no Ningengirai Kyoushi

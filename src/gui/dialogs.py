@@ -866,10 +866,21 @@ def open_log_viewer(root: tk.Tk) -> None:
         except Exception as e:
             messagebox.showerror('Error', f'Failed to open log file: {e}')
     
+    def copy_log_to_clipboard():
+        """Copy the visible log content to clipboard."""
+        try:
+            log_content = log_text.get('1.0', 'end-1c')
+            log_window.clipboard_clear()
+            log_window.clipboard_append(log_content)
+            messagebox.showinfo('Copied', 'Log content copied to clipboard')
+        except Exception as e:
+            messagebox.showerror('Error', f'Failed to copy log: {e}')
+    
     # Buttons
     button_frame = ttk.Frame(log_window)
     button_frame.pack(side='bottom', fill='x', padx=5, pady=5)
     
+    ttk.Button(button_frame, text='📋 Copy', command=copy_log_to_clipboard).pack(side='left', padx=5)
     ttk.Button(button_frame, text='Refresh', command=refresh_log).pack(side='left', padx=5)
     ttk.Button(button_frame, text='Clear Log', command=clear_log).pack(side='left', padx=5)
     ttk.Button(button_frame, text='Open in Editor', command=open_log_file).pack(side='left', padx=5)
